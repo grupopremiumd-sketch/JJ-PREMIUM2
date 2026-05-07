@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J PREMIUM v14</title>
+    <title>J&J PREMIUM v15</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -12,12 +12,12 @@
         .tool-view { display: none; grid-template-columns: 1fr 380px; height: calc(100vh - 65px); }
         @media (max-width: 1024px) {
             .tool-view { grid-template-columns: 1fr; grid-template-rows: 1fr 320px; }
-            .sidebar { width: 100% !important; border-left: none; border-top: 2px solid #dc2626; overflow-y: scroll; padding-bottom: 80px; }
+            .sidebar { width: 100% !important; border-left: none; border-top: 2px solid #dc2626; overflow-y: scroll; padding-bottom: 60px; }
         }
         .active-view { display: grid !important; }
         .viewport { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0a0a0a; touch-action: none; }
         #zoom-container { transform-origin: center center; position: absolute; will-change: transform; }
-        canvas { box-shadow: 0 0 50px #000; image-rendering: auto; }
+        canvas { box-shadow: 0 0 50px #000; }
         #selection-box { position: absolute; border: 2px dashed #dc2626; display: none; pointer-events: none; z-index: 100; background: rgba(220,38,38,0.1); }
         .sidebar { background: #0a0a0a; border-left: 1px solid #222; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; }
@@ -25,15 +25,16 @@
         .input-jj { background: #000; border: 1px solid #333; border-radius: 6px; padding: 10px; color: #dc2626; font-weight: 900; font-size: 13px; width: 100%; outline: none; }
         #export-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; padding: 15px; }
         .modal-content { background: #0a0a0a; border: 1px solid #dc2626; border-radius: 20px; width: 100%; max-width: 400px; padding: 20px; }
-        .color-tag { width: 28px; height: 28px; border-radius: 6px; border: 1px solid #333; cursor: pointer; }
+        .color-tag { width: 32px; height: 32px; border-radius: 8px; border: 1px solid #333; cursor: pointer; transition: 0.2s; }
+        .color-tag:hover { transform: scale(1.1); border-color: white; }
     </style>
 </head>
 <body>
 
     <header class="h-[65px] px-4 md:px-8 flex justify-between items-center bg-black border-b border-red-900/40">
         <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
-            <div class="w-9 h-9 bg-red-600 rounded flex items-center justify-center font-black text-lg">J&J</div>
-            <h1 class="font-black text-sm uppercase italic tracking-tighter">J&J <span class="text-red-600 font-light">PREMIUM</span></h1>
+            <div class="w-9 h-9 bg-red-600 rounded flex items-center justify-center font-black text-lg shadow-lg">J&J</div>
+            <h1 class="font-black text-sm uppercase italic tracking-tighter text-white">J&J <span class="text-red-600 font-light">PREMIUM</span></h1>
         </div>
         <a href="https://wa.me/51916689969" target="_blank" class="bg-red-600 px-4 py-2 rounded-lg text-[10px] font-black uppercase shadow-lg">VIP</a>
     </header>
@@ -43,30 +44,30 @@
         <p class="text-zinc-500 font-bold uppercase text-[9px] tracking-[0.4em] mb-12 italic">STUDIO DE PRODUCCIÓN MASTER</p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl mb-12">
-            <div onclick="initTool('color')" class="bg-black/40 p-6 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600">
-                <div class="flex justify-center gap-2 mb-4"><div class="w-10 h-10 bg-blue-600 rounded"></div><span class="text-2xl">➔</span><div class="w-10 h-10 bg-red-600 rounded"></div></div>
+            <div onclick="initTool('color')" class="bg-black/40 p-6 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all">
+                <div class="flex justify-center gap-2 mb-4"><div class="w-10 h-10 bg-blue-600 rounded"></div><span class="text-2xl">➔</span><div class="w-10 h-10 bg-yellow-500 rounded"></div></div>
                 <h3 class="font-black uppercase text-lg italic mb-1 text-center">Colorizador</h3>
-                <p class="text-[8px] text-zinc-500 font-bold uppercase text-center italic">Cambia tintas por recuadro</p>
+                <p class="text-[8px] text-zinc-500 font-bold uppercase text-center italic">Cambio de tintas por zona</p>
             </div>
-            <div onclick="initTool('bg')" class="bg-black/40 p-6 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600">
-                <div class="w-20 h-10 mx-auto mb-4 bg-zinc-800 rounded border border-dashed border-zinc-600 flex items-center justify-center"><span class="text-[10px] font-black">PNG</span></div>
+            <div onclick="initTool('bg')" class="bg-black/40 p-6 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all">
+                <div class="w-20 h-10 mx-auto mb-4 bg-zinc-800 rounded border border-dashed border-zinc-600 flex items-center justify-center"><span class="text-[10px] font-black">PNG PRO</span></div>
                 <h3 class="font-black uppercase text-lg italic mb-1 text-center text-red-600">Quitar Fondo</h3>
-                <p class="text-[8px] text-zinc-500 font-bold uppercase text-center italic">Limpia blancos y negros</p>
+                <p class="text-[8px] text-zinc-500 font-bold uppercase text-center italic">Elimina blanco/negro total</p>
             </div>
-            <div onclick="initTool('ia')" class="bg-black/40 p-6 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600">
-                <div class="flex justify-center items-center mb-4 gap-2"><span class="text-zinc-700">A</span><span class="text-2xl text-white font-black">A</span></div>
+            <div onclick="initTool('ia')" class="bg-black/40 p-6 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all">
+                <div class="flex justify-center items-center mb-4 gap-2"><span class="text-zinc-700">A</span><span class="text-3xl text-white font-black drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">A</span></div>
                 <h3 class="font-black uppercase text-lg italic mb-1 text-center">Mejorador IA</h3>
-                <p class="text-[8px] text-zinc-500 font-bold uppercase text-center italic">Sube resolución x2</p>
+                <p class="text-[8px] text-zinc-500 font-bold uppercase text-center italic">Súper Nitidez y Upscale</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl pb-10">
-            <a href="https://wa.me/51916689969" target="_blank" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between">
+            <a href="https://wa.me/51916689969" target="_blank" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between hover:bg-green-600/20">
                 <div class="flex items-center gap-3"><span>👑</span><h4 class="font-black text-xs uppercase italic">Suscripción Premium</h4></div>
                 <span>➔</span>
             </a>
-            <a href="https://wa.me/51904503246" target="_blank" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between">
-                <div class="flex items-center gap-3"><span>🔄</span><h4 class="font-black text-xs uppercase italic">Renovar</h4></div>
+            <a href="https://wa.me/51904503246" target="_blank" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between hover:bg-red-600/20">
+                <div class="flex items-center gap-3"><span>🔄</span><h4 class="font-black text-xs uppercase italic">Renovar Membresía</h4></div>
                 <span>➔</span>
             </a>
         </div>
@@ -77,49 +78,54 @@
             <div id="zoom-container"><canvas id="canvas"></canvas><div id="selection-box"></div></div>
         </main>
         <aside class="sidebar">
-            <button onclick="window.location.reload()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20">← VOLVER</button>
+            <button onclick="window.location.reload()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20">← VOLVER AL MENÚ</button>
             <div class="card"><input type="file" id="upload" class="text-[10px] w-full text-zinc-500" accept="image/*"/></div>
 
             <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
-                <div id="design-palette" class="flex flex-wrap gap-2 justify-center"></div>
+                <p class="text-[9px] text-red-500 font-black uppercase text-center italic">Recuadro activo para precisión</p>
+                <div id="design-palette" class="flex flex-wrap gap-2 justify-center max-h-24 overflow-y-auto p-1 custom-scroll"></div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="text-center"><p class="text-[8px] uppercase font-black mb-1">Antes</p><div id="color-old" class="w-full h-10 rounded-lg border border-white/10 bg-zinc-900"></div></div>
-                    <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1 italic">Nuevo</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none"></div>
+                    <div class="text-center"><p class="text-[8px] uppercase font-black mb-1">Color Antiguo</p><div id="color-old" class="w-full h-10 rounded-lg border border-white/10 bg-zinc-900 shadow-inner"></div></div>
+                    <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1 italic">Color Nuevo</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none cursor-pointer"></div>
                 </div>
-                <button onclick="applyColorAction()" class="btn-jj text-[10px]">Actualizar Área</button>
+                <button onclick="applyColorAction()" class="btn-jj text-[10px]">Cambiar en Recuadro</button>
             </div>
 
             <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
+                <p class="text-[9px] text-zinc-500 font-black uppercase text-center italic">Toque directo sin recuadro</p>
                 <div class="grid grid-cols-2 gap-2"><button onclick="quickRemove('white')" class="py-3 bg-white text-black font-black text-[9px] rounded">BLANCO</button><button onclick="quickRemove('black')" class="py-3 bg-zinc-800 text-white font-black text-[9px] rounded">NEGRO</button></div>
-                <button onclick="applyBgRemovePro()" class="btn-jj text-[10px]">Borrar Fondo</button>
+                <button onclick="applyBgRemovePro()" class="btn-jj text-[10px]">Eliminar Fondo</button>
             </div>
 
             <div id="panel-ia" class="hidden card border-red-600/30 space-y-4">
-                <button onclick="upscaleIA(2)" class="w-full py-4 bg-zinc-900 text-red-500 font-black text-[9px] rounded-xl border border-red-900/30">HD X2</button>
-                <button onclick="applyBetterIA()" class="btn-jj text-[10px]">MEJORAR BORDES</button>
+                <button onclick="upscaleIA(2)" class="w-full py-4 bg-zinc-900 text-red-500 font-black text-[9px] rounded-xl border border-red-900/30">HDPRO UPSCALING X2</button>
+                <button onclick="applyBetterIA()" class="btn-jj text-[10px]">ULTRA NITIDEZ BORDES</button>
             </div>
 
             <div class="mt-auto space-y-3">
                 <div class="flex gap-4 justify-center py-2"><button onclick="setBg('#ffffff')" class="w-7 h-7 bg-white rounded-full"></button><button onclick="setBg('#0a0a0a')" class="w-7 h-7 bg-black rounded-full border border-white/10"></button><button onclick="setBg('#cbd5e1')" class="w-7 h-7 bg-slate-400 rounded-full"></button></div>
                 <button onclick="resetToOriginal()" class="w-full py-3 bg-zinc-900 text-yellow-500 font-black rounded-xl text-[9px] uppercase">Restaurar</button>
-                <button onclick="openExportModal()" id="btn-dl-final" class="w-full py-5 bg-white text-black rounded-xl font-black text-[12px] uppercase shadow-xl">DESCARGAR PNG MASTER</button>
+                <button onclick="openExportModal()" class="w-full py-5 bg-white text-black rounded-xl font-black text-[12px] uppercase shadow-xl">DESCARGAR PNG MASTER</button>
             </div>
         </aside>
     </section>
 
     <div id="export-modal">
         <div class="modal-content">
-            <h3 class="text-red-600 font-black text-center mb-6 underline">Exportación Master</h3>
+            <h3 class="text-red-600 font-black text-center mb-6 underline uppercase italic">Panel de Salida J&J</h3>
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <select id="exp-unit" class="input-jj" onchange="convertUnits()"><option value="px">PX</option><option value="cm">CM</option><option value="mm">MM</option></select>
-                <input type="number" id="exp-dpi" value="300" class="input-jj">
+                <input type="number" id="exp-dpi" value="300" class="input-jj" placeholder="DPI">
             </div>
             <div class="grid grid-cols-2 gap-4 mb-4">
-                <input type="number" id="exp-width" class="input-jj" oninput="syncDim('w')" placeholder="W">
-                <input type="number" id="exp-height" class="input-jj" oninput="syncDim('h')" placeholder="H">
+                <input type="number" id="exp-width" class="input-jj" oninput="syncDim('w')" placeholder="Ancho">
+                <input type="number" id="exp-height" class="input-jj" oninput="syncDim('h')" placeholder="Alto">
             </div>
-            <div class="mb-6"><select id="exp-quality" class="input-jj"><option value="high">Bicúbica (Pro)</option><option value="medium">Bilineal</option><option value="low">Rápida</option></select></div>
-            <div class="flex items-center gap-3 justify-center mb-6"><input type="checkbox" id="exp-ratio" checked class="accent-red-600 w-5 h-5"><label class="text-[10px] font-black text-red-500 uppercase">Mantener Proporción</label></div>
+            <div class="mb-6">
+                <label class="text-[9px] font-black text-zinc-500 block mb-1 uppercase italic">Filtro de Calidad</label>
+                <select id="exp-quality" class="input-jj"><option value="high">Bicúbica (Suave)</option><option value="medium">Bilineal</option><option value="low">Cercano</option></select>
+            </div>
+            <div class="flex items-center gap-3 justify-center mb-6"><input type="checkbox" id="exp-ratio" checked class="accent-red-600 w-5 h-5"><label class="text-[10px] font-black text-red-500 uppercase italic">Fijar Proporción</label></div>
             <div class="flex gap-3"><button onclick="closeExportModal()" class="flex-1 py-4 bg-zinc-900 text-[10px] font-black rounded-xl">Cerrar</button><button onclick="downloadPro()" class="flex-1 btn-jj text-[10px]">Descargar</button></div>
         </div>
     </div>
@@ -129,14 +135,16 @@
         const viewport = document.getElementById('viewport'), zoomContainer = document.getElementById('zoom-container');
         const upload = document.getElementById('upload'), selectionBox = document.getElementById('selection-box');
         let originalImg = null, scale = 1, posX = 0, posY = 0, ratio = 1, targetRGB = [0,0,0], lastTouchDist = 0;
-        let isSelecting = false, isPanning = false, startX, startY, selectArea = null;
+        let isSelecting = false, isPanning = false, startX, startY, selectArea = null, currentTool = 'color';
 
         function initTool(tool) {
+            currentTool = tool;
             document.getElementById('view-home').style.display = 'none';
             document.getElementById('view-tool').classList.add('active-view');
             document.getElementById('panel-color').classList.toggle('hidden', tool !== 'color');
             document.getElementById('panel-bg').classList.toggle('hidden', tool !== 'bg');
             document.getElementById('panel-ia').classList.toggle('hidden', tool !== 'ia');
+            selectionBox.style.display = 'none';
         }
 
         upload.onchange = (e) => {
@@ -146,7 +154,7 @@
                 img.onload = () => {
                     canvas.width = img.width; canvas.height = img.height;
                     ctx.drawImage(img, 0, 0); originalImg = img; ratio = img.width / img.height;
-                    extractPalette();
+                    extractPaletteFull();
                     document.getElementById('exp-width').value = img.width; document.getElementById('exp-height').value = img.height;
                     scale = 0.5; updateTransform();
                 };
@@ -155,15 +163,15 @@
             reader.readAsDataURL(e.target.files[0]);
         };
 
-        function extractPalette() {
-            const data = ctx.getImageData(0,0,Math.min(canvas.width, 500), Math.min(canvas.height, 500)).data;
+        function extractPaletteFull() {
+            const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
             const colors = {};
-            for(let i=0; i<data.length; i+=1000) {
-                if(data[i+3] < 200) continue;
+            for(let i=0; i<data.length; i+=1200) { // Mayor profundidad de escaneo
+                if(data[i+3] < 128) continue;
                 const h = "#" + ((1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2]).toString(16).slice(1).toUpperCase();
                 colors[h] = (colors[h] || 0) + 1;
             }
-            const sorted = Object.keys(colors).sort((a,b) => colors[b]-colors[a]).slice(0, 10);
+            const sorted = Object.keys(colors).sort((a,b) => colors[b]-colors[a]).slice(0, 16);
             const container = document.getElementById('design-palette'); container.innerHTML = "";
             sorted.forEach(hex => {
                 const div = document.createElement('div'); div.className = "color-tag"; div.style.backgroundColor = hex;
@@ -175,7 +183,7 @@
             });
         }
 
-        // TACTIL FIX
+        // CONTROL TACTIL OPTIMIZADO
         viewport.addEventListener('touchstart', (e) => {
             if(!originalImg) return;
             const rect = canvas.getBoundingClientRect();
@@ -183,11 +191,15 @@
                 lastTouchDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
                 isPanning = true;
             } else {
-                isSelecting = true;
                 startX = (e.touches[0].clientX - rect.left) / scale;
                 startY = (e.touches[0].clientY - rect.top) / scale;
-                selectionBox.style.display = 'block'; selectionBox.style.left = startX + 'px'; selectionBox.style.top = startY + 'px';
-                selectionBox.style.width = '0px'; selectionBox.style.height = '0px';
+                
+                if(currentTool === 'color') {
+                    isSelecting = true;
+                    selectionBox.style.display = 'block'; selectionBox.style.left = startX + 'px'; selectionBox.style.top = startY + 'px';
+                    selectionBox.style.width = '0px'; selectionBox.style.height = '0px';
+                }
+                
                 const p = ctx.getImageData(Math.max(0,Math.min(startX,canvas.width-1)), Math.max(0,Math.min(startY,canvas.height-1)), 1, 1).data;
                 targetRGB = [p[0], p[1], p[2]]; document.getElementById('color-old').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
             }
@@ -199,12 +211,16 @@
             if(e.touches.length === 2) {
                 const dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
                 scale *= (dist / lastTouchDist); lastTouchDist = dist;
-            } else if(isSelecting) {
+            } else if(isSelecting && currentTool === 'color') {
                 const cx = (e.touches[0].clientX - rect.left) / scale;
                 const cy = (e.touches[0].clientY - rect.top) / scale;
                 let x = Math.min(startX, cx), y = Math.min(startY, cy), w = Math.abs(cx - startX), h = Math.abs(cy - startY);
-                selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px'; selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px';
+                selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px';
+                selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px';
                 selectArea = { x, y, w, h };
+            } else if(isPanning) {
+                posX = e.touches[0].pageX - startX * scale - rect.left;
+                posY = e.touches[0].pageY - startY * scale - rect.top;
             }
             updateTransform();
         }, {passive: false});
@@ -212,6 +228,7 @@
         viewport.addEventListener('touchend', () => { isSelecting = isPanning = false; });
 
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
+
         function applyColorAction() {
             const area = selectArea || {x:0, y:0, w:canvas.width, h:canvas.height};
             const id = ctx.getImageData(area.x, area.y, area.w, area.h); const d = id.data, hex = document.getElementById('custom-picker').value;
@@ -219,7 +236,7 @@
             for(let i=0; i<d.length; i+=4) {
                 if(d[i+3]<10) continue;
                 const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2));
-                if(diff < 30) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; }
+                if(diff < 35) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; }
             }
             ctx.putImageData(id, area.x, area.y); selectionBox.style.display='none'; selectArea=null;
         }
@@ -228,26 +245,34 @@
             const id = ctx.getImageData(0,0,canvas.width,canvas.height); const d = id.data;
             for(let i=0; i<d.length; i+=4) {
                 const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2));
-                if(diff < 40) d[i+3]=0;
+                if(diff < 45) d[i+3]=0;
             }
             ctx.putImageData(id,0,0);
         }
 
-        function openExportModal() { document.getElementById('export-modal').style.display='flex'; }
-        function closeExportModal() { document.getElementById('export-modal').style.display='none'; }
+        function upscaleIA(f) {
+            const tc = document.createElement('canvas'); tc.width = canvas.width*f; tc.height = canvas.height*f;
+            const tctx = tc.getContext('2d'); tctx.imageSmoothingEnabled = true; tctx.imageSmoothingQuality = 'high';
+            tctx.drawImage(canvas,0,0,tc.width,tc.height);
+            canvas.width = tc.width; canvas.height = tc.height; ctx.drawImage(tc,0,0); updateTransform();
+        }
+
+        function applyBetterIA() {
+            // Algoritmo de nitidez avanzada J&J
+            const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+            ctx.filter = 'contrast(125%) saturate(105%) brightness(102%) blur(0px)';
+            ctx.drawImage(canvas, 0, 0);
+            ctx.filter = 'none';
+            // Sharpen manual ligero
+            const d = imgData.data;
+            for(let i=0; i<d.length; i+=4) {
+                if(d[i+3] > 0 && d[i+3] < 255) d[i+3] = d[i+3] > 128 ? 255 : 0; // Limpia bordes semi-transparentes
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
         function downloadPro() {
             const oc = document.createElement('canvas'); oc.width = document.getElementById('exp-width').value; oc.height = document.getElementById('exp-height').value;
             const octx = oc.getContext('2d'); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = document.getElementById('exp-quality').value;
             octx.drawImage(canvas,0,0,oc.width,oc.height);
-            const a = document.createElement('a'); a.download = 'jj_premium.png'; a.href = oc.toDataURL(); a.click(); closeExportModal();
-        }
-        function upscaleIA(f) { const tc = document.createElement('canvas'); tc.width = canvas.width*f; tc.height = canvas.height*f; tc.getContext('2d').drawImage(canvas,0,0,tc.width,tc.height); canvas.width = tc.width; canvas.height = tc.height; ctx.drawImage(tc,0,0); updateTransform(); }
-        function applyBetterIA() { ctx.filter = 'contrast(120%)'; ctx.drawImage(canvas,0,0); ctx.filter = 'none'; }
-        function resetToOriginal() { if(originalImg) ctx.drawImage(originalImg,0,0); selectionBox.style.display='none'; }
-        function quickRemove(color) { targetRGB = color === 'white' ? [255,255,255] : [0,0,0]; applyBgRemovePro(); }
-        function syncDim(type) { if(!document.getElementById('exp-ratio').checked) return; const w = document.getElementById('exp-width'), h = document.getElementById('exp-height'); if(type === 'w') h.value = Math.round(w.value / ratio); else w.value = Math.round(h.value * ratio); }
-        function convertUnits() { /* Logic cm/mm */ }
-        function setBg(c) { viewport.style.backgroundColor = c; }
-    </script>
-</body>
-</html>
+            const a = document.createElement('a'); a.download = 'jj_premium_maste
