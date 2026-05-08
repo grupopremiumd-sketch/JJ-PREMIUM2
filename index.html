@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J PREMIUM v29</title>
+    <title>J&J PREMIUM v30</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -29,7 +29,6 @@
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; }
         .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; }
         .btn-download-top { background: linear-gradient(to bottom, #facc15, #eab308); color: black; font-weight: 900; text-transform: uppercase; border-radius: 8px; padding: 8px 15px; font-size: 11px; display: none; box-shadow: 0 0 15px rgba(250,204,21,0.4); border: none; cursor: pointer; }
-        .label-tool { font-size: 9px; font-weight: 900; color: #666; text-transform: uppercase; margin-bottom: 4px; display: block; }
     </style>
 </head>
 <body>
@@ -40,7 +39,7 @@
             <h1 class="font-black text-sm md:text-lg uppercase italic tracking-tighter text-white">J&J <span class="text-red-600">PREMIUM</span></h1>
         </div>
         <div class="flex items-center gap-3">
-            <button id="btn-top-dl" onclick="downloadOriginalSize()" class="btn-download-top">📥 DESCARGAR PNG</button>
+            <button id="btn-top-dl" onclick="downloadPNGWith300DPI()" class="btn-download-top">📥 BAJAR PNG 300DPI</button>
             <a href="https://wa.me/51916689969" target="_blank" class="bg-red-600 px-4 py-2 rounded-lg text-[10px] font-black uppercase">VIP</a>
         </div>
     </header>
@@ -67,17 +66,11 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl pb-10">
             <a href="https://wa.me/51916689969" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between text-white hover:bg-green-600/20 transition-all">
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">👑</span>
-                    <div class="text-left"><h4 class="font-black text-xs uppercase italic">Suscribirme</h4><p class="text-[8px] text-zinc-500 font-bold uppercase tracking-widest">Nuevos Clientes</p></div>
-                </div>
+                <div class="flex items-center gap-3">👑 <h4 class="font-black text-xs uppercase italic">Suscribirme</h4></div>
                 <span>➔</span>
             </a>
             <a href="https://wa.me/51904503246" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between text-white hover:bg-red-600/20 transition-all">
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">🔄</span>
-                    <div class="text-left"><h4 class="font-black text-xs uppercase italic">Renovar Membresía</h4><p class="text-[8px] text-zinc-500 font-bold uppercase tracking-widest">Actualización</p></div>
-                </div>
+                <div class="flex items-center gap-3">🔄 <h4 class="font-black text-xs uppercase italic">Renovar</h4></div>
                 <span>➔</span>
             </a>
         </div>
@@ -98,7 +91,7 @@
                 <div id="design-palette" class="flex flex-wrap gap-2 justify-center mb-4 min-h-[40px]"></div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="text-center"><p class="text-[8px] font-black uppercase mb-1">Actual</p><div id="color-old" class="w-full h-10 rounded-lg border border-white/10 bg-zinc-900"></div></div>
-                    <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1">Nueva Tinta</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none p-0 cursor-pointer"></div>
+                    <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1">Nuevo</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none p-0 cursor-pointer"></div>
                 </div>
                 <button onclick="applyColor()" class="btn-jj text-[10px] mt-4">Actualizar Tinta</button>
             </div>
@@ -106,23 +99,19 @@
             <!-- PANEL QUITAR FONDO -->
             <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
                 <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900"></div>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="quickBG('white')" class="py-2 bg-white text-black font-black text-[9px] rounded">BLANCO</button>
-                    <button onclick="quickBG('black')" class="py-2 bg-zinc-800 text-white font-black text-[9px] rounded">NEGRO</button>
+                <div>
+                    <label class="text-[9px] font-black text-zinc-600 uppercase mb-1 block">Tolerancia</label>
+                    <input type="range" id="bg-tolerance" min="1" max="150" value="40" class="w-full accent-red-600">
                 </div>
                 <div>
-                    <label class="label-tool">Tolerancia: <span id="tol-val" class="text-red-500">40</span></label>
-                    <input type="range" id="bg-tolerance" min="1" max="150" value="40" class="w-full accent-red-600" oninput="document.getElementById('tol-val').innerText=this.value">
+                    <label class="text-[9px] font-black text-zinc-600 uppercase mb-1 block">Suavizado</label>
+                    <input type="range" id="bg-smooth" min="0" max="10" value="1" class="w-full accent-red-600">
                 </div>
-                <div>
-                    <label class="label-tool">Suavizado: <span id="smooth-val" class="text-red-500">1</span></label>
-                    <input type="range" id="bg-smooth" min="0" max="10" value="1" class="w-full accent-red-600" oninput="document.getElementById('smooth-val').innerText=this.value">
-                </div>
-                <button onclick="removeBG()" class="btn-jj text-[10px]">Ejecutar Limpieza</button>
+                <button onclick="removeBG()" class="btn-jj text-[10px]">Quitar Fondo</button>
             </div>
 
             <div id="panel-ia" class="hidden card border-red-600/30 space-y-4">
-                <button onclick="upscaleIA(2)" class="w-full py-4 bg-zinc-900 text-red-500 font-black text-[10px] rounded-xl border border-red-900/30 uppercase">Upscale HD x2</button>
+                <button onclick="upscaleIA(2)" class="w-full py-4 bg-zinc-900 text-red-500 font-black text-[10px] rounded-xl border border-red-900/30 uppercase italic">Upscale HD x2</button>
                 <button onclick="applyIA()" class="btn-jj text-[11px]">Nitidez Master</button>
             </div>
             
@@ -164,19 +153,16 @@
 
         // ZOOM & PANNING
         viewport.onwheel = (e) => { if (!originalImg) return; e.preventDefault(); scale = Math.max(0.05, Math.min(20, scale * (e.deltaY > 0 ? 0.9 : 1.1))); updateTransform(); };
+        
         viewport.addEventListener('mousedown', (e) => {
             if (!originalImg) return;
             const rect = canvas.getBoundingClientRect();
             const tx = (e.clientX - rect.left) / scale;
             const ty = (e.clientY - rect.top) / scale;
             if (e.button === 2 || e.button === 1 || (e.button === 0 && currentTool !== 'color')) { isPanning = true; startX = e.clientX - posX; startY = e.clientY - posY; captureColor(tx, ty); } 
-            else if (e.button === 0 && currentTool === 'color') { isSelecting = true; startX = tx; startY = ty; selectionBox.style.display = 'block'; selectionBox.style.left = startX + 'px'; selectionBox.style.top = startY + 'px'; selectionBox.style.width = '0px'; selectionBox.style.height = '0px'; captureColor(startX, startY); }
+            else if (e.button === 0 && currentTool === 'color') { isSelecting = true; startX = tx; startY = ty; selectionBox.style.display = 'block'; selectionBox.style.left = startX + 'px'; selectionBox.style.top = startY + 'px'; captureColor(startX, startY); }
         });
-        window.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            if (isPanning) { posX = e.clientX - startX; posY = e.clientY - startY; updateTransform(); } 
-            else if (isSelecting) { const cx = (e.clientX - rect.left) / scale; const cy = (e.clientY - rect.top) / scale; let x = Math.min(startX, cx), y = Math.min(startY, cy), w = Math.abs(cx - startX), h = Math.abs(cy - startY); selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px'; selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px'; selectArea = {x, y, w, h}; }
-        });
+        window.addEventListener('mousemove', (e) => { if (isPanning) { posX = e.clientX - startX; posY = e.clientY - startY; updateTransform(); } else if (isSelecting) { const rect = canvas.getBoundingClientRect(); const cx = (e.clientX - rect.left) / scale; const cy = (e.clientY - rect.top) / scale; let x = Math.min(startX, cx), y = Math.min(startY, cy), w = Math.abs(cx - startX), h = Math.abs(cy - startY); selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px'; selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px'; selectArea = {x, y, w, h}; } });
         window.addEventListener('mouseup', () => { isSelecting = isPanning = false; });
         viewport.addEventListener('contextmenu', e => e.preventDefault());
 
@@ -188,40 +174,74 @@
             if(e.touches.length === 2) { lastDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY); isPanning = true; } 
             else { if(currentTool === 'color') { isSelecting = true; startX = tx; startY = ty; selectionBox.style.display = 'block'; selectionBox.style.left = startX + 'px'; selectionBox.style.top = startY + 'px'; captureColor(startX, startY); } else { isPanning = true; startX = e.touches[0].clientX - posX; startY = e.touches[0].clientY - posY; captureColor(tx, ty); } }
         }, {passive: false});
-        viewport.addEventListener('touchmove', (e) => {
-            if(!originalImg) return; e.preventDefault();
-            const rect = canvas.getBoundingClientRect();
-            if(e.touches.length === 2) { const dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY); scale *= (dist/lastDist); lastDist = dist; } 
-            else if(isSelecting) { const cx = (e.touches[0].clientX - rect.left) / scale; const cy = (e.touches[0].clientY - rect.top) / scale; let x = Math.min(startX, cx), y = Math.min(startY, cy), w = Math.abs(cx - startX), h = Math.abs(cy - startY); selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px'; selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px'; selectArea = {x, y, w, h}; } 
-            else if(isPanning) { posX = e.touches[0].clientX - startX; posY = e.touches[0].clientY - startY; }
-            updateTransform();
-        }, {passive: false});
+        viewport.addEventListener('touchmove', (e) => { if(!originalImg) return; e.preventDefault(); if(e.touches.length === 2) { const dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY); scale *= (dist/lastDist); lastDist = dist; } else if(isSelecting) { const rect = canvas.getBoundingClientRect(); const cx = (e.touches[0].clientX - rect.left) / scale; const cy = (e.touches[0].clientY - rect.top) / scale; let x = Math.min(startX, cx), y = Math.min(startY, cy), w = Math.abs(cx - startX), h = Math.abs(cy - startY); selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px'; selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px'; selectArea = {x, y, w, h}; } else if(isPanning) { posX = e.touches[0].clientX - startX; posY = e.touches[0].clientY - startY; } updateTransform(); }, {passive: false});
 
         function captureColor(x, y) { const p = ctx.getImageData(Math.max(0,Math.min(x,canvas.width-1)), Math.max(0,Math.min(y,canvas.height-1)), 1, 1).data; targetRGB = [p[0], p[1], p[2]]; const hex = `rgb(${p[0]},${p[1]},${p[2]})`; document.getElementById('color-old').style.backgroundColor = hex; document.getElementById('bg-color-preview').style.backgroundColor = hex; }
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
 
-        // DESCARGA SIMPLIFICADA: TAMAÑO ORIGINAL A 300 DPI
-        function downloadOriginalSize() {
+        // --- FUNCIÓN MAESTRA DE DESCARGA: INYECTA 300 DPI ---
+        async function downloadPNGWith300DPI() {
             if(!originalImg) return;
-            // Crear canvas temporal del tamaño exacto del canvas actual (que es el original o el procesado por IA)
-            const exportCanvas = document.createElement('canvas');
-            exportCanvas.width = canvas.width;
-            exportCanvas.height = canvas.height;
-            const exportCtx = exportCanvas.getContext('2d');
             
-            // Dibujar el contenido actual
-            exportCtx.drawImage(canvas, 0, 0);
+            const dataUrl = canvas.toDataURL('image/png');
+            const response = await fetch(dataUrl);
+            const blob = await response.blob();
+            const arrayBuffer = await blob.arrayBuffer();
             
-            // Generar el link de descarga
+            const uint8Array = new Uint8Array(arrayBuffer);
+            
+            // Definir 300 DPI en píxeles por metro (pHYs chunk)
+            // 300 dpi / 0.0254 metros = 11811 píxeles/metro
+            const dpi = 300;
+            const pixelsPerMeter = Math.round(dpi / 0.0254);
+            
+            // Crear el chunk pHYs
+            const pHYsChunk = new Uint8Array(21);
+            pHYsChunk.set([0, 0, 0, 9, 112, 72, 89, 115]); // Length (9), 'pHYs'
+            
+            const view = new DataView(pHYsChunk.buffer);
+            view.setUint32(8, pixelsPerMeter); // X pixels per meter
+            view.setUint32(12, pixelsPerMeter); // Y pixels per meter
+            view.setUint8(16, 1); // Unit is meter
+            
+            // Calcular CRC para pHYs
+            const crc = calculateCRC(pHYsChunk.slice(4, 17));
+            view.setUint32(17, crc);
+            
+            // Insertar el chunk después del header de PNG e IHDR
+            const finalPNG = new Uint8Array(uint8Array.length + 21);
+            finalPNG.set(uint8Array.slice(0, 33)); // Header + IHDR
+            finalPNG.set(pHYsChunk, 33);
+            finalPNG.set(uint8Array.slice(33), 33 + 21);
+            
+            const finalBlob = new Blob([finalPNG], { type: 'image/png' });
+            const url = URL.createObjectURL(finalBlob);
             const a = document.createElement('a');
-            a.download = `jj_premium_${canvas.width}x${canvas.height}_300dpi.png`;
-            a.href = exportCanvas.toDataURL('image/png');
+            a.download = `JJ_PREMIUM_300DPI_${Date.now()}.png`;
+            a.href = url;
             a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Utilidad para calcular el CRC del chunk PNG
+        function calculateCRC(data) {
+            let crc = 0xFFFFFFFF;
+            const table = window.crcTable || (function() {
+                const t = new Int32Array(256);
+                for (let i = 0; i < 256; i++) {
+                    let c = i;
+                    for (let j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+                    t[i] = c;
+                }
+                return window.crcTable = t;
+            })();
+            for (let i = 0; i < data.length; i++) crc = table[(crc ^ data[i]) & 0xFF] ^ (crc >>> 1);
+            return (crc ^ 0xFFFFFFFF) >>> 0;
         }
 
         function removeBG() { const id = ctx.getImageData(0,0,canvas.width,canvas.height); const d = id.data; const tol = parseInt(document.getElementById('bg-tolerance').value); const smooth = parseInt(document.getElementById('bg-smooth').value); for(let i=0; i<d.length; i+=4) { const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)); if(diff < tol) { if (smooth > 0 && diff > (tol - smooth * 5)) { d[i+3] = ((diff - (tol - smooth * 5)) / (smooth * 5)) * 255; } else { d[i+3] = 0; } } } ctx.putImageData(id,0,0); }
         function applyColor() { const area = selectArea || {x:0, y:0, w:canvas.width, h:canvas.height}; const id = ctx.getImageData(area.x, area.y, area.w, area.h); const d = id.data, hex = document.getElementById('custom-picker').value, rN = parseInt(hex.slice(1,3),16), gN = parseInt(hex.slice(3,5),16), bN = parseInt(hex.slice(5,7),16); for(let i=0; i<d.length; i+=4) { if(d[i+3]<10) continue; const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)); if(diff < 35) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; } } ctx.putImageData(id, area.x, area.y); selectionBox.style.display='none'; selectArea=null; }
-        function manualScan() { if(!originalImg) return; const data = ctx.getImageData(0,0,canvas.width,canvas.height).data; const colors = {}; for(let i=0; i<data.length; i+=Math.max(4, Math.floor(data.length/2000)*4)) { if(data[i+3] < 128) continue; const h = "#" + ((1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2]).toString(16).slice(1).toUpperCase(); colors[h] = (colors[h] || 0) + 1; } const sorted = Object.keys(colors).sort((a,b) => colors[b]-colors[a]).slice(0, 10); const container = document.getElementById('design-palette'); container.innerHTML = ""; sorted.forEach(hex => { const div = document.createElement('div'); div.className = "w-8 h-8 rounded border border-zinc-800 cursor-pointer hover:scale-110"; div.style.backgroundColor = hex; div.onclick = () => { const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16); targetRGB = [r,g,b]; document.getElementById('color-old').style.backgroundColor = hex; document.getElementById('bg-color-preview').style.backgroundColor = hex; }; container.appendChild(div); }); }
+        function manualScan() { if(!originalImg) return; const data = ctx.getImageData(0,0,canvas.width,canvas.height).data; const colors = {}; for(let i=0; i<data.length; i+=Math.max(4, Math.floor(data.length/2000)*4)) { if(data[i+3] < 128) continue; const h = "#" + ((1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2]).toString(16).slice(1).toUpperCase(); colors[h] = (colors[h] || 0) + 1; } const sorted = Object.keys(colors).sort((a,b) => colors[b]-colors[a]).slice(0, 10); const container = document.getElementById('design-palette'); container.innerHTML = ""; sorted.forEach(hex => { const div = document.createElement('div'); div.className = "w-8 h-8 rounded border border-zinc-800 cursor-pointer"; div.style.backgroundColor = hex; div.onclick = () => { const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16); targetRGB = [r,g,b]; document.getElementById('color-old').style.backgroundColor = hex; document.getElementById('bg-color-preview').style.backgroundColor = hex; }; container.appendChild(div); }); }
         function upscaleIA(f) { const tc = document.createElement('canvas'); tc.width = canvas.width*f; tc.height = canvas.height*f; tc.getContext('2d').drawImage(canvas,0,0,tc.width,tc.height); canvas.width = tc.width; canvas.height = tc.height; ctx.drawImage(tc,0,0); updateTransform(); }
         function applyIA() { ctx.filter = 'contrast(120%) brightness(102%)'; ctx.drawImage(canvas,0,0); ctx.filter = 'none'; }
         function quickBG(c) { targetRGB = c === 'white' ? [255,255,255] : [0,0,0]; removeBG(); }
