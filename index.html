@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J PREMIUM v21</title>
+    <title>J&J PREMIUM v22</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Lato', sans-serif; background: #050505; color: white; margin: 0; overflow: hidden; position: fixed; width: 100%; height: 100%; }
         .bg-premium { background: radial-gradient(circle at center, #250000 0%, #050505 100%); }
         
-        .tool-view { display: none; grid-template-columns: 1fr 380px; height: calc(100vh - 65px); }
-        @media (max-width: 1024px) {
-            .tool-view { grid-template-columns: 1fr; grid-template-rows: 1fr 320px; }
-            .sidebar { width: 100% !important; border-top: 2px solid #dc2626; overflow-y: auto; padding-bottom: 40px; }
+        /* Layout Ultra-Flexible */
+        .tool-view { display: none; height: calc(100vh - 65px); width: 100%; }
+        
+        @media (min-width: 1025px) {
+            .tool-view { display: flex; flex-direction: row; }
+            .viewport { flex-grow: 1; height: 100%; }
+            .sidebar { width: 350px; min-width: 350px; border-left: 2px solid #222; }
         }
 
-        .active-view { display: grid !important; }
-        .viewport { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0a0a0a; touch-action: none; cursor: crosshair; }
-        #zoom-container { transform-origin: center center; position: absolute; transition: transform 0.05s ease-out; }
+        @media (max-width: 1024px) {
+            .tool-view { display: flex; flex-direction: column; }
+            .viewport { flex-grow: 1; width: 100%; }
+            .sidebar { width: 100%; height: 320px; border-top: 2px solid #dc2626; overflow-y: auto; }
+        }
+
+        .active-view { display: flex !important; }
+        .viewport { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0a0a0a; touch-action: none; }
+        #zoom-container { transform-origin: center center; position: absolute; }
         canvas { box-shadow: 0 0 50px #000; }
         
-        .sidebar { background: #0a0a0a; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .sidebar { background: #0a0a0a; padding: 15px; display: flex; flex-direction: column; gap: 12px; z-index: 50; }
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; }
         .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; }
         .input-jj { background: #000; border: 1px solid #333; border-radius: 6px; padding: 10px; color: #dc2626; font-weight: 900; width: 100%; font-size: 13px; }
         
         #selection-box { position: absolute; border: 2px dashed #dc2626; display: none; pointer-events: none; z-index: 100; background: rgba(220,38,38,0.1); }
         #export-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
-        .btn-download-top { background: linear-gradient(to bottom, #facc15, #eab308); color: black; font-weight: 900; text-transform: uppercase; border-radius: 8px; padding: 8px 12px; font-size: 10px; box-shadow: 0 0 15px rgba(250, 204, 21, 0.3); display: none; }
+        .btn-download-top { background: linear-gradient(to bottom, #facc15, #eab308); color: black; font-weight: 900; text-transform: uppercase; border-radius: 8px; padding: 8px 15px; font-size: 11px; box-shadow: 0 0 15px rgba(250, 204, 21, 0.4); display: none; }
     </style>
 </head>
 <body>
@@ -36,67 +45,65 @@
     <header class="h-[65px] px-4 md:px-8 flex justify-between items-center bg-black border-b border-red-900/40 z-[100]">
         <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
             <div class="w-10 h-10 bg-red-600 rounded flex items-center justify-center font-black text-xl shadow-lg">J&J</div>
-            <h1 class="font-black text-sm md:text-lg uppercase italic tracking-tighter">J&J <span class="text-red-600 font-light">PREMIUM</span></h1>
+            <h1 class="font-black text-sm md:text-lg uppercase italic tracking-tighter">J&J <span class="text-red-600">PREMIUM</span></h1>
         </div>
         
-        <div class="flex items-center gap-2">
-            <button id="btn-top-dl" onclick="openExport()" class="btn-download-top">📥 Descargar</button>
-            <a href="https://wa.me/51916689969" target="_blank" class="bg-red-600 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest">VIP</a>
+        <div class="flex items-center gap-3">
+            <button id="btn-top-dl" onclick="openExport()" class="btn-download-top animate-pulse">📥 DESCARGAR</button>
+            <a href="https://wa.me/51916689969" target="_blank" class="bg-red-600 px-4 py-2 rounded-lg text-[10px] font-black uppercase">VIP</a>
         </div>
     </header>
 
-    <!-- INICIO -->
-    <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6 overflow-y-auto">
+    <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6 overflow-y-auto custom-scroll">
         <h2 class="text-5xl md:text-7xl font-black italic mb-2 uppercase text-center tracking-tighter">J&J PREMIUM</h2>
-        <p class="text-zinc-500 font-bold uppercase text-[9px] tracking-[0.4em] mb-12 italic text-center">Software Master de Producción</p>
+        <p class="text-zinc-500 font-bold uppercase text-[9px] tracking-[0.5em] mb-12 italic">STUDIO DE PRODUCCIÓN MASTER</p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl mb-12">
-            <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2.5rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all text-center">
-                <div class="flex justify-center gap-2 mb-4"><div class="w-10 h-10 bg-blue-600 rounded"></div><span class="text-2xl text-white">➔</span><div class="w-10 h-10 bg-yellow-500 rounded"></div></div>
+            <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all text-center group">
+                <div class="flex justify-center gap-2 mb-4 group-hover:scale-110 transition-transform"><div class="w-10 h-10 bg-blue-600 rounded"></div><span class="text-2xl">➔</span><div class="w-10 h-10 bg-yellow-500 rounded"></div></div>
                 <h3 class="font-black uppercase text-xl italic mb-1">Colorizador</h3>
-                <p class="text-[9px] text-zinc-500 font-bold uppercase italic">Tintas por Zona</p>
+                <p class="text-[9px] text-zinc-500 font-bold uppercase italic">Cambio de Tintas</p>
             </div>
-            <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2.5rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all text-center">
-                <div class="w-20 h-10 mx-auto mb-4 bg-zinc-800 rounded border border-dashed border-zinc-600 flex items-center justify-center shadow-lg"><span class="text-[10px] font-black text-zinc-400">PNG PRO</span></div>
+            <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all text-center group">
+                <div class="w-24 h-12 mx-auto mb-4 bg-zinc-800 rounded border border-dashed border-zinc-600 flex items-center justify-center group-hover:scale-110 transition-transform"><span class="text-[10px] font-black text-zinc-400 uppercase">PNG Pro</span></div>
                 <h3 class="font-black uppercase text-xl italic mb-1 text-red-600">Quitar Fondo</h3>
-                <p class="text-[9px] text-zinc-500 font-bold uppercase italic">Limpia Fondos</p>
+                <p class="text-[9px] text-zinc-500 font-bold uppercase italic">Limpia Diseños</p>
             </div>
-            <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2.5rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all text-center">
-                <div class="flex justify-center items-center mb-4 gap-2"><span class="text-zinc-700 text-lg">A</span><span class="text-3xl text-white font-black drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">A</span></div>
+            <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 transition-all text-center group">
+                <div class="flex justify-center items-center mb-4 gap-2 group-hover:scale-110 transition-transform"><span class="text-zinc-700 text-lg">A</span><span class="text-3xl text-white font-black drop-shadow-[0_0_8px_white]">A</span></div>
                 <h3 class="font-black uppercase text-xl italic mb-1">Mejorador IA</h3>
-                <p class="text-[9px] text-zinc-500 font-bold uppercase italic">HD Upscale</p>
+                <p class="text-[9px] text-zinc-500 font-bold uppercase italic">HD Upscale x2</p>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl pb-10">
-            <a href="https://wa.me/51916689969" target="_blank" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between">
+            <a href="https://wa.me/51916689969" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between hover:bg-green-600/20">
                 <div class="flex items-center gap-3"><span>👑</span><h4 class="font-black text-xs uppercase italic tracking-widest">Suscripción Premium</h4></div>
                 <span>➔</span>
             </a>
-            <a href="https://wa.me/51904503246" target="_blank" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between">
+            <a href="https://wa.me/51904503246" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between hover:bg-red-600/20">
                 <div class="flex items-center gap-3"><span>🔄</span><h4 class="font-black text-xs uppercase italic tracking-widest">Renovar Membresía</h4></div>
                 <span>➔</span>
             </a>
         </div>
     </section>
 
-    <!-- WORKSPACE -->
     <section id="view-tool" class="tool-view">
         <main class="viewport" id="viewport">
             <div id="zoom-container"><canvas id="canvas"></canvas><div id="selection-box"></div></div>
         </main>
         <aside class="sidebar">
-            <button onclick="window.location.reload()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 w-full mb-2">← VOLVER AL MENÚ</button>
+            <button onclick="window.location.reload()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 w-full mb-2">← VOLVER</button>
             <div class="card"><input type="file" id="upload" class="text-[10px] w-full text-zinc-500" accept="image/*"/></div>
 
             <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
                 <button onclick="manualScan()" class="w-full py-2 bg-zinc-800 text-[8px] font-black rounded mb-3 uppercase">Escanear Paleta</button>
                 <div id="design-palette" class="flex flex-wrap gap-2 justify-center mb-4 min-h-[40px]"></div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="text-center"><p class="text-[8px] font-black uppercase mb-1 text-zinc-600">Antes</p><div id="color-old" class="w-full h-10 rounded-lg border border-white/10 bg-zinc-900"></div></div>
-                    <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1 italic">Nuevo</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none p-0 cursor-pointer"></div>
+                    <div class="text-center"><p class="text-[8px] font-black uppercase mb-1">Original</p><div id="color-old" class="w-full h-10 rounded-lg border border-white/10 bg-zinc-900"></div></div>
+                    <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1">Nuevo</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none p-0 cursor-pointer"></div>
                 </div>
-                <button onclick="applyColor()" class="btn-jj text-[10px] mt-4 shadow-lg shadow-red-900/20">Cambiar Color</button>
+                <button onclick="applyColor()" class="btn-jj text-[10px] mt-4">Actualizar Color</button>
             </div>
 
             <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
@@ -105,16 +112,15 @@
             </div>
 
             <div id="panel-ia" class="hidden card border-red-600/30 space-y-4">
-                <button onclick="upscaleIA(2)" class="w-full py-4 bg-zinc-900 text-red-500 font-black text-[10px] rounded-xl border border-red-900/30">HD X2</button>
+                <button onclick="upscaleIA(2)" class="w-full py-4 bg-zinc-900 text-red-500 font-black text-[10px] rounded-xl border border-red-900/30 uppercase">Upscale HD x2</button>
                 <button onclick="applyIA()" class="btn-jj text-[11px]">SÚPER NITIDEZ</button>
             </div>
             
-            <div class="flex gap-4 justify-center py-2"><button onclick="setBg('#ffffff')" class="w-7 h-7 bg-white rounded-full border border-white/20"></button><button onclick="setBg('#0a0a0a')" class="w-7 h-7 bg-black rounded-full border border-white/10"></button><button onclick="setBg('#cbd5e1')" class="w-7 h-7 bg-slate-400 rounded-full border border-white/20"></button></div>
-            <button onclick="reset()" class="w-full py-3 bg-zinc-900 text-yellow-500 font-black rounded-xl text-[10px] uppercase italic">Restaurar Original</button>
+            <div class="flex gap-4 justify-center py-2"><button onclick="setBg('#ffffff')" class="w-7 h-7 bg-white rounded-full"></button><button onclick="setBg('#0a0a0a')" class="w-7 h-7 bg-black rounded-full border border-white/10"></button><button onclick="setBg('#cbd5e1')" class="w-7 h-7 bg-slate-400 rounded-full"></button></div>
+            <button onclick="reset()" class="w-full py-3 bg-zinc-900 text-yellow-500 font-black rounded-xl text-[10px] uppercase">Restaurar Original</button>
         </aside>
     </section>
 
-    <!-- MODAL DESCARGA -->
     <div id="export-modal">
         <div class="modal-content">
             <h3 class="text-red-600 font-black text-center mb-6 underline uppercase italic">Panel de Exportación</h3>
@@ -126,9 +132,9 @@
                 <input type="number" id="exp-width" class="input-jj" oninput="syncDim('w')" placeholder="Ancho">
                 <input type="number" id="exp-height" class="input-jj" oninput="syncDim('h')" placeholder="Alto">
             </div>
-            <div class="mb-6"><select id="exp-quality" class="input-jj"><option value="high">Bicúbica (Alta Calidad)</option><option value="medium">Bilineal</option></select></div>
-            <div class="flex items-center gap-3 justify-center mb-6"><input type="checkbox" id="exp-ratio" checked class="accent-red-600 w-5 h-5"><label class="text-[10px] font-black text-red-500 uppercase italic">Mantener Proporción</label></div>
-            <div class="flex gap-3"><button onclick="closeExport()" class="flex-1 py-4 bg-zinc-900 text-zinc-500 font-black text-[10px] rounded-xl">Cancelar</button><button onclick="download()" class="flex-1 btn-jj text-[11px] text-white">Descargar</button></div>
+            <div class="mb-6"><select id="exp-quality" class="input-jj"><option value="high">Calidad Bicúbica</option><option value="medium">Bilineal</option></select></div>
+            <div class="flex items-center gap-3 justify-center mb-6"><input type="checkbox" id="exp-ratio" checked class="accent-red-600 w-5 h-5"><label class="text-[10px] font-black text-red-500 uppercase">Fijar Proporción</label></div>
+            <div class="flex gap-3"><button onclick="closeExport()" class="flex-1 py-4 bg-zinc-900 text-zinc-500 font-black text-[10px] rounded-xl">Cerrar</button><button onclick="download()" class="flex-1 btn-jj text-[11px] text-white">Descargar</button></div>
         </div>
     </div>
 
@@ -169,18 +175,11 @@
             if (!originalImg) return;
             e.preventDefault();
             const delta = e.deltaY > 0 ? 0.9 : 1.1;
-            scale = Math.max(0.1, Math.min(20, scale * delta));
+            scale = Math.max(0.05, Math.min(20, scale * delta));
             updateTransform();
         };
 
-        // ZOOM POR TECLADO (+ / -)
-        window.addEventListener('keydown', (e) => {
-            if (!originalImg) return;
-            if (e.key === '+' || e.key === '=') { scale *= 1.1; updateTransform(); }
-            if (e.key === '-' || e.key === '_') { scale *= 0.9; updateTransform(); }
-        });
-
-        // GESTOS TÁCTILES Y SELECCIÓN
+        // TOUCH GESTURES
         viewport.addEventListener('touchstart', (e) => {
             if(!originalImg) return;
             const rect = canvas.getBoundingClientRect();
@@ -193,7 +192,6 @@
                 if(currentTool === 'color') {
                     isSelecting = true;
                     selectionBox.style.display = 'block'; selectionBox.style.left = startX + 'px'; selectionBox.style.top = startY + 'px';
-                    selectionBox.style.width = '0px'; selectionBox.style.height = '0px';
                 }
                 const p = ctx.getImageData(Math.max(0,Math.min(startX,canvas.width-1)), Math.max(0,Math.min(startY,canvas.height-1)), 1, 1).data;
                 targetRGB = [p[0], p[1], p[2]]; document.getElementById('color-old').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
@@ -221,16 +219,6 @@
         }, {passive: false});
 
         viewport.addEventListener('touchend', () => { isSelecting = isPanning = false; });
-
-        // RATÓN PANNING (PC)
-        viewport.addEventListener('mousedown', (e) => {
-            if(!originalImg || e.button !== 1) return; // Rueda ratón clic
-            isPanning = true; startX = e.clientX - posX; startY = e.clientY - posY;
-        });
-        window.addEventListener('mousemove', (e) => {
-            if(isPanning) { posX = e.clientX - startX; posY = e.clientY - startY; updateTransform(); }
-        });
-        window.addEventListener('mouseup', () => isPanning = false);
 
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
 
@@ -264,7 +252,7 @@
         }
         function removeBG() { const id = ctx.getImageData(0,0,canvas.width,canvas.height); const d = id.data; for(let i=0; i<d.length; i+=4) { const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)); if(diff < 45) d[i+3]=0; } ctx.putImageData(id,0,0); }
         function upscaleIA(f) { const tc = document.createElement('canvas'); tc.width = canvas.width*f; tc.height = canvas.height*f; tc.getContext('2d').drawImage(canvas,0,0,tc.width,tc.height); canvas.width = tc.width; canvas.height = tc.height; ctx.drawImage(tc,0,0); updateTransform(); }
-        function applyIA() { ctx.filter = 'contrast(120%) brightness(102%)'; ctx.drawImage(canvas,0,0); ctx.filter = 'none'; }
+        function applyIA() { ctx.filter = 'contrast(120%)'; ctx.drawImage(canvas,0,0); ctx.filter = 'none'; }
         function openExport() { if(!originalImg) return; document.getElementById('export-modal').style.display='flex'; }
         function closeExport() { document.getElementById('export-modal').style.display='none'; }
         function download() {
