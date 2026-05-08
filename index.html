@@ -3,79 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J PREMIUM v41</title>
+    <title>J&J PREMIUM v42</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Lato', sans-serif; background: #050505; color: white; margin: 0; overflow: hidden; position: fixed; width: 100%; height: 100%; }
         .bg-premium { background: radial-gradient(circle at center, #250000 0%, #050505 100%); }
         .tool-view { display: none; height: calc(100vh - 65px); width: 100%; }
-        
-        /* Pantalla de Bloqueo */
         #auth-screen { position: fixed; inset: 0; z-index: 9999; background: #000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        
-        @media (min-width: 1025px) { .tool-view { display: flex; flex-direction: row; } .viewport { flex-grow: 1; height: 100%; cursor: crosshair; } .sidebar { width: 350px; min-width: 350px; border-left: 2px solid #222; } }
-        @media (max-width: 1024px) { .tool-view { display: flex; flex-direction: column; } .viewport { flex-grow: 1; width: 100%; } .sidebar { width: 100%; height: 350px; border-top: 2px solid #dc2626; overflow-y: auto; padding-bottom: 80px; } }
-        
         .active-view { display: flex !important; }
         .viewport { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0a0a0a; touch-action: none; transition: background 0.3s ease; }
         #zoom-container { transform-origin: center center; position: absolute; pointer-events: none; }
         canvas { box-shadow: 0 0 60px #000; pointer-events: auto; }
-        #selection-box { position: absolute; border: 2px dashed #dc2626; display: none; pointer-events: none; z-index: 100; background: rgba(220,38,38,0.15); }
         .sidebar { background: #0a0a0a; padding: 15px; display: flex; flex-direction: column; gap: 12px; z-index: 50; }
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; }
         .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; color: white; border: none; cursor: pointer; }
-        #export-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #0a0a0a; border: 1px solid #dc2626; border-radius: 20px; width: 100%; max-width: 400px; padding: 20px; }
+        @media (min-width: 1025px) { .tool-view { display: flex; flex-direction: row; } .viewport { flex-grow: 1; height: 100%; cursor: crosshair; } .sidebar { width: 350px; min-width: 350px; border-left: 2px solid #222; } }
+        @media (max-width: 1024px) { .tool-view { display: flex; flex-direction: column; } .viewport { flex-grow: 1; width: 100%; } .sidebar { width: 100%; height: 350px; border-top: 2px solid #dc2626; overflow-y: auto; padding-bottom: 80px; } }
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA DE ACCESO VIP -->
+    <!-- BLOQUEO DE ACCESO -->
     <div id="auth-screen">
         <div class="max-w-md w-full bg-zinc-900 p-8 rounded-[2rem] border border-red-600/30 text-center shadow-2xl">
-            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6 shadow-lg">J&J</div>
-            <h2 class="text-2xl font-black italic uppercase text-white mb-2">Acceso Suscriptores</h2>
-            <p class="text-zinc-500 text-xs font-bold uppercase mb-8 tracking-widest">Ingresa tu número móvil registrado</p>
+            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6">J&J</div>
+            <h2 class="text-2xl font-black italic uppercase text-white mb-2">Acceso J&J PREMIUM</h2>
+            <p id="auth-msg" class="text-zinc-500 text-[10px] font-bold uppercase mb-8 tracking-widest">Ingresa tu número VIP o usa tus pruebas gratis</p>
             
-            <input type="tel" id="user-phone" placeholder="Ej: 51916689969" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none transition-all">
+            <input type="tel" id="user-phone" placeholder="Número de móvil" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none">
             
-            <button onclick="checkAccess()" id="auth-btn" class="w-full btn-jj py-4 mb-6">Verificar Membresía</button>
-            
-            <div class="flex flex-col gap-2">
-                <a href="https://wa.me/51916689969" target="_blank" class="text-[10px] text-zinc-500 hover:text-white uppercase font-black tracking-tighter">¿No tienes acceso? Adquirir aquí</a>
-            </div>
+            <button onclick="verifyUser()" class="w-full btn-jj py-4 mb-4">Entrar al Sistema</button>
+            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 hover:text-white">Usar Prueba Gratuita (Quedan <span id="trial-count-ui">2</span>)</button>
         </div>
     </div>
 
-    <!-- CONTENIDO PROTEGIDO -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div id="main-content" style="display:none;">
         <header class="h-[65px] px-4 md:px-8 flex justify-between items-center bg-black border-b border-red-900/40 z-[100]">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
-                <div class="w-10 h-10 bg-red-600 rounded flex items-center justify-center font-black text-xl shadow-lg text-white">J&J</div>
-                <h1 class="font-black text-sm md:text-lg uppercase italic tracking-tighter text-white">J&J <span class="text-red-600 font-black">PREMIUM</span></h1>
+            <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
+                <div class="w-10 h-10 bg-red-600 rounded flex items-center justify-center font-black text-xl text-white">J&J</div>
+                <h1 class="font-black text-sm md:text-lg uppercase italic text-white">J&J <span class="text-red-600 font-black">PREMIUM</span></h1>
             </div>
             <div class="flex items-center gap-3">
-                <button id="btn-top-dl" onclick="openExport()" class="bg-yellow-500 text-black font-black text-[10px] px-4 py-2 rounded shadow-lg hidden">📥 DESCARGAR MASTER</button>
-                <span id="user-badge" class="bg-zinc-800 px-3 py-1 rounded-full text-[9px] font-black text-green-500 border border-green-500/20">VIP ACTIVO</span>
+                <button id="btn-top-dl" onclick="downloadMaster()" class="bg-yellow-500 text-black font-black text-[10px] px-6 py-2 rounded uppercase shadow-lg hidden">📥 DESCARGAR (300 DPI)</button>
+                <div id="trial-badge" class="bg-zinc-800 px-3 py-1 rounded text-[8px] font-black text-yellow-500 border border-yellow-500/20">MODO PRUEBA</div>
             </div>
         </header>
 
-        <!-- MENU PRINCIPAL -->
         <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6 overflow-y-auto">
-            <h2 class="text-5xl md:text-7xl font-black italic mb-2 uppercase text-center text-white tracking-tighter">J&J PREMIUM</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl mb-12 mt-10">
+            <h2 class="text-5xl md:text-7xl font-black italic mb-10 uppercase text-center text-white tracking-tighter">J&J PREMIUM</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl mb-12">
                 <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl">
-                    <div class="flex justify-center gap-2 mb-4 group-hover:scale-105 transition-transform"><div class="w-10 h-10 bg-blue-600 rounded"></div><span class="text-2xl text-white">➔</span><div class="w-10 h-10 bg-red-600 rounded"></div></div>
-                    <h3 class="font-black uppercase text-xl italic mb-1 text-white">Extractor de Tintas</h3>
+                    <h3 class="font-black uppercase text-xl italic text-white">Extractor de Tintas</h3>
                 </div>
                 <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl">
-                    <div class="w-24 h-12 mx-auto mb-4 bg-zinc-800 rounded border border-dashed border-zinc-600 flex items-center justify-center group-hover:scale-105 transition-transform"><span class="text-[10px] font-black text-zinc-400">PNG PRO</span></div>
-                    <h3 class="font-black uppercase text-xl italic mb-1 text-red-600">Quitar Fondo</h3>
+                    <h3 class="font-black uppercase text-xl italic text-red-600">Quitar Fondo</h3>
                 </div>
                 <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl">
-                    <div class="flex justify-center items-center mb-4 text-3xl text-white font-black drop-shadow-[0_0_10px_white]">IA+</div>
-                    <h3 class="font-black uppercase text-xl italic mb-1 text-white">Mejorador IA Pro</h3>
+                    <h3 class="font-black uppercase text-xl italic text-white">Mejorador IA Pro</h3>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl pb-10">
@@ -84,45 +70,40 @@
             </div>
         </section>
 
-        <!-- ESPACIO DE HERRAMIENTAS -->
         <section id="view-tool" class="tool-view">
             <main class="viewport" id="viewport">
-                <div id="zoom-container"><canvas id="canvas"></canvas><div id="selection-box"></div></div>
+                <div id="zoom-container"><canvas id="canvas"></canvas></div>
             </main>
             <aside class="sidebar">
-                <button onclick="window.location.reload()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 w-full mb-2">← VOLVER</button>
+                <button onclick="location.reload()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 w-full mb-2">← VOLVER</button>
                 <div class="card"><input type="file" id="upload" class="text-[10px] w-full text-zinc-500" accept="image/*"/></div>
 
-                <!-- MESA DE TRABAJO -->
-                <div class="card border-zinc-800">
+                <div class="card">
                     <div class="flex flex-wrap gap-2 justify-center">
                         <div onclick="setBg('#0a0a0a')" class="w-6 h-6 rounded-full bg-black border border-white/10 cursor-pointer"></div>
                         <div onclick="setBg('#ffffff')" class="w-6 h-6 rounded-full bg-white border border-black/10 cursor-pointer"></div>
-                        <div onclick="setBg('#dc2626')" class="w-6 h-6 rounded-full bg-red-600 cursor-pointer"></div>
                         <input type="color" oninput="setBg(this.value)" class="w-6 h-6 bg-transparent border-none p-0 cursor-pointer">
                     </div>
                 </div>
 
-                <!-- PANEL EXTRACTOR (CORREGIDO) -->
-                <div id="panel-color" class="hidden card border-red-600/30 space-y-4 text-center">
-                    <button onclick="manualScan()" class="w-full py-2 bg-zinc-800 text-[8px] font-black rounded mb-2 uppercase">1. Escanear Colores</button>
+                <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
+                    <button onclick="manualScan()" class="w-full py-2 bg-zinc-800 text-[8px] font-black rounded uppercase">1. Escanear Colores</button>
                     <div id="design-palette" class="flex flex-wrap gap-2 justify-center mb-4 min-h-[40px]"></div>
                     <div class="grid grid-cols-2 gap-4 border-t border-zinc-800 pt-4">
-                        <div class="text-center"><p class="text-[8px] font-black uppercase mb-1 text-zinc-500 italic">Actual</p><div id="color-old" class="w-full h-8 rounded border border-white/10 bg-zinc-900"></div></div>
-                        <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1 italic">Nuevo</p><input type="color" id="custom-picker" class="w-full h-8 bg-transparent border-none p-0 cursor-pointer"></div>
+                        <div class="text-center"><p class="text-[8px] uppercase text-zinc-500">Actual</p><div id="color-old" class="w-full h-8 rounded border border-white/10 bg-zinc-900"></div></div>
+                        <div class="text-center"><p class="text-[8px] uppercase text-red-500 font-black">Nuevo</p><input type="color" id="custom-picker" class="w-full h-8 bg-transparent border-none p-0 cursor-pointer"></div>
                     </div>
-                    <button onclick="applyColor()" class="btn-jj text-[10px] mt-4 shadow-lg shadow-red-900/20">2. Reemplazar Tinta</button>
+                    <button onclick="applyColor()" class="btn-jj text-[10px] mt-4">2. Reemplazar Color</button>
                 </div>
 
-                <!-- OTROS PANELES -->
                 <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
                     <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900"></div>
-                    <input type="range" id="bg-tolerance" min="1" max="150" value="40" class="w-full accent-red-600" oninput="updateBGParams()">
-                    <button onclick="confirmBG()" class="btn-jj text-[10px]">Confirmar Recorte</button>
+                    <input type="range" id="bg-tolerance" min="1" max="150" value="40" class="w-full accent-red-600">
+                    <button onclick="removeBG()" class="btn-jj text-[10px]">Confirmar Borrado</button>
                 </div>
 
-                <div id="panel-ia" class="hidden card border-yellow-600/30 space-y-4 text-center">
-                    <button onclick="upscaleIA_Ultra()" class="w-full py-5 bg-gradient-to-r from-yellow-600 to-red-600 text-white font-black text-[11px] rounded-xl uppercase">⚡ Súper Resolución x2</button>
+                <div id="panel-ia" class="hidden card border-yellow-600/30 space-y-4">
+                    <button onclick="upscaleIA_Ultra()" class="w-full py-5 bg-gradient-to-r from-yellow-600 to-red-600 text-white font-black text-[11px] rounded-xl uppercase">⚡ Mejorar Resolución x2</button>
                 </div>
                 
                 <button onclick="reset()" class="w-full py-3 bg-zinc-900 text-yellow-500 font-black rounded-xl text-[10px] uppercase italic mt-auto">Restaurar Original</button>
@@ -130,58 +111,80 @@
         </section>
     </div>
 
-    <!-- MODAL EXPORTACIÓN -->
-    <div id="export-modal">
-        <div class="modal-content">
-            <h3 class="text-red-600 font-black text-center mb-6 underline uppercase italic">Exportación Industrial 300 DPI</h3>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <select id="exp-unit" class="bg-black border border-zinc-800 rounded p-2 text-xs text-red-500" onchange="convertUnits()"><option value="px">px</option><option value="cm">cm</option></select>
-                <div class="bg-black border border-zinc-800 rounded p-2 text-xs text-white text-center">300 DPI</div>
-            </div>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <input type="number" id="exp-width" class="bg-black border border-zinc-800 rounded p-2 text-xs text-white" oninput="syncDim('w')" placeholder="Ancho">
-                <input type="number" id="exp-height" class="bg-black border border-zinc-800 rounded p-2 text-xs text-white" oninput="syncDim('h')" placeholder="Alto">
-            </div>
-            <button onclick="downloadPNGWith300DPI()" class="flex-1 btn-jj text-[11px] text-white mt-4">Descargar PNG Master</button>
-            <button onclick="closeExport()" class="w-full py-2 text-zinc-600 text-[10px] font-black uppercase mt-4">Cancelar</button>
-        </div>
-    </div>
-
     <script>
         const canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
         const viewport = document.getElementById('viewport'), zoomContainer = document.getElementById('zoom-container');
-        const upload = document.getElementById('upload'), selectionBox = document.getElementById('selection-box');
-        let originalImg = null, liveSnapshot = null, scale = 1, posX = 0, posY = 0, ratio = 1, targetRGB = [0,0,0], currentTool = '';
+        const upload = document.getElementById('upload');
+        let originalImg = null, isVIP = false, trials = parseInt(localStorage.getItem('jj_trials')) || 2;
+        let scale = 1, posX = 0, posY = 0, targetRGB = [0,0,0], isPanning = false, startX, startY;
 
-        // --- SISTEMA DE AUTENTICACIÓN (APP SHEETS) ---
-        // Cambia este URL por tu Script de Google o URL de AppSheet
-        const API_URL = "https://script.google.com/macros/s/AKfycbz_XXXXXXXXX/exec"; 
+        document.getElementById('trial-count-ui').innerText = trials;
 
-        async function checkAccess() {
+        // --- SISTEMA DE PRUEBAS Y ACCESO ---
+        function startTrial() {
+            if(trials <= 0) return alert("Has agotado tus 2 pruebas gratuitas. Adquiere una suscripción para continuar.");
+            enterApp(false);
+        }
+
+        function verifyUser() {
             const phone = document.getElementById('user-phone').value;
-            const btn = document.getElementById('auth-btn');
-            if(!phone) return alert("Ingresa tu número");
-
-            btn.innerText = "Verificando...";
-            btn.disabled = true;
-
-            try {
-                // Aquí simulamos la respuesta. Para real, usar fetch(API_URL + "?phone=" + phone)
-                // Por ahora, habilitaremos el acceso para que puedas probar el código
-                setTimeout(() => {
-                    document.getElementById('auth-screen').style.display = 'none';
-                    document.getElementById('main-content').style.display = 'block';
-                }, 1000);
-            } catch (e) {
-                alert("Error de conexión. Intenta de nuevo.");
-                btn.disabled = false;
-                btn.innerText = "Verificar Membresía";
+            // Aquí iría tu lista VIP. Simulamos coincidencia:
+            if(phone === "51916689969" || phone === "VIPJJ") {
+                enterApp(true);
+            } else {
+                alert("Número no registrado en la lista VIP.");
             }
+        }
+
+        function enterApp(vip) {
+            isVIP = vip;
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            if(vip) {
+                document.getElementById('trial-badge').innerText = "VIP ACTIVO";
+                document.getElementById('trial-badge').classList.replace('text-yellow-500', 'text-green-500');
+            }
+        }
+
+        // --- DESCARGA AUTOMÁTICA 300 DPI ---
+        async function downloadMaster() {
+            if(!isVIP) {
+                trials--;
+                localStorage.setItem('jj_trials', trials);
+                alert(`Descarga de prueba iniciada. Te queda ${trials} prueba(s) gratis.`);
+                if(trials < 0) location.reload();
+            }
+
+            alert("Iniciando descarga industrial: El archivo se exportará a 300 DPI (Píxeles/Pulgada) para impresión profesional.");
+
+            const dataUrl = canvas.toDataURL('image/png');
+            const response = await fetch(dataUrl);
+            const arrayBuffer = await (await response.blob()).arrayBuffer();
+            const uint8Array = new Uint8Array(arrayBuffer);
+            const pixelsPerMeter = Math.round(300 / 0.0254);
+            
+            const pHYsChunk = new Uint8Array(21);
+            pHYsChunk.set([0, 0, 0, 9, 112, 72, 89, 115]); 
+            const view = new DataView(pHYsChunk.buffer);
+            view.setUint32(8, pixelsPerMeter); view.setUint32(12, pixelsPerMeter); view.setUint8(16, 1);
+            
+            let crc = 0xFFFFFFFF;
+            const table = window.crcTable || (function() { const t = new Int32Array(256); for (let i = 0; i < 256; i++) { let c = i; for (let j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[i] = c; } return window.crcTable = t; })();
+            for (let i = 4; i < 17; i++) crc = table[(crc ^ pHYsChunk[i]) & 0xFF] ^ (crc >>> 1);
+            view.setUint32(17, crc ^ 0xFFFFFFFF);
+            
+            const finalPNG = new Uint8Array(uint8Array.length + 21);
+            finalPNG.set(uint8Array.slice(0, 33)); finalPNG.set(pHYsChunk, 33); finalPNG.set(uint8Array.slice(33), 54);
+            
+            const a = document.createElement('a');
+            a.download = `JJ_MASTER_300DPI_${Date.now()}.png`;
+            a.href = URL.createObjectURL(new Blob([finalPNG], { type: 'image/png' }));
+            a.click();
+            if(!isVIP && trials === 0) { alert("Has usado todas tus pruebas. El sistema se reiniciará."); location.reload(); }
         }
 
         // --- HERRAMIENTAS ---
         function initTool(tool) {
-            currentTool = tool;
             document.getElementById('view-home').style.display = 'none';
             document.getElementById('view-tool').classList.add('active-view');
             document.getElementById('panel-color').classList.toggle('hidden', tool !== 'color');
@@ -197,15 +200,13 @@
                 img.onload = () => {
                     canvas.width = img.width; canvas.height = img.height;
                     ctx.drawImage(img, 0, 0); originalImg = img;
-                    liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
-                    ratio = img.width/img.height; scale = 0.5; posX = 0; posY = 0; updateTransform();
+                    scale = 0.5; posX = 0; posY = 0; updateTransform();
                 };
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(e.target.files[0]);
         };
 
-        // --- CORRECCIÓN EXTRACTOR DE TINTAS ---
         function manualScan() {
             if(!originalImg) return;
             const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
@@ -219,10 +220,9 @@
             const container = document.getElementById('design-palette'); container.innerHTML = "";
             sorted.forEach(hex => {
                 const div = document.createElement('div');
-                div.className = "w-8 h-8 rounded border border-zinc-800 cursor-pointer hover:scale-110 transition-transform";
+                div.className = "w-8 h-8 rounded border border-zinc-800 cursor-pointer";
                 div.style.backgroundColor = hex;
                 div.onclick = () => {
-                    // Solo cargamos el color, NO lo aplicamos aún
                     const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
                     targetRGB = [r,g,b];
                     document.getElementById('color-old').style.backgroundColor = hex;
@@ -232,49 +232,41 @@
         }
 
         function applyColor() {
-            if(!originalImg) return;
             const id = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const d = id.data;
-            const hex = document.getElementById('custom-picker').value;
+            const d = id.data, hex = document.getElementById('custom-picker').value;
             const rN = parseInt(hex.slice(1,3),16), gN = parseInt(hex.slice(3,5),16), bN = parseInt(hex.slice(5,7),16);
-            
             for(let i=0; i<d.length; i+=4) {
-                if(d[i+3] < 10) continue;
                 const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2));
-                if(diff < 35) {
-                    d[i] = rN; d[i+1] = gN; d[i+2] = bN;
-                }
+                if(diff < 35) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; }
             }
             ctx.putImageData(id, 0, 0);
-            liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
         }
 
-        // --- SISTEMA LIVE ---
+        function removeBG() {
+            const tol = document.getElementById('bg-tolerance').value;
+            const id = ctx.getImageData(0,0,canvas.width,canvas.height);
+            const d = id.data;
+            for(let i=0; i<d.length; i+=4) {
+                if(d[i] > 255-tol && d[i+1] > 255-tol && d[i+2] > 255-tol) d[i+3] = 0;
+            }
+            ctx.putImageData(id,0,0);
+        }
+
+        function upscaleIA_Ultra() {
+            const tc = document.createElement('canvas'); tc.width = canvas.width*2; tc.height = canvas.height*2;
+            const tctx = tc.getContext('2d'); tctx.imageSmoothingEnabled = true; tctx.imageSmoothingQuality = 'high';
+            tctx.drawImage(canvas, 0, 0, tc.width, tc.height);
+            canvas.width = tc.width; canvas.height = tc.height; ctx.drawImage(tc, 0, 0); updateTransform();
+            alert("Mejora IA completada.");
+        }
+
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
-        function captureColor(x, y) { 
-            const p = ctx.getImageData(Math.max(0,Math.min(x,canvas.width-1)), Math.max(0,Math.min(y,canvas.height-1)), 1, 1).data; 
-            targetRGB = [p[0], p[1], p[2]]; 
-            const hex = `rgb(${p[0]},${p[1]},${p[2]})`; 
-            document.getElementById('color-old').style.backgroundColor = hex; 
-            document.getElementById('bg-color-preview').style.backgroundColor = hex; 
-        }
-
-        // --- EXPORTACIÓN ---
-        function openExport() { if(!originalImg) return; document.getElementById('export-modal').style.display='flex'; }
-        function closeExport() { document.getElementById('export-modal').style.display='none'; }
-        async function downloadPNGWith300DPI() { 
-            const dataUrl = canvas.toDataURL('image/png');
-            const a = document.createElement('a'); a.download = `JJ_MASTER_300DPI.png`; a.href = dataUrl; a.click();
-            closeExport();
-        }
-
-        // MOVIMIENTO Y RESET
-        viewport.onwheel = (e) => { if (!originalImg) return; e.preventDefault(); scale = Math.max(0.05, scale * (e.deltaY > 0 ? 0.9 : 1.1)); updateTransform(); };
-        viewport.onmousedown = (e) => { if (!originalImg) return; isPanning = true; startX = e.clientX - posX; startY = e.clientY - posY; };
-        window.onmousemove = (e) => { if (isPanning) { posX = e.clientX - startX; posY = e.clientY - startY; updateTransform(); } };
+        viewport.onwheel = (e) => { e.preventDefault(); scale = Math.max(0.1, scale * (e.deltaY > 0 ? 0.9 : 1.1)); updateTransform(); };
+        viewport.onmousedown = (e) => { isPanning = true; startX = e.clientX - posX; startY = e.clientY - posY; };
+        window.onmousemove = (e) => { if(isPanning) { posX = e.clientX - startX; posY = e.clientY - startY; updateTransform(); } };
         window.onmouseup = () => isPanning = false;
-        function reset() { if(originalImg) { ctx.drawImage(originalImg,0,0); liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); } }
-        function setBg(c) { document.getElementById('viewport').style.backgroundColor = c; }
+        function setBg(c) { viewport.style.backgroundColor = c; }
+        function reset() { if(originalImg) { canvas.width = originalImg.width; canvas.height = originalImg.height; ctx.drawImage(originalImg,0,0); } }
     </script>
 </body>
 </html>
