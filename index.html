@@ -3,23 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J PREMIUM v34</title>
+    <title>J&J PREMIUM v35</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Lato', sans-serif; background: #050505; color: white; margin: 0; overflow: hidden; position: fixed; width: 100%; height: 100%; }
         .bg-premium { background: radial-gradient(circle at center, #250000 0%, #050505 100%); }
         .tool-view { display: none; height: calc(100vh - 65px); width: 100%; }
-        @media (min-width: 1025px) {
-            .tool-view { display: flex; flex-direction: row; }
-            .viewport { flex-grow: 1; height: 100%; cursor: crosshair; }
-            .sidebar { width: 350px; min-width: 350px; border-left: 2px solid #222; }
-        }
-        @media (max-width: 1024px) {
-            .tool-view { display: flex; flex-direction: column; }
-            .viewport { flex-grow: 1; width: 100%; }
-            .sidebar { width: 100%; height: 350px; border-top: 2px solid #dc2626; overflow-y: auto; padding-bottom: 80px; }
-        }
+        @media (min-width: 1025px) { .tool-view { display: flex; flex-direction: row; } .viewport { flex-grow: 1; height: 100%; cursor: crosshair; } .sidebar { width: 350px; min-width: 350px; border-left: 2px solid #222; } }
+        @media (max-width: 1024px) { .tool-view { display: flex; flex-direction: column; } .viewport { flex-grow: 1; width: 100%; } .sidebar { width: 100%; height: 350px; border-top: 2px solid #dc2626; overflow-y: auto; padding-bottom: 80px; } }
         .active-view { display: flex !important; }
         .viewport { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0a0a0a; touch-action: none; transition: background 0.3s ease; }
         #zoom-container { transform-origin: center center; position: absolute; transition: transform 0.08s ease-out; pointer-events: none; }
@@ -27,13 +19,13 @@
         #selection-box { position: absolute; border: 2px dashed #dc2626; display: none; pointer-events: none; z-index: 100; background: rgba(220,38,38,0.15); }
         .sidebar { background: #0a0a0a; padding: 15px; display: flex; flex-direction: column; gap: 12px; z-index: 50; }
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; }
-        .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; color: white; cursor: pointer; border: none; }
+        .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; color: white; border: none; cursor: pointer; }
         .btn-download-top { background: linear-gradient(to bottom, #facc15, #eab308); color: black; font-weight: 900; text-transform: uppercase; border-radius: 8px; padding: 8px 15px; font-size: 11px; display: none; box-shadow: 0 0 15px rgba(250, 204, 21, 0.4); border: none; cursor: pointer; }
         .label-tool { font-size: 9px; font-weight: 900; color: #666; text-transform: uppercase; margin-bottom: 4px; display: block; }
-        .input-export { background: #000; border: 1px solid #333; border-radius: 6px; padding: 10px; color: white; font-weight: 700; width: 100%; font-size: 13px; outline: none; }
         .color-dot { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
         #export-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: #0a0a0a; border: 1px solid #dc2626; border-radius: 20px; width: 100%; max-width: 400px; padding: 20px; }
+        .input-export { background: #000; border: 1px solid #333; border-radius: 6px; padding: 10px; color: white; font-weight: 700; width: 100%; font-size: 13px; outline: none; }
     </style>
 </head>
 <body>
@@ -49,31 +41,31 @@
         </div>
     </header>
 
-    <!-- MENU INICIAL -->
+    <!-- INICIO -->
     <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6 overflow-y-auto">
         <h2 class="text-5xl md:text-7xl font-black italic mb-2 uppercase text-center text-white tracking-tighter">J&J PREMIUM</h2>
         <p class="text-zinc-500 font-bold uppercase text-[9px] tracking-[0.4em] mb-12 italic text-center">Studio de Producción Textil</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl mb-12">
-            <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all">
-                <div class="flex justify-center gap-2 mb-4"><div class="w-10 h-10 bg-blue-600 rounded"></div><span class="text-2xl text-white">➔</span><div class="w-10 h-10 bg-red-600 rounded"></div></div>
+            <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group">
+                <div class="flex justify-center gap-2 mb-4 group-hover:scale-105 transition-transform"><div class="w-10 h-10 bg-blue-600 rounded"></div><span class="text-2xl text-white">➔</span><div class="w-10 h-10 bg-red-600 rounded"></div></div>
                 <h3 class="font-black uppercase text-xl italic mb-1 text-white">Extractor de Tintas</h3>
             </div>
-            <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all">
-                <div class="w-24 h-12 mx-auto mb-4 bg-zinc-800 rounded border border-dashed border-zinc-600 flex items-center justify-center"><span class="text-[10px] font-black text-zinc-400">PNG PRO</span></div>
+            <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group">
+                <div class="w-24 h-12 mx-auto mb-4 bg-zinc-800 rounded border border-dashed border-zinc-600 flex items-center justify-center group-hover:scale-105 transition-transform"><span class="text-[10px] font-black text-zinc-400">PNG PRO</span></div>
                 <h3 class="font-black uppercase text-xl italic mb-1 text-red-600">Quitar Fondo</h3>
             </div>
-            <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all">
-                <div class="flex justify-center items-center mb-4 gap-2"><span class="text-zinc-700 text-lg">A</span><span class="text-3xl text-white font-black">A</span></div>
+            <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group">
+                <div class="flex justify-center items-center mb-4 gap-2 group-hover:scale-105 transition-transform"><span class="text-zinc-700 text-lg">A</span><span class="text-3xl text-white font-black drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">A</span></div>
                 <h3 class="font-black uppercase text-xl italic mb-1 text-white">Mejorador IA</h3>
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl pb-10">
-            <a href="https://wa.me/51916689969" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between text-white hover:bg-green-600/20">👑 Suscribirme <span>➔</span></a>
-            <a href="https://wa.me/51904503246" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between text-white hover:bg-red-600/20">🔄 Renovar <span>➔</span></a>
+            <a href="https://wa.me/51916689969" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between text-white hover:bg-green-600/20 transition-all">👑 Suscribirme <span>➔</span></a>
+            <a href="https://wa.me/51904503246" target="_blank" class="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center justify-between text-white hover:bg-red-600/20 transition-all">🔄 Renovar <span>➔</span></a>
         </div>
     </section>
 
-    <!-- WORKSPACE -->
+    <!-- ESPACIO DE TRABAJO -->
     <section id="view-tool" class="tool-view">
         <main class="viewport" id="viewport">
             <div id="zoom-container"><canvas id="canvas"></canvas><div id="selection-box"></div></div>
@@ -91,7 +83,6 @@
                     <div onclick="setBg('#cbd5e1')" class="color-dot bg-slate-400"></div>
                     <div onclick="setBg('#dc2626')" class="color-dot bg-red-600"></div>
                     <div onclick="setBg('#1e3a8a')" class="color-dot bg-blue-900"></div>
-                    <div onclick="setBg('#166534')" class="color-dot bg-green-800"></div>
                     <input type="color" oninput="setBg(this.value)" class="w-6 h-6 bg-transparent border-none p-0 cursor-pointer">
                 </div>
             </div>
@@ -104,25 +95,25 @@
                     <div class="text-center"><p class="text-[8px] font-black uppercase mb-1">Actual</p><div id="color-old" class="w-full h-10 rounded-lg border border-white/10 bg-zinc-900"></div></div>
                     <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1">Nuevo</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none p-0 cursor-pointer"></div>
                 </div>
-                <button onclick="applyColor()" class="btn-jj text-[10px] mt-4">Actualizar Tinta</button>
+                <button onclick="applyColor()" class="btn-jj text-[10px] mt-4 shadow-lg">Actualizar Tinta</button>
             </div>
 
-            <!-- QUITAR FONDO CON CORRECCIÓN DE BORDES -->
+            <!-- QUITAR FONDO REFORZADO -->
             <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
                 <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900"></div>
                 <div>
-                    <label class="label-tool">Tolerancia de Color</label>
-                    <input type="range" id="bg-tolerance" min="1" max="150" value="40" class="w-full accent-red-600">
+                    <label class="label-tool">Tolerancia: <span id="tol-num" class="text-red-500">40</span></label>
+                    <input type="range" id="bg-tolerance" min="1" max="150" value="40" class="w-full accent-red-600" oninput="document.getElementById('tol-num').innerText=this.value">
                 </div>
                 <div>
-                    <label class="label-tool">Suavizado de Borde</label>
-                    <input type="range" id="bg-smooth" min="0" max="10" value="1" class="w-full accent-red-600">
+                    <label class="label-tool">Suavizado (Blur): <span id="smooth-num" class="text-red-500">0</span></label>
+                    <input type="range" id="bg-smooth" min="0" max="10" value="0" class="w-full accent-red-600" oninput="document.getElementById('smooth-num').innerText=this.value">
                 </div>
                 <div>
-                    <label class="label-tool text-red-500 font-black">Contraer Píxel (Eliminar Sobras)</label>
-                    <input type="range" id="bg-choke" min="0" max="5" value="0" step="1" class="w-full accent-red-600">
+                    <label class="label-tool text-yellow-500">Contraer Borde: <span id="choke-num" class="text-yellow-500">0</span> px</label>
+                    <input type="range" id="bg-choke" min="0" max="10" value="0" step="1" class="w-full accent-yellow-500" oninput="document.getElementById('choke-num').innerText=this.value">
                 </div>
-                <button onclick="removeBG()" class="btn-jj text-[10px]">Quitar Fondo & Refinar</button>
+                <button onclick="processBG()" class="btn-jj text-[10px]">Quitar Fondo & Refinar</button>
             </div>
 
             <div id="panel-ia" class="hidden card border-red-600/30 space-y-4">
@@ -134,19 +125,19 @@
         </aside>
     </section>
 
-    <!-- MODAL EXPORTACIÓN -->
+    <!-- EXPORTACIÓN -->
     <div id="export-modal">
         <div class="modal-content">
-            <h3 class="text-red-600 font-black text-center mb-6 underline uppercase italic">Exportación Industrial 300 DPI</h3>
+            <h3 class="text-red-600 font-black text-center mb-6 underline uppercase italic">Exportación 300 DPI</h3>
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div><label class="label-export">Unidad</label><select id="exp-unit" class="input-export text-red-500" onchange="convertUnits()"><option value="px">px</option><option value="cm">cm</option></select></div>
-                <div><label class="label-export">DPI Fijo</label><div class="input-export text-zinc-500">300</div></div>
+                <div><label class="label-export">DPI</label><div class="bg-black border border-zinc-800 rounded p-2 text-xs text-white">300</div></div>
             </div>
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div><label class="label-export">Ancho</label><input type="number" id="exp-width" class="input-export" oninput="syncDim('w')"></div>
                 <div><label class="label-export">Alto</label><input type="number" id="exp-height" class="input-export" oninput="syncDim('h')"></div>
             </div>
-            <div class="flex items-center gap-3 justify-center mb-6"><input type="checkbox" id="exp-ratio" checked class="accent-red-600 w-5 h-5"><label class="text-[10px] font-black text-red-500 uppercase italic">Fijar Proporción</label></div>
+            <div class="flex items-center gap-3 justify-center mb-6"><input type="checkbox" id="exp-ratio" checked class="accent-red-600 w-5 h-5"><label class="text-[10px] font-black text-red-500 uppercase italic">Proporción</label></div>
             <div class="flex gap-3"><button onclick="closeExport()" class="flex-1 py-4 bg-zinc-900 text-[10px] font-black rounded-xl">Cerrar</button><button onclick="downloadPNGWith300DPI()" class="flex-1 btn-jj text-[11px]">Bajar PNG</button></div>
         </div>
     </div>
@@ -183,7 +174,6 @@
         };
 
         viewport.onwheel = (e) => { if (!originalImg) return; e.preventDefault(); scale = Math.max(0.05, Math.min(20, scale * (e.deltaY > 0 ? 0.9 : 1.1))); updateTransform(); };
-        
         viewport.addEventListener('mousedown', (e) => {
             if (!originalImg) return;
             const rect = canvas.getBoundingClientRect();
@@ -194,59 +184,55 @@
         window.addEventListener('mousemove', (e) => { if (isPanning) { posX = e.clientX - startX; posY = e.clientY - startY; updateTransform(); } else if (isSelecting) { const rect = canvas.getBoundingClientRect(); const cx = (e.clientX - rect.left) / scale; const cy = (e.clientY - rect.top) / scale; let x = Math.min(startX, cx), y = Math.min(startY, cy), w = Math.abs(cx - startX), h = Math.abs(cy - startY); selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px'; selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px'; selectArea = {x, y, w, h}; } });
         window.addEventListener('mouseup', () => { isSelecting = isPanning = false; });
 
-        viewport.addEventListener('touchstart', (e) => {
-            if(!originalImg) return;
-            const rect = canvas.getBoundingClientRect();
-            const tx = (e.touches[0].clientX - rect.left) / scale; const ty = (e.touches[0].clientY - rect.top) / scale;
-            if(e.touches.length === 2) { lastDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY); isPanning = true; } 
-            else { if(currentTool === 'color') { isSelecting = true; startX = tx; startY = ty; selectionBox.style.display = 'block'; selectionBox.style.left = startX + 'px'; selectionBox.style.top = startY + 'px'; captureColor(startX, startY); } else { isPanning = true; startX = e.touches[0].clientX - posX; startY = e.touches[0].clientY - posY; captureColor(tx, ty); } }
-        }, {passive: false});
-        viewport.addEventListener('touchmove', (e) => { if(!originalImg) return; e.preventDefault(); if(e.touches.length === 2) { const dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY); scale *= (dist/lastDist); lastDist = dist; } else if(isSelecting) { const rect = canvas.getBoundingClientRect(); const cx = (e.touches[0].clientX - rect.left) / scale; const cy = (e.touches[0].clientY - rect.top) / scale; let x = Math.min(startX, cx), y = Math.min(startY, cy), w = Math.abs(cx - startX), h = Math.abs(cy - startY); selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px'; selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px'; selectArea = {x, y, w, h}; } else if(isPanning) { posX = e.touches[0].clientX - startX; posY = e.touches[0].clientY - startY; } updateTransform(); }, {passive: false});
-
         function captureColor(x, y) { const p = ctx.getImageData(Math.max(0,Math.min(x,canvas.width-1)), Math.max(0,Math.min(y,canvas.height-1)), 1, 1).data; targetRGB = [p[0], p[1], p[2]]; const hex = `rgb(${p[0]},${p[1]},${p[2]})`; document.getElementById('color-old').style.backgroundColor = hex; document.getElementById('bg-color-preview').style.backgroundColor = hex; }
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
 
-        // --- LÓGICA DE QUITAR FONDO AVANZADA (CON CONTRACCIÓN) ---
-        function removeBG() {
-            const id = ctx.getImageData(0,0,canvas.width,canvas.height); 
+        // --- MOTOR DE PROCESAMIENTO AVANZADO (QUIDAR FONDO + CONTRACCIÓN + SUAVIZADO) ---
+        function processBG() {
+            if(!originalImg) return;
+            const id = ctx.getImageData(0,0,canvas.width,canvas.height);
             const d = id.data;
             const tol = parseInt(document.getElementById('bg-tolerance').value);
-            const smooth = parseInt(document.getElementById('bg-smooth').value);
+            const blur = parseInt(document.getElementById('bg-smooth').value);
             const choke = parseInt(document.getElementById('bg-choke').value);
-            
-            // 1. Eliminar por color
+
+            // 1. ELIMINAR COLOR CON TOLERANCIA
             for(let i=0; i<d.length; i+=4) {
                 const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2));
-                if(diff < tol) {
-                    if (smooth > 0 && diff > (tol - smooth * 5)) d[i+3] = ((diff - (tol - smooth * 5)) / (smooth * 5)) * 255;
-                    else d[i+3] = 0;
-                }
+                if(diff < tol) d[i+3] = 0;
             }
 
-            // 2. Contracción de Píxeles (Choke)
+            // 2. CONTRACCIÓN DE BORDES (CHOKE)
             if(choke > 0) {
-                const tempMask = new Uint8Array(d.length/4);
-                for(let i=0; i<tempMask.length; i++) tempMask[i] = d[i*4+3];
-                
-                for(let c=0; choke > c; c++) {
+                for(let step=0; step<choke; step++) {
+                    const temp = new Uint8ClampedArray(d);
                     for(let y=1; y<canvas.height-1; y++) {
                         for(let x=1; x<canvas.width-1; x++) {
-                            const idx = y * canvas.width + x;
-                            if(tempMask[idx] > 0) {
-                                // Si algún vecino es transparente, este píxel se vuelve transparente
-                                if(tempMask[idx-1] === 0 || tempMask[idx+1] === 0 || tempMask[idx-canvas.width] === 0 || tempMask[idx+canvas.width] === 0) {
-                                    d[idx*4+3] = 0;
+                            const i = (y * canvas.width + x) * 4;
+                            if(temp[i+3] > 0) {
+                                // Si algún vecino es transparente, este píxel muere
+                                if(temp[i-4+3]==0 || temp[i+4+3]==0 || temp[i-(canvas.width*4)+3]==0 || temp[i+(canvas.width*4)+3]==0) {
+                                    d[i+3] = 0;
                                 }
                             }
                         }
                     }
-                    for(let i=0; i<tempMask.length; i++) tempMask[i] = d[i*4+3]; // Actualizar máscara para siguiente pasada
                 }
             }
+
             ctx.putImageData(id,0,0);
+
+            // 3. SUAVIZADO REAL (BLUR DE ALPHA)
+            if(blur > 0) {
+                ctx.globalCompositeOperation = 'destination-in';
+                ctx.filter = `blur(${blur}px)`;
+                ctx.drawImage(canvas, 0, 0);
+                ctx.filter = 'none';
+                ctx.globalCompositeOperation = 'source-over';
+            }
         }
 
-        // --- RESTO DE FUNCIONES (MEDIDAS, IA, SCAN) ---
+        // --- RESTO DE FUNCIONES ---
         function openExport() { if(!originalImg) return; const unit = document.getElementById('exp-unit').value; const w = document.getElementById('exp-width'); const h = document.getElementById('exp-height'); if(unit === 'px') { w.value = canvas.width; h.value = canvas.height; } else { w.value = (canvas.width/300*2.54).toFixed(2); h.value = (canvas.height/300*2.54).toFixed(2); } document.getElementById('export-modal').style.display = 'flex'; }
         function convertUnits() { const u = document.getElementById('exp-unit').value; const w = document.getElementById('exp-width'); const h = document.getElementById('exp-height'); if(u === 'px') { w.value = Math.round(parseFloat(w.value)/2.54*300); h.value = Math.round(parseFloat(h.value)/2.54*300); } else { w.value = (parseFloat(w.value)/300*2.54).toFixed(2); h.value = (parseFloat(h.value)/300*2.54).toFixed(2); } }
         function syncDim(type) { if(!document.getElementById('exp-ratio').checked) return; const w = document.getElementById('exp-width'); const h = document.getElementById('exp-height'); if(type === 'w') h.value = (parseFloat(w.value)/ratio).toFixed(2); else w.value = (parseFloat(h.value)*ratio).toFixed(2); }
