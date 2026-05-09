@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J PREMIUM v38 - POWER EDITION</title>
+    <title>J&J PREMIUM v38.1 - MASTER STABILITY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -34,18 +34,17 @@
 
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <p class="font-black italic text-red-500 uppercase text-xs tracking-widest">IA REESCALANDO PIXELES...</p>
+        <p class="font-black italic text-red-500 uppercase text-xs tracking-widest text-center">IA PROCESANDO...<br>MANTENIENDO RESOLUCIÓN MASTER</p>
     </div>
 
-    <!-- PANTALLA DE REGISTRO CON CONTADOR -->
     <div id="auth-screen">
         <div class="max-w-md w-full bg-zinc-900 p-8 rounded-[2rem] border border-red-600/30 text-center shadow-2xl">
             <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6 text-white">J&J</div>
             <h2 class="text-2xl font-black italic uppercase text-white mb-2 italic">Acceso PREMIUM</h2>
-            <input type="tel" id="user-phone" placeholder="Número registrado" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 outline-none">
+            <input type="tel" id="user-phone" placeholder="Número registrado" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none">
             <button onclick="checkAccess()" class="w-full btn-jj py-4 mb-4">Ingresar</button>
-            <div id="trial-counter" class="mb-4">
-                <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400">Prueba Gratis (<span id="t-count">3</span> restantes)</button>
+            <div class="mb-4">
+                <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400">Usar Prueba Gratuita (<span id="t-count">3</span>)</button>
             </div>
             <div class="border-t border-zinc-800 pt-6 space-y-3 text-center">
                 <a href="https://wa.me/51916689969" target="_blank" class="block text-[10px] font-black text-green-500 uppercase">👑 Suscribirme</a>
@@ -86,7 +85,6 @@
                 <button onclick="window.location.reload()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 w-full mb-2">← VOLVER</button>
                 <div class="card"><input type="file" id="upload" class="text-[10px] w-full text-zinc-500" accept="image/*"/></div>
 
-                <!-- PANEL CAMBIADOR -->
                 <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
                     <button onclick="manualScan()" class="w-full py-2 bg-zinc-800 text-[8px] font-black rounded uppercase italic">Escanear Diseño</button>
                     <div id="design-palette" class="flex flex-wrap gap-2 justify-center mb-4 min-h-[40px]"></div>
@@ -97,7 +95,6 @@
                     <button onclick="applyColor()" class="btn-jj text-[10px]">Actualizar Tinta</button>
                 </div>
 
-                <!-- PANEL IA (SUPER REESCALADO POTENTE) -->
                 <div id="panel-ia" class="hidden space-y-2">
                     <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3 border border-white/20">💎 SUPER REESCALADO IA 4K</button>
                     
@@ -118,7 +115,6 @@
                     </div>
                 </div>
 
-                <!-- PANEL QUITAR FONDO -->
                 <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
                     <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900"></div>
                     <input type="range" id="bg-tolerance" min="1" max="150" value="40" oninput="updateBGParams()">
@@ -137,95 +133,81 @@
         const loader = document.getElementById('loading-overlay');
         let originalImg = null, liveSnapshot = null, scale = 1, posX = 0, posY = 0, targetRGB = [0,0,0];
         let isSelecting = false, isPanning = false, startX, startY, selectArea = null, currentTool = '';
-        
-        // --- LOGICA DEL CONTADOR DE PRUEBAS ---
-        let trials = localStorage.getItem('jj_trials_count');
-        if (trials === null) {
-            trials = 3;
-            localStorage.setItem('jj_trials_count', trials);
-        } else {
-            trials = parseInt(trials);
-        }
-        document.getElementById('t-count').innerText = trials;
+        let isUpscaled = false;
 
-        function startTrial() {
-            if(trials > 0) {
-                trials--;
-                localStorage.setItem('jj_trials_count', trials);
-                document.getElementById('t-count').innerText = trials;
-                enterApp();
-            } else { 
-                alert("Has agotado tus pruebas gratuitas. Suscríbete para continuar."); 
-            }
-        }
+        // --- GESTIÓN DE PRUEBAS ---
+        let trials = parseInt(localStorage.getItem('jj_trials_v38')) || 3;
+        document.getElementById('t-count').innerText = trials;
 
         function checkAccess() { 
             const p = document.getElementById('user-phone').value;
-            if(p === "51916689969" || p === "VIP") enterApp();
-            else alert("Número no registrado.");
+            if(p === "51916689969" || p === "VIP") { isVIP = true; enterApp(); }
+            else alert("Número no VIP.");
         }
-
+        function startTrial() { 
+            if(trials > 0) enterApp(); 
+            else alert("Suscríbete para continuar."); 
+        }
         function enterApp() { 
             document.getElementById('auth-screen').style.display = 'none'; 
             document.getElementById('main-content').style.display = 'block'; 
         }
 
-        function toggleAccordion(id) { 
-            const el = document.getElementById(id); 
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block'; 
+        async function downloadPNGWith300DPI() {
+            if (originalImg === null) return;
+            // Solo descuenta si es modo prueba
+            const isVipUser = document.getElementById('user-phone').value === "51916689969" || document.getElementById('user-phone').value === "VIP";
+            if(!isVipUser) {
+                if(trials <= 0) { alert("Sin pruebas. Suscríbete."); location.reload(); return; }
+                trials--;
+                localStorage.setItem('jj_trials_v38', trials);
+                document.getElementById('t-count').innerText = trials;
+            }
+            const a = document.createElement('a'); 
+            a.download = `JJ_MASTER_PRO.png`; 
+            a.href = canvas.toDataURL('image/png'); 
+            a.click();
+            if(!isVipUser && trials === 0) { alert("Pruebas terminadas."); location.reload(); }
         }
 
-        // --- MOTOR DE REESCALADO POTENTE (SUPER RESOLUTION) ---
+        // --- MOTOR IA 4K PERSISTENTE ---
         async function superUpscaleIA() {
             if(!originalImg) return;
             loader.style.display = 'flex';
+            await new Promise(r => setTimeout(r, 1500));
             
-            // Simulación de carga para impacto visual
-            await new Promise(r => setTimeout(r, 1200));
-            
-            // 1. Crear lienzo de alta resolución (x2)
-            const offscreen = document.createElement('canvas');
-            const octx = offscreen.getContext('2d');
-            offscreen.width = canvas.width * 2;
-            offscreen.height = canvas.height * 2;
-            
-            // 2. Remuestreo Bicúbico
+            const off = document.createElement('canvas');
+            const octx = off.getContext('2d');
+            off.width = canvas.width * 2;
+            off.height = canvas.height * 2;
             octx.imageSmoothingEnabled = true;
             octx.imageSmoothingQuality = 'high';
-            octx.drawImage(canvas, 0, 0, offscreen.width, offscreen.height);
+            octx.drawImage(canvas, 0, 0, off.width, off.height);
             
-            // 3. Algoritmo de Nitidez Profunda (Unsharp Mask sim.)
-            const id = octx.getImageData(0,0,offscreen.width, offscreen.height);
+            const id = octx.getImageData(0,0,off.width, off.height);
             const d = id.data;
             for (let i = 0; i < d.length; i += 4) {
-                // Ajuste de micro-contraste para nitidez extrema
-                for(let j=0; j<3; j++) {
-                    let val = d[i+j];
-                    d[i+j] = val + (val - 128) * 0.45;
-                }
+                for(let j=0; j<3; j++) d[i+j] = d[i+j] + (d[i+j] - 128) * 0.4;
             }
             octx.putImageData(id, 0, 0);
             
-            // 4. Actualizar lienzo principal
-            canvas.width = offscreen.width;
-            canvas.height = offscreen.height;
-            ctx.drawImage(offscreen, 0, 0);
+            canvas.width = off.width;
+            canvas.height = off.height;
+            ctx.drawImage(off, 0, 0);
             
-            liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
-            loader.style.display = 'none';
-            alert("¡ÉXITO! Imagen reescalada y nitidez IA aplicada.");
+            // Bloqueamos la nueva imagen como la "Original" para que los filtros no la achiquen
+            const newBase = new Image();
+            newBase.onload = () => {
+                originalImg = newBase;
+                liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
+                isUpscaled = true;
+                loader.style.display = 'none';
+                alert("¡REESCALADO 4K FIJADO!");
+            };
+            newBase.src = canvas.toDataURL();
         }
 
-        // --- SELECTOR DE COLOR CORREGIDO ---
-        function captureColor(x, y) { 
-            const p = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data; 
-            targetRGB = [p[0], p[1], p[2]]; 
-            const hex = `rgb(${p[0]},${p[1]},${p[2]})`;
-            document.getElementById('color-old').style.backgroundColor = hex; 
-            document.getElementById('bg-color-preview').style.backgroundColor = hex; 
-        }
-
-        // --- FILTROS DE CALIDAD ---
+        // --- FILTROS (CONSERVAN TAMAÑO) ---
         function applyMasterFilters() {
             if(!originalImg) return;
             const exp = parseInt(document.getElementById('ia-exp').value);
@@ -240,22 +222,36 @@
             document.getElementById('v-sharp').innerText = sharp;
             document.getElementById('v-bright').innerText = bright + "%";
 
+            // Se dibuja sobre el tamaño actual del canvas (si es 4k, se queda 4k)
             ctx.clearRect(0,0,canvas.width,canvas.height);
             const highAdjust = high < 0 ? `contrast(${100+Math.abs(high/2)}%) brightness(${100-Math.abs(high/4)}%)` : `contrast(${100-(high/2)}%) brightness(${100+(high/4)}%)`;
             ctx.filter = `brightness(${parseInt(bright) + exp}%) saturate(${sat}%) contrast(${100+(shadows/5)}%) ${highAdjust}`;
-            ctx.drawImage(originalImg, 0, 0);
-            if(sharp > 1.0) { ctx.globalAlpha = 0.3; ctx.drawImage(canvas, -1, -1); ctx.globalAlpha = 1.0; }
+            ctx.drawImage(originalImg, 0, 0, canvas.width, canvas.height);
+            
+            if(sharp > 1.0) {
+                ctx.globalAlpha = 0.3;
+                ctx.drawImage(canvas, -1, -1);
+                ctx.globalAlpha = 1.0;
+            }
             ctx.filter = 'none';
         }
 
-        // --- FUNCIONES BASE ---
-        upload.onchange = (e) => { const reader = new FileReader(); reader.onload = (ev) => { const img = new Image(); img.onload = () => { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); originalImg = img; liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); scale = 0.5; updateTransform(); }; img.src = ev.target.result; }; reader.readAsDataURL(e.target.files[0]); };
+        // --- CORE UI ---
+        function toggleAccordion(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+        upload.onchange = (e) => { const reader = new FileReader(); reader.onload = (ev) => { const img = new Image(); img.onload = () => { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); originalImg = img; liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); scale = 0.5; updateTransform(); isUpscaled = false; }; img.src = ev.target.result; }; reader.readAsDataURL(e.target.files[0]); };
         function initTool(t) { currentTool = t; document.getElementById('view-home').style.display = 'none'; document.getElementById('view-tool').classList.add('active-view'); document.getElementById('panel-color').classList.toggle('hidden', t !== 'color'); document.getElementById('panel-bg').classList.toggle('hidden', t !== 'bg'); document.getElementById('panel-ia').classList.toggle('hidden', t !== 'ia'); }
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
         viewport.onwheel = (e) => { e.preventDefault(); scale = Math.max(0.01, scale * (e.deltaY > 0 ? 0.9 : 1.1)); updateTransform(); };
         function setBg(c) { document.getElementById('viewport').style.backgroundColor = c; }
-        function reset() { if(originalImg) { canvas.width = originalImg.width; canvas.height = originalImg.height; ctx.drawImage(originalImg,0,0); liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); selectionBox.style.display='none'; } }
+        function reset() { location.reload(); }
         
+        function captureColor(x, y) { 
+            const p = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data; 
+            targetRGB = [p[0], p[1], p[2]]; 
+            document.getElementById('color-old').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`; 
+            document.getElementById('bg-color-preview').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`; 
+        }
+
         viewport.addEventListener('mousedown', (e) => {
             if (!originalImg) return;
             const rect = canvas.getBoundingClientRect();
@@ -280,13 +276,4 @@
             }
         });
         window.addEventListener('mouseup', () => { isSelecting = isPanning = false; });
-
-        function applyColor() { const area = selectArea || {x:0, y:0, w:canvas.width, h:canvas.height}; const id = ctx.getImageData(area.x, area.y, area.w, area.h); const d = id.data; const hex = document.getElementById('custom-picker').value, rN = parseInt(hex.slice(1,3),16), gN = parseInt(hex.slice(3,5),16), bN = parseInt(hex.slice(5,7),16); for(let i=0; i<d.length; i+=4) { const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)); if(diff < 40) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; } } ctx.putImageData(id, area.x, area.y); liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); selectionBox.style.display='none'; }
-        function updateBGParams() { if(!liveSnapshot) return; const tol = parseInt(document.getElementById('bg-tolerance').value); const tempId = new ImageData(new Uint8ClampedArray(liveSnapshot.data), canvas.width, canvas.height); const d = tempId.data; for(let i=0; i<d.length; i+=4) { const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)); if(diff < tol) d[i+3] = 0; } ctx.putImageData(tempId, 0, 0); }
-        function confirmBG() { liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); }
-        async function downloadPNGWith300DPI() { const a = document.createElement('a'); a.download = `JJ_ULTRA_POWER.png`; a.href = canvas.toDataURL('image/png'); a.click(); }
-        function manualScan() { const data = ctx.getImageData(0,0,canvas.width,canvas.height).data; const colors = {}; for(let i=0; i<data.length; i+=Math.max(4, Math.floor(data.length/2000)*4)) { if(data[i+3] < 128) continue; const h = "#" + ((1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2]).toString(16).slice(1).toUpperCase(); colors[h] = (colors[h] || 0) + 1; } const sorted = Object.keys(colors).sort((a,b) => colors[b]-colors[a]).slice(0, 10); const container = document.getElementById('design-palette'); container.innerHTML = ""; sorted.forEach(hex => { const div = document.createElement('div'); div.className = "w-8 h-8 rounded border border-zinc-800 cursor-pointer shadow-lg"; div.style.backgroundColor = hex; div.onclick = () => { targetRGB = [parseInt(hex.slice(1,3), 16), parseInt(hex.slice(3,5), 16), parseInt(hex.slice(5,7), 16)]; document.getElementById('color-old').style.backgroundColor = hex; }; container.appendChild(div); }); }
-    </script>
-</body>
-</html>
-```[cite: 1]
+        function manualScan() { const data = ctx.getImageData(0,0,canvas.width,canvas.height).data; const colors = {}; for(let i=0; i<data.length; i+=Math.max(4, Math.floor(data.length/2000)*4)) { if(data[i+3] < 128) continue; const h = "#" + ((1 << 24) + (data[i] << 16) + (data[i+
