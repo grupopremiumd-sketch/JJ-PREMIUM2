@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J PREMIUM v38.6 - ULTRA DEEP</title>
+    <title>J&J PREMIUM v38.7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -35,7 +35,7 @@
 
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <p class="font-black italic text-red-500 uppercase text-xs tracking-widest text-center px-4">IA PROCESANDO COLOR PROFUNDO...<br>ELIMINANDO RESIDUOS DE BORDES</p>
+        <p id="loading-text" class="font-black italic text-red-500 uppercase text-xs tracking-widest text-center px-4">PROCESANDO...</p>
     </div>
 
     <div id="auth-screen">
@@ -79,7 +79,7 @@
                 <div class="card"><input type="file" id="upload" class="text-[10px] w-full text-zinc-500" accept="image/*"/></div>
 
                 <div class="card border-zinc-800">
-                    <p class="label-tool text-center mb-3">Color de Mesa de Trabajo</p>
+                    <p class="label-tool text-center mb-3">Mesa de Trabajo</p>
                     <div class="flex flex-wrap gap-x-4 justify-center">
                         <div class="flex flex-col items-center"><div onclick="setBg('#0a0a0a')" class="w-6 h-6 rounded-full bg-black border border-white/10 cursor-pointer shadow-lg"></div><span class="color-label">Negro</span></div>
                         <div class="flex flex-col items-center"><div onclick="setBg('#ffffff')" class="w-6 h-6 rounded-full bg-white border border-black/10 cursor-pointer shadow-lg"></div><span class="color-label">Blanco</span></div>
@@ -89,18 +89,18 @@
                 </div>
 
                 <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
-                    <p class="label-tool text-red-500 text-center italic">Detector de Color y Degradados</p>
-                    <button onclick="manualScan()" class="w-full py-2 bg-zinc-800 text-[8px] font-black rounded uppercase italic">Escanear Diseño</button>
+                    <p class="label-tool text-red-500 text-center italic">Reemplazo de Tinta de Alta Precisión</p>
+                    <button onclick="manualScan()" class="w-full py-2 bg-zinc-800 text-[8px] font-black rounded uppercase italic">Escanear Colores</button>
                     <div id="design-palette" class="flex flex-wrap gap-2 justify-center mb-4 min-h-[40px]"></div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="text-center"><p class="text-[8px] font-black uppercase mb-1">Actual</p><div id="color-old" class="w-full h-8 rounded border border-white/10 bg-zinc-900"></div></div>
+                        <div class="text-center"><p class="text-[8px] font-black uppercase mb-1 text-zinc-500">Actual</p><div id="color-old" class="w-full h-8 rounded border border-white/10 bg-zinc-900 shadow-inner"></div></div>
                         <div class="text-center"><p class="text-[8px] text-red-500 font-black uppercase mb-1">Nuevo</p><input type="color" id="custom-picker" class="w-full h-8 bg-transparent border-none p-0 cursor-pointer"></div>
                     </div>
                     <div>
-                        <label class="label-tool flex justify-between">Fuerza de Cambio: <span id="v-force">45</span></label>
-                        <input type="range" id="color-force" min="10" max="120" value="45" oninput="document.getElementById('v-force').innerText = this.value">
+                        <label class="label-tool flex justify-between">Tolerancia de Borde: <span id="v-force">35</span></label>
+                        <input type="range" id="color-force" min="1" max="100" value="35" oninput="document.getElementById('v-force').innerText = this.value">
                     </div>
-                    <button onclick="applyColor()" class="btn-jj text-[10px]">Actualizar Tinta Pro</button>
+                    <button onclick="applyColor()" class="btn-jj text-[10px]">Actualizar Tinta</button>
                 </div>
 
                 <div id="panel-ia" class="hidden space-y-2">
@@ -117,19 +117,19 @@
                     <div id="acc-cal" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Saturación: <span id="v-sat">100%</span></label><input type="range" id="ia-sat" min="0" max="200" value="100" oninput="applyMasterFilters()"></div>
                         <div><label class="label-tool flex justify-between">Nitidez Extra: <span id="v-sharp">1.0</span></label><input type="range" id="ia-sharp" min="1.0" max="2.5" step="0.1" value="1.0" oninput="applyMasterFilters()"></div>
-                        <div><label class="label-tool flex justify-between">Brillo: <span id="v-bright">100%</span></label><input type="range" id="ia-bright" min="50" max="150" value="100" oninput="applyMasterFilters()"></div>
+                        <div><label class="label-tool flex justify-between">Brillo Extra: <span id="v-bright">100%</span></label><input type="range" id="ia-bright" min="50" max="150" value="100" oninput="applyMasterFilters()"></div>
                     </div>
                 </div>
 
                 <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
-                    <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900 mb-2"></div>
+                    <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900 mb-2 shadow-inner"></div>
                     <div onclick="toggleAccordion('acc-bg')" class="accordion-header"><span class="text-[9px] font-black text-white">AJUSTES DE BORDE</span><span>▼</span></div>
                     <div id="acc-bg" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Tolerancia: <span id="val-tol">40</span></label><input type="range" id="bg-tolerance" min="1" max="150" value="40" oninput="updateBGParams()"></div>
                         <div><label class="label-tool flex justify-between">Contraer: <span id="val-choke">0</span> px</label><input type="range" id="bg-choke" min="0" max="10" value="0" step="1" oninput="updateBGParams()"></div>
                         <div><label class="label-tool flex justify-between">Suavizar: <span id="val-feather">0</span> px</label><input type="range" id="bg-feather" min="0" max="10" value="0" step="0.5" oninput="updateBGParams()"></div>
                     </div>
-                    <button onclick="confirmBG()" class="btn-jj text-[10px]">Eliminar Fondo (Gotero)</button>
+                    <button onclick="confirmBG()" class="btn-jj text-[10px]">Eliminar Color</button>
                 </div>
                 
                 <button onclick="reset()" class="w-full py-3 bg-zinc-900 text-yellow-500 font-black rounded-xl text-[10px] uppercase mt-auto shadow-lg">REESTABLECER</button>
@@ -146,17 +146,17 @@
         let isSelecting = false, isPanning = false, startX, startY, selectArea = null, currentTool = '';
         let isVIP = false;
 
-        let trials = localStorage.getItem('jj_trials_v38.6') || 3;
+        let trials = localStorage.getItem('jj_trials_v38.7') || 3;
         document.getElementById('t-count').innerText = trials;
         function checkAccess() { const p = document.getElementById('user-phone').value; if(p === "51916689969" || p === "VIP") { isVIP = true; enterApp(); } else alert("No VIP."); }
-        function startTrial() { if(trials > 0) enterApp(); else alert("Sin pruebas."); }
+        function startTrial() { if(trials > 0) enterApp(); else alert("Suscríbete."); }
         function enterApp() { document.getElementById('auth-screen').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; }
 
         async function downloadPNGWith300DPI() {
             if (!originalImg) return;
             if(!isVIP) {
                 if(trials <= 0) return location.reload();
-                trials--; localStorage.setItem('jj_trials_v38.6', trials); document.getElementById('t-count').innerText = trials;
+                trials--; localStorage.setItem('jj_trials_v38.7', trials); document.getElementById('t-count').innerText = trials;
             }
             const dataUrl = canvas.toDataURL('image/png');
             const response = await fetch(dataUrl);
@@ -182,6 +182,7 @@
         async function superUpscaleIA() {
             if(!originalImg) return;
             loader.style.display = 'flex';
+            document.getElementById('loading-text').innerText = "IA REESCALANDO A 4K...";
             await new Promise(r => setTimeout(r, 1200));
             const off = document.createElement('canvas'); const octx = off.getContext('2d');
             off.width = canvas.width * 2; off.height = canvas.height * 2;
@@ -192,14 +193,15 @@
             octx.putImageData(id, 0, 0);
             canvas.width = off.width; canvas.height = off.height; ctx.drawImage(off, 0, 0);
             const newBase = new Image();
-            newBase.onload = () => { originalImg = newBase; liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); loader.style.display = 'none'; alert("4K FIJADO"); };
+            newBase.onload = () => { originalImg = newBase; liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); loader.style.display = 'none'; };
             newBase.src = canvas.toDataURL();
         }
 
-        // --- CAMBIADOR DE COLOR ULTRA PROFUNDO (ELIMINA RESIDUOS) ---
+        // --- CAMBIADOR DE COLOR ULTRA LIMPIO (ELIMINA RESIDUOS) ---
         function applyColor() {
             if(!originalImg) return;
             loader.style.display = 'flex';
+            document.getElementById('loading-text').innerText = "ELIMINANDO RESIDUOS DE COLOR...";
             setTimeout(() => {
                 const area = selectArea || {x:0, y:0, w:canvas.width, h:canvas.height};
                 const force = parseInt(document.getElementById('color-force').value);
@@ -209,24 +211,31 @@
                 const rN = parseInt(hex.slice(1,3),16), gN = parseInt(hex.slice(3,5),16), bN = parseInt(hex.slice(5,7),16);
                 
                 for(let i=0; i<d.length; i+=4) {
-                    if(d[i+3] < 5) continue; // Ignorar transparente
-                    const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2));
+                    if(d[i+3] < 1) continue; // Ignorar transparente total
+                    
+                    // Cálculo de distancia de color (Euclidiana)
+                    const diff = Math.sqrt(
+                        Math.pow(d[i]-targetRGB[0],2)+
+                        Math.pow(d[i+1]-targetRGB[1],2)+
+                        Math.pow(d[i+2]-targetRGB[2],2)
+                    );
                     
                     if(diff < force) {
+                        // Cambio radical para eliminar el color viejo al 100%
                         d[i]=rN; d[i+1]=gN; d[i+2]=bN;
-                    } else if (diff < force + 20) {
-                        // Algoritmo de suavizado de degradados y bordes
-                        const blend = (force + 20 - diff) / 20;
-                        d[i] = d[i] * (1 - blend) + rN * blend;
-                        d[i+1] = d[i+1] * (1 - blend) + gN * blend;
-                        d[i+2] = d[i+2] * (1 - blend) + bN * blend;
+                    } else if (diff < force + 15) {
+                        // Limpieza de halos en los bordes
+                        const blend = (force + 15 - diff) / 15;
+                        d[i] = Math.round(d[i] * (1 - blend) + rN * blend);
+                        d[i+1] = Math.round(d[i+1] * (1 - blend) + gN * blend);
+                        d[i+2] = Math.round(d[i+2] * (1 - blend) + bN * blend);
                     }
                 }
                 ctx.putImageData(id, area.x, area.y);
                 liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
                 selectionBox.style.display='none'; selectArea = null;
                 loader.style.display = 'none';
-            }, 100);
+            }, 50);
         }
 
         function applyMasterFilters() {
