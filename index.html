@@ -3,20 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J STUDIO v42.3 - REGISTRO ACTIVO</title>
+    <title>J&J STUDIO v42.4 - UNLOCK FIX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Lato', sans-serif; background: #050505; color: white; margin: 0; overflow: hidden; position: fixed; width: 100%; height: 100%; }
-        .bg-premium { background: radial-gradient(circle at center, #1a0000 0%, #050505 100%); }
-        .tool-view { display: none; height: calc(100vh - 65px); width: 100%; }
-        
-        /* VENTANA DE REGISTRO OBLIGATORIA */
         #auth-screen { position: fixed; inset: 0; z-index: 9999; background: #000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        
+        .tool-view { display: none; height: calc(100vh - 65px); width: 100%; }
         @media (min-width: 1025px) { .tool-view { display: flex; flex-direction: row; } .viewport { flex-grow: 1; height: 100%; cursor: crosshair; } .sidebar { width: 350px; min-width: 350px; border-left: 2px solid #222; } }
         @media (max-width: 1024px) { .tool-view { display: flex; flex-direction: column; } .sidebar { width: 100%; height: 450px; border-top: 2px solid #dc2626; overflow-y: auto; padding-bottom: 80px; } }
-        
         .active-view { display: flex !important; }
         .viewport { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0a0a0a; touch-action: none; }
         #zoom-container { transform-origin: center center; position: absolute; pointer-events: none; }
@@ -24,15 +19,12 @@
         #selection-box { position: absolute; border: 1.5px solid #fff; display: none; pointer-events: none; z-index: 9999; background: rgba(100, 100, 100, 0.4); }
         .sidebar { background: #0a0a0a; padding: 15px; display: flex; flex-direction: column; gap: 12px; z-index: 50; }
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; }
-        .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; color: white; border: none; cursor: pointer; transition: 0.3s; }
-        .btn-jj:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; color: white; border: none; cursor: pointer; }
         .btn-renew { background: #ff9f43 !important; color: #000 !important; }
-        
         .label-tool { font-size: 9px; font-weight: 900; color: #666; text-transform: uppercase; margin-bottom: 4px; display: block; }
         .accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #1a1a1a; border-radius: 8px; margin-bottom: 5px; font-size: 10px; font-weight: 900; }
         .accordion-content { display: none; padding: 10px; background: #0d0d0d; border-radius: 0 0 8px 8px; margin-bottom: 10px; border: 1px solid #222; }
         input[type=range] { accent-color: #dc2626; height: 4px; width: 100%; }
-        
         #loading-overlay { position: fixed; inset:0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .spinner { border: 4px solid rgba(255,255,255,0.1); border-left-color: #dc2626; border-radius: 50%; width: 50px; height: 50px; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -40,23 +32,18 @@
 </head>
 <body>
 
-    <div id="loading-overlay"><div class="spinner"></div><p class="font-black italic text-red-500 uppercase text-sm mt-4 tracking-widest">Validando con J&J Sheets...</p></div>
+    <div id="loading-overlay"><div class="spinner"></div><p class="font-black italic text-red-500 uppercase text-sm mt-4 tracking-widest">Validando Acceso...</p></div>
 
     <div id="auth-screen">
         <div class="max-w-md w-full bg-zinc-900 p-8 rounded-[2rem] border border-red-600/30 text-center shadow-2xl text-white">
-            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6 shadow-xl text-white">J&J</div>
-            <h2 class="text-2xl font-black italic uppercase mb-2">¡BIENVENIDO A J&J!</h2>
-            <p class="text-zinc-500 text-[10px] mb-8 uppercase font-bold tracking-widest">Creative Studio VIP Access</p>
-            
-            <input type="tel" id="user-id" placeholder="Ingresa tu número registrado" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none">
-            
-            <button id="btn-login-main" onclick="validateAccess()" class="w-full btn-jj py-4 mb-4">VALIDAR ACCESO VIP</button>
-            <button id="btn-free-dl" onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8">🎁 USAR PRUEBA GRATUITA (<span id="count-free">2</span>)</button>
-            
-            <div class="border-t border-zinc-800 pt-6 space-y-3">
-                <button class="w-full py-3 bg-blue-600/10 border border-blue-600/30 rounded-xl text-[10px] font-black text-blue-400 uppercase" onclick="window.open('https://t.me/+B50m1g0NBM1mNzU5', '_blank')">📢 GRUPO TELEGRAM</button>
-                <button class="w-full py-3 bg-orange-600/10 border border-orange-600/30 rounded-xl text-[10px] font-black text-orange-500 uppercase" onclick="window.open('https://wa.me/51904503246?text=quiero%20renovar%20mi%20suscripcion', '_blank')">🔥 RENOVAR SOCIO VIP</button>
-                <button class="w-full py-3 bg-green-600/10 border border-green-600/30 rounded-xl text-[10px] font-black text-green-500 uppercase" onclick="window.open('https://wa.me/51916689969?text=quiero%20mas%20informacion', '_blank')">💎 SER SOCIO NUEVO / INFORMES</button>
+            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6">J&J</div>
+            <h2 class="text-2xl font-black italic uppercase mb-2">STUDIO CENTRAL</h2>
+            <input type="tel" id="user-phone" placeholder="Número registrado" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none">
+            <button id="btn-login" onclick="validateAccess()" class="w-full btn-jj py-4 mb-4">INGRESAR AHORA</button>
+            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8">PRUEBA GRATIS (<span id="t-count">2</span>)</button>
+            <div class="border-t border-zinc-800 pt-6 space-y-3 text-left">
+                <button class="w-full py-3 bg-orange-600/10 border border-orange-600/30 rounded-xl text-[10px] font-black text-orange-500 uppercase" onclick="window.open('https://wa.me/51904503246', '_blank')">🔥 RENOVAR VIP</button>
+                <button class="w-full py-3 bg-green-600/10 border border-green-600/30 rounded-xl text-[10px] font-black text-green-500 uppercase" onclick="window.open('https://wa.me/51916689969', '_blank')">💎 NUEVO REGISTRO</button>
             </div>
         </div>
     </div>
@@ -65,19 +52,18 @@
         <header class="h-[65px] px-4 flex justify-between items-center bg-black border-b border-red-900/40 z-[100]">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
                 <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-black text-white">J&J</div>
-                <h1 id="user-display" class="font-black text-xs uppercase italic text-white tracking-widest">J&J STUDIO</h1>
+                <h1 id="user-display" class="font-black text-xs uppercase italic text-white tracking-widest tracking-tighter">J&J STUDIO VIP</h1>
             </div>
-            <button onclick="downloadPNGWith300DPI()" class="bg-yellow-500 text-black font-black text-[10px] px-4 py-2 rounded shadow-lg uppercase italic tracking-tighter">📥 Descargar Master 300DPI</button>
+            <button onclick="downloadPNGWith300DPI()" class="bg-yellow-500 text-black font-black text-[10px] px-4 py-2 rounded shadow-lg uppercase italic tracking-tighter">📥 Descargar Master</button>
         </header>
 
-        <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6 overflow-y-auto">
+        <section id="view-home" class="h-[calc(100vh-65px)] bg-[radial-gradient(circle_at_center,#1a0000_0%,#050505_100%)] flex flex-col items-center py-10 px-6 overflow-y-auto">
             <h2 class="text-5xl font-black italic mb-10 uppercase text-center text-white tracking-tighter">TOOLSET PRO</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
-                <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">MASTER COLOR CHANGER</h3></div>
+                <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">Master Color</h3></div>
                 <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-red-600">Quitar Fondo</h3></div>
-                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">Mejorador IA Pro</h3></div>
+                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">IA Upscale</h3></div>
             </div>
-            <button onclick="logout()" class="mt-12 text-[10px] text-zinc-600 uppercase font-black hover:text-red-500">Cerrar Sesión Studio</button>
         </section>
 
         <section id="view-tool" class="tool-view">
@@ -86,28 +72,17 @@
                 <div id="selection-box"></div>
             </main>
             <aside class="sidebar">
-                <button onclick="goBack()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 mb-2">← VOLVER AL MENÚ</button>
+                <button onclick="goBack()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 mb-2">← VOLVER</button>
                 <div class="card"><input type="file" id="upload" class="text-[10px] w-full text-zinc-500" accept="image/*"/></div>
                 
-                <div class="card border-zinc-800">
-                    <p class="label-tool text-center mb-2">Mesa de Trabajo</p>
-                    <div class="flex justify-center gap-4">
-                        <div onclick="setBg('#0a0a0a')" class="w-6 h-6 rounded-full bg-black border border-white/10 cursor-pointer shadow-lg"></div>
-                        <div onclick="setBg('#ffffff')" class="w-6 h-6 rounded-full bg-white border border-black/10 cursor-pointer shadow-lg"></div>
-                        <input type="color" oninput="setBg(this.value)" class="w-6 h-6 bg-transparent border-none p-0 cursor-pointer shadow-lg">
-                    </div>
-                </div>
-
                 <div id="panel-ia" class="hidden space-y-2">
-                    <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3 border border-white/10">💎 RECONSTRUCCIÓN IA 4K</button>
-                    
+                    <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3">💎 RECONSTRUCCIÓN IA 4K</button>
                     <div onclick="toggleAccordion('acc-raw')" class="accordion-header"><span>REVELADO RAW</span><span>▼</span></div>
                     <div id="acc-raw" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Exposición: <span id="v-exp">0</span></label><input type="range" id="ia-exp" min="-100" max="100" value="0" oninput="applyFilters()"></div>
                         <div><label class="label-tool flex justify-between">Sombras: <span id="v-shadows">0</span></label><input type="range" id="ia-shadows" min="-100" max="100" value="0" oninput="applyFilters()"></div>
                         <div><label class="label-tool flex justify-between">Altas Luces: <span id="v-highlights">0</span></label><input type="range" id="ia-highlights" min="-100" max="100" value="0" oninput="applyFilters()"></div>
                     </div>
-
                     <div onclick="toggleAccordion('acc-cal')" class="accordion-header"><span>AJUSTES CALIDAD</span><span>▼</span></div>
                     <div id="acc-cal" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Brillo: <span id="v-bright">100%</span></label><input type="range" id="ia-bright" min="50" max="150" value="100" oninput="applyFilters()"></div>
@@ -117,18 +92,15 @@
                 </div>
 
                 <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
-                    <p class="label-tool text-red-500 text-center italic font-black">Selector Gris Matrix</p>
-                    <div class="flex justify-between items-center bg-black p-3 rounded-lg border border-white/5">
-                        <div id="color-old" class="w-12 h-12 rounded border border-white/10 bg-zinc-800 shadow-inner"></div>
-                        <span class="text-red-600 font-black text-xl">➜</span>
+                    <div class="flex justify-between items-center bg-black p-2 rounded">
+                        <div id="color-old" class="w-12 h-12 rounded border border-white/10 bg-zinc-800"></div>
+                        <span class="text-red-600 font-black">➜</span>
                         <input type="color" id="custom-picker" class="w-12 h-12 bg-transparent border-none p-0 cursor-pointer">
                     </div>
                     <button onclick="applyColor()" class="btn-jj text-[10px] shadow-2xl">Cambiar Color en Zona</button>
-                    <button onclick="manualScan()" class="w-full py-2 bg-zinc-800 text-[8px] font-black rounded uppercase italic">Escanear Diseño</button>
                 </div>
 
                 <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
-                    <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900 shadow-inner"></div>
                     <div><label class="label-tool flex justify-between">Tolerancia: <span id="val-tol">40</span></label><input type="range" id="bg-tolerance" min="1" max="150" value="40" oninput="updateBG()"></div>
                     <button onclick="confirmBG()" class="btn-jj text-[10px]">Confirmar Recorte</button>
                 </div>
@@ -150,17 +122,12 @@
         let isVIP = sessionStorage.getItem('jj_session') === 'active';
         let freeCount = parseInt(localStorage.getItem('jj_free_count') || "2");
 
-        window.onload = () => {
-            if(isVIP) enterApp();
-            document.getElementById('count-free').innerText = freeCount;
-        };
+        window.onload = () => { if(isVIP) enterApp(); document.getElementById('t-count').innerText = freeCount; };
 
-        // --- VALIDACIÓN REAL POR API GOOGLE SHEETS ---
         async function validateAccess() {
-            const u = document.getElementById('user-id').value.toString().replace(/\D/g,'');
+            const u = document.getElementById('user-phone').value.toString().replace(/\D/g,'');
             if(!u) return alert("Número vacío");
-            
-            const btn = document.getElementById('btn-login-main');
+            const btn = document.getElementById('btn-login');
             btn.innerText = "VERIFICANDO...";
             btn.disabled = true;
 
@@ -168,36 +135,56 @@
                 const res = await fetch(`https://script.google.com/macros/s/AKfycbzwIHNPwRi4x_oQHIYIvMYRD7HbZD-dkwo7bEdH3Zc9yN4-TwfURjSd1TcgNKPqYJxo/exec?user=${u}`);
                 const data = await res.json();
                 
+                // SI EL SCRIPT DE GOOGLE DICE TRUE, ENTRAMOS.
                 if(data.access === true) { 
                     isVIP = true; 
                     sessionStorage.setItem('jj_session', 'active');
-                    document.getElementById('user-display').innerText = `J&J - ${data.nombre.toUpperCase()}`;
+                    document.getElementById('user-display').innerText = `SOCIO: ${data.nombre.toUpperCase()}`;
                     enterApp(); 
-                } else if(data.status.toLowerCase().includes("vencido")) {
-                    btn.innerText = "🆘 VENCIDO - RENOVAR";
+                } else {
+                    alert(`ESTADO: ${data.status.toUpperCase()}`);
+                    btn.innerText = "RENOVAR MEMBRESÍA";
                     btn.classList.add('btn-renew');
                     btn.disabled = false;
-                    btn.onclick = () => window.open('https://wa.me/51904503246?text=Quiero%20renovar%20mi%20VIP', '_blank');
-                } else {
-                    alert("Número no activo o no socio.");
-                    btn.innerText = "VALIDAR ACCESO VIP";
-                    btn.disabled = false;
+                    btn.onclick = () => window.open('https://wa.me/51904503246', '_blank');
                 }
-            } catch(e) { alert("Error de red J&J."); btn.innerText = "REINTENTAR"; btn.disabled = false; }
+            } catch(e) { alert("Error de servidor J&J."); btn.innerText = "REINTENTAR"; btn.disabled = false; }
         }
 
-        function startTrial() { if(freeCount > 0) { isVIP = false; enterApp(); } else alert("Pruebas agotadas."); }
+        function startTrial() { if(freeCount > 0) enterApp(); else alert("Sin pruebas."); }
         function enterApp() { document.getElementById('auth-screen').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; }
         function logout() { sessionStorage.clear(); location.reload(); }
 
-        // --- MANEJO DE HERRAMIENTAS ---
-        function clearMemory() {
-            originalImg = null; liveSnapshot = null; initialSnapshot = null;
-            canvas.width = 0; canvas.height = 0; upload.value = ""; selectionBox.style.display = 'none'; selectArea = null;
-            posX = 0; posY = 0; scale = 1; updateTransform();
+        // --- FILTROS (V42.4 FIXED) ---
+        function applyFilters() {
+            if(!originalImg) return;
+            const exp = parseInt(document.getElementById('ia-exp').value);
+            const shad = parseInt(document.getElementById('ia-shadows').value);
+            const high = parseInt(document.getElementById('ia-highlights').value);
+            const sat = document.getElementById('ia-sat').value;
+            const sharp = document.getElementById('ia-sharp').value;
+            const bright = document.getElementById('ia-bright').value;
+
+            document.getElementById('v-exp').innerText = exp;
+            document.getElementById('v-shadows').innerText = shad;
+            document.getElementById('v-highlights').innerText = high;
+            document.getElementById('v-bright').innerText = bright + "%";
+            document.getElementById('v-sat').innerText = sat + "%";
+            document.getElementById('v-sharp').innerText = sharp;
+
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            const sAdj = 100 + (shad * -0.25);
+            const hAdj = 100 + (high * 0.25);
+            ctx.filter = `brightness(${parseInt(bright) + exp}%) saturate(${sat}%) contrast(${sAdj}%) brightness(${hAdj}%)`;
+            ctx.drawImage(originalImg, 0, 0);
+            if(sharp > 1.0) { ctx.globalAlpha = 0.4; ctx.drawImage(canvas, -1, -1); ctx.globalAlpha = 1.0; }
+            ctx.filter = 'none';
         }
-        function goBack() { clearMemory(); document.getElementById('view-tool').classList.remove('active-view'); document.getElementById('view-home').style.display = 'flex'; currentTool = ''; }
-        function initTool(t) { clearMemory(); currentTool = t; document.getElementById('view-home').style.display = 'none'; document.getElementById('view-tool').classList.add('active-view'); document.getElementById('panel-color').classList.toggle('hidden', t !== 'color'); document.getElementById('panel-bg').classList.toggle('hidden', t !== 'bg'); document.getElementById('panel-ia').classList.toggle('hidden', t !== 'ia'); }
+
+        // --- SISTEMA CORE ---
+        function clearMemory() { originalImg = null; canvas.width = 0; canvas.height = 0; selectionBox.style.display = 'none'; posX = 0; posY = 0; scale = 1; updateTransform(); }
+        function goBack() { clearMemory(); document.getElementById('view-tool').classList.remove('active-view'); document.getElementById('view-home').style.display = 'flex'; }
+        function initTool(t) { currentTool = t; document.getElementById('view-home').style.display = 'none'; document.getElementById('view-tool').classList.add('active-view'); document.getElementById('panel-color').classList.toggle('hidden', t !== 'color'); document.getElementById('panel-bg').classList.toggle('hidden', t !== 'bg'); document.getElementById('panel-ia').classList.toggle('hidden', t !== 'ia'); }
 
         upload.onchange = (e) => {
             const reader = new FileReader();
@@ -216,35 +203,7 @@
             reader.readAsDataURL(e.target.files[0]);
         };
 
-        // --- MOTOR DE FILTROS RAW Y CALIDAD (V42.3) ---
-        function applyFilters() {
-            if(!originalImg) return;
-            const exp = parseInt(document.getElementById('ia-exp').value);
-            const shad = parseInt(document.getElementById('ia-shadows').value);
-            const high = parseInt(document.getElementById('ia-highlights').value);
-            const sat = document.getElementById('ia-sat').value;
-            const sharp = document.getElementById('ia-sharp').value;
-            const bright = document.getElementById('ia-bright').value;
-
-            document.getElementById('v-exp').innerText = exp;
-            document.getElementById('v-shadows').innerText = shad;
-            document.getElementById('v-highlights').innerText = high;
-            document.getElementById('v-bright').innerText = bright + "%";
-            document.getElementById('v-sat').innerText = sat + "%";
-            document.getElementById('v-sharp').innerText = sharp;
-
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            const shadAdj = 100 + (shad * -0.25);
-            const highAdj = 100 + (high * 0.25);
-            ctx.filter = `brightness(${parseInt(bright) + exp}%) saturate(${sat}%) contrast(${shadAdj}%) brightness(${highAdj}%)`;
-            ctx.drawImage(originalImg, 0, 0);
-            
-            if(sharp > 1.0) { ctx.globalAlpha = 0.4; ctx.drawImage(canvas, -1, -1); ctx.globalAlpha = 1.0; }
-            ctx.filter = 'none';
-        }
-
-        // --- SELECTOR ZONAS MATRIX ---
-        let panSX, panSY;
+        // SELECTOR MATRIX
         viewport.addEventListener('mousedown', (e) => {
             if (!originalImg) return;
             const rect = canvas.getBoundingClientRect(), vRect = viewport.getBoundingClientRect();
@@ -254,12 +213,12 @@
                 targetRGB = [p[0], p[1], p[2]];
                 document.getElementById('color-old').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
                 if(currentTool === 'color') { isSelecting = true; startX_PX = tx; startY_PX = ty; startX_View = e.clientX - vRect.left; startY_View = e.clientY - vRect.top; }
-                if(currentTool === 'bg') updateBG(); 
+                if(currentTool === 'bg') updateBG();
             }
-            isPanning = true; panSX = e.clientX - posX; panSY = e.clientY - posY;
+            isPanning = true; startXP = e.clientX - posX; startYP = e.clientY - posY;
         });
         window.addEventListener('mousemove', (e) => {
-            if (isPanning && !isSelecting) { posX = e.clientX - panSX; posY = e.clientY - panSY; updateTransform(); }
+            if (isPanning && !isSelecting) { posX = e.clientX - startXP; posY = e.clientY - startYP; updateTransform(); }
             if (isSelecting) {
                 const vRect = viewport.getBoundingClientRect();
                 const curVX = e.clientX - vRect.left, curVY = e.clientY - vRect.top;
@@ -274,29 +233,24 @@
         window.addEventListener('mouseup', () => { isSelecting = isPanning = false; });
 
         function applyColor() {
-            if(!originalImg) return;
-            const area = selectArea || {x:0, y:0, w:canvas.width, h:canvas.height};
-            const id = ctx.getImageData(area.x, area.y, area.w, area.h);
+            if(!originalImg || !selectArea) return;
+            const id = ctx.getImageData(selectArea.x, selectArea.y, selectArea.w, selectArea.h);
             const d = id.data, hex = document.getElementById('custom-picker').value, rN = parseInt(hex.slice(1,3),16), gN = parseInt(hex.slice(3,5),16), bN = parseInt(hex.slice(5,7),16);
             for(let i=0; i<d.length; i+=4) {
-                const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2));
-                if(diff < 80) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; }
+                if(Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)) < 80) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; }
             }
-            ctx.putImageData(id, area.x, area.y);
-            liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
+            ctx.putImageData(id, selectArea.x, selectArea.y);
             selectionBox.style.display='none'; selectArea = null;
         }
 
-        async function superUpscaleIA() { if(!originalImg) return; loader.style.display = 'flex'; await new Promise(r => setTimeout(r, 1200)); const off = document.createElement('canvas'); const octx = off.getContext('2d'); off.width = canvas.width * 2; off.height = canvas.height * 2; octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; octx.drawImage(canvas, 0, 0, off.width, off.height); const id = octx.getImageData(0,0,off.width, off.height); const d = id.data; for (let i = 0; i < d.length; i += 4) { for(let j=0; j<3; j++) d[i+j] = d[i+j] + (d[i+j] - 127) * 0.6; } octx.putImageData(id, 0, 0); canvas.width = off.width; canvas.height = off.height; ctx.drawImage(off, 0, 0); const newBase = new Image(); newBase.onload = () => { originalImg = newBase; liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); loader.style.display = 'none'; }; newBase.src = canvas.toDataURL(); }
-
-        function updateBG() { if(!liveSnapshot) return; const tol = parseInt(document.getElementById('bg-tolerance').value); const tempId = new ImageData(new Uint8ClampedArray(liveSnapshot.data), canvas.width, canvas.height); const d = tempId.data; for(let i=0; i<d.length; i+=4) { const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)); if(diff < tol) d[i+3] = 0; } ctx.putImageData(tempId, 0, 0); }
+        async function superUpscaleIA() { if(!originalImg) return; loader.style.display = 'flex'; await new Promise(r => setTimeout(r, 1200)); const off = document.createElement('canvas'); const octx = off.getContext('2d'); off.width = canvas.width * 2; off.height = canvas.height * 2; octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; octx.drawImage(canvas, 0, 0, off.width, off.height); const id = octx.getImageData(0,0,off.width, off.height); const d = id.data; for (let i = 0; i < d.length; i += 4) { for(let j=0; j<3; j++) d[i+j] = d[i+j] + (d[i+j] - 127) * 0.6; } octx.putImageData(id, 0, 0); canvas.width = off.width; canvas.height = off.height; ctx.drawImage(off, 0, 0); const newBase = new Image(); newBase.onload = () => { originalImg = newBase; applyFilters(); loader.style.display = 'none'; }; newBase.src = canvas.toDataURL(); }
+        function updateBG() { if(!liveSnapshot) return; const tol = parseInt(document.getElementById('bg-tolerance').value); const tempId = new ImageData(new Uint8ClampedArray(liveSnapshot.data), canvas.width, canvas.height); const d = tempId.data; for(let i=0; i<d.length; i+=4) { if(Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)) < tol) d[i+3] = 0; } ctx.putImageData(tempId, 0, 0); }
         function confirmBG() { liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); }
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
         function setBg(c) { document.getElementById('viewport').style.backgroundColor = c; }
         function toggleAccordion(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
-        function hardReset() { if(initialSnapshot) { canvas.width = initialSnapshot.width; canvas.height = initialSnapshot.height; ctx.putImageData(initialSnapshot, 0, 0); applyFilters(); posX = 0; posY = 0; scale = 0.5; updateTransform(); } }
-        async function downloadPNGWith300DPI() { if(!originalImg) return; if(!isVIP) { freeCount--; localStorage.setItem('jj_free_count', freeCount); } const a = document.createElement('a'); a.download = `JJ_MASTER.png`; a.href = canvas.toDataURL('image/png'); a.click(); if(!isVIP && freeCount === 0) location.reload(); }
-        function manualScan() { const data = ctx.getImageData(0,0,canvas.width,canvas.height).data; const colors = {}; for(let i=0; i<data.length; i+=Math.max(4, Math.floor(data.length/2000)*4)) { if(data[i+3] < 128) continue; const h = "#" + ((1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2]).toString(16).slice(1).toUpperCase(); colors[h] = (colors[h] || 0) + 1; } const sorted = Object.keys(colors).sort((a,b) => colors[b]-colors[a]).slice(0, 10); const container = document.createElement('div'); }
+        function hardReset() { if(initialSnapshot) { canvas.width = initialSnapshot.width; canvas.height = initialSnapshot.height; ctx.putImageData(initialSnapshot, 0, 0); posX = 0; posY = 0; scale = 0.5; updateTransform(); } }
+        async function downloadPNGWith300DPI() { if(!originalImg) return; if(!isVIP) { freeCount--; localStorage.setItem('jj_free_count', freeCount); } const link = document.createElement('a'); link.download = `JJ_MASTER.png`; link.href = canvas.toDataURL('image/png'); link.click(); if(!isVIP && freeCount === 0) location.reload(); }
     </script>
 </body>
 </html>
