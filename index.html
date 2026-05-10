@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J STUDIO v42.9 - PLATINUM PRO</title>
+    <title>J&J STUDIO v42.10</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -24,26 +24,26 @@
         .accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #1a1a1a; border-radius: 8px; margin-bottom: 5px; font-size: 10px; font-weight: 900; }
         .accordion-content { display: none; padding: 10px; background: #0d0d0d; border-radius: 0 0 8px 8px; margin-bottom: 10px; border: 1px solid #222; }
         input[type=range] { accent-color: #dc2626; height: 4px; width: 100%; }
-        #loading-overlay { position: fixed; inset:0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .spinner { border: 4px solid rgba(255,255,255,0.1); border-left-color: #dc2626; border-radius: 50%; width: 50px; height: 50px; animation: spin 0.8s linear infinite; }
+        #loading-overlay { position: fixed; inset:0; background: rgba(0,0,0,0.9); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-left-color: #dc2626; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="loading-overlay"><div class="spinner"></div><p id="loading-text" class="font-black italic text-red-500 uppercase text-sm mt-4">Sincronizando J&J Studio...</p></div>
+    <div id="loading-overlay"><div class="spinner"></div><p id="loading-text" class="font-black italic text-red-500 uppercase text-[10px] mt-4 tracking-widest">Sincronizando...</p></div>
 
     <div id="auth-screen">
         <div class="max-w-md w-full bg-zinc-900 p-8 rounded-[2rem] border border-red-600/30 text-center shadow-2xl text-white">
-            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6">J&J</div>
-            <h2 class="text-2xl font-black italic uppercase mb-2">ACCESO STUDIO</h2>
+            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6 shadow-xl">J&J</div>
+            <h2 class="text-2xl font-black italic uppercase mb-2">ACCESO VIP</h2>
+            <p class="text-zinc-500 text-[10px] mb-6 uppercase font-bold tracking-widest">Premium Designing Tool</p>
             <input type="tel" id="user-phone" placeholder="Número registrado" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none">
-            <button id="btn-login" onclick="validateAccess()" class="w-full btn-jj py-4 mb-4">INGRESAR AHORA</button>
-            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8">Prueba de Cortesía (<span id="t-count">2</span>)</button>
-            
+            <button id="btn-login" onclick="validateAccess()" class="w-full btn-jj py-4 mb-4">Ingresar al Studio</button>
+            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8">Prueba nuestras herramientas (<span id="t-count">2</span>)</button>
             <div class="border-t border-zinc-800 pt-6 space-y-3">
-                <a href="https://wa.me/51916689969" target="_blank" class="flex items-center justify-between bg-green-600/10 border border-green-600/30 p-4 rounded-xl text-[10px] font-black text-green-500 uppercase"><span>👑 Suscribirme al VIP</span><span>➔</span></a>
-                <a href="https://wa.me/51904503246" target="_blank" class="flex items-center justify-between bg-orange-600/10 border border-orange-600/30 p-4 rounded-xl text-[10px] font-black text-orange-500 uppercase"><span>🔥 Renovar Membresía</span><span>➔</span></a>
+                <button class="w-full py-3 bg-green-600/10 border border-green-600/30 rounded-xl text-[10px] font-black text-green-500 uppercase" onclick="window.open('https://wa.me/51916689969', '_blank')">👑 Suscribirme al VIP</button>
+                <button class="w-full py-3 bg-orange-600/10 border border-orange-600/30 rounded-xl text-[10px] font-black text-orange-500 uppercase" onclick="window.open('https://wa.me/51904503246', '_blank')">🔥 Renovar Membresía</button>
             </div>
         </div>
     </div>
@@ -55,17 +55,17 @@
                 <h1 id="user-display" class="font-black text-xs uppercase italic text-white tracking-widest">J&J STUDIO PRO</h1>
             </div>
             <div class="flex gap-2">
-                <button onclick="logout()" class="bg-zinc-800 text-zinc-400 font-black text-[8px] px-3 py-2 rounded uppercase border border-zinc-700 hover:text-red-500">Cerrar Sesión</button>
-                <button onclick="downloadPNGWith300DPI()" class="bg-yellow-500 text-black font-black text-[9px] px-3 py-2 rounded shadow-lg uppercase italic font-black">📥 DESCARGAR 300 DPI</button>
+                <button onclick="logout()" class="bg-zinc-800 text-zinc-400 font-black text-[8px] px-3 py-2 rounded border border-zinc-700 uppercase">Salir</button>
+                <button onclick="downloadPNGWith300DPI()" class="bg-yellow-500 text-black font-black text-[9px] px-3 py-2 rounded shadow-lg uppercase italic font-black">📥 Descargar Master</button>
             </div>
         </header>
 
         <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6 overflow-y-auto">
-            <h2 class="text-5xl font-black italic mb-10 uppercase text-center text-white tracking-tighter">TOOLSET PLATINUM</h2>
+            <h2 class="text-5xl font-black italic mb-10 uppercase text-center text-white tracking-tighter">TOOLSET PRO</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
-                <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center shadow-xl transition-all group"><h3 class="font-black uppercase text-xl italic text-white">Master Color</h3></div>
-                <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center shadow-xl transition-all group"><h3 class="font-black uppercase text-xl italic text-red-600">Quitar Fondo</h3></div>
-                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center shadow-xl transition-all group"><h3 class="font-black uppercase text-xl italic text-white">Mejorador IA</h3></div>
+                <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">Master Color</h3></div>
+                <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-red-600">Quitar Fondo</h3></div>
+                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">Mejorador IA</h3></div>
             </div>
         </section>
 
@@ -88,17 +88,8 @@
                     </div>
                 </div>
 
-                <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
-                    <p class="label-tool text-white text-center italic">Recorte Avanzado por Gotero</p>
-                    <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900 shadow-inner"></div>
-                    <div><label class="label-tool flex justify-between">Tolerancia: <span id="val-tol">40</span></label><input type="range" id="bg-tolerance" min="1" max="150" value="40" oninput="updateBG()"></div>
-                    <div><label class="label-tool flex justify-between">Contraer: <span id="val-choke">0</span></label><input type="range" id="bg-choke" min="0" max="5" value="0" oninput="updateBG()"></div>
-                    <div><label class="label-tool flex justify-between">Suavizado: <span id="val-feather">0</span></label><input type="range" id="bg-feather" min="0" max="10" value="0" step="0.5" oninput="updateBG()"></div>
-                    <button onclick="confirmBG()" class="btn-jj text-[10px]">Confirmar Recorte</button>
-                </div>
-
                 <div id="panel-ia" class="hidden space-y-2">
-                    <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3 border border-white/10">💎 IA RECONSTRUCCIÓN 4K</button>
+                    <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3 border border-white/10">💎 RECONSTRUCCIÓN IA 4K</button>
                     <div onclick="toggleAccordion('acc-raw')" class="accordion-header"><span>REVELADO RAW</span><span>▼</span></div>
                     <div id="acc-raw" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Exposición: <span id="v-exp">0</span></label><input type="range" id="ia-exp" min="-100" max="100" value="0" oninput="applyFilters()"></div>
@@ -113,13 +104,21 @@
                     </div>
                 </div>
 
+                <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
+                    <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900 shadow-inner"></div>
+                    <div><label class="label-tool flex justify-between">Tolerancia: <span id="val-tol">40</span></label><input type="range" id="bg-tolerance" min="1" max="150" value="40" oninput="updateBG()"></div>
+                    <div><label class="label-tool flex justify-between">Contraer: <span id="val-choke">0</span></label><input type="range" id="bg-choke" min="0" max="5" value="0" oninput="updateBG()"></div>
+                    <div><label class="label-tool flex justify-between">Suavizado: <span id="val-feather">0</span></label><input type="range" id="bg-feather" min="0" max="10" value="0" step="0.5" oninput="updateBG()"></div>
+                    <button onclick="confirmBG()" class="btn-jj text-[10px]">Confirmar Recorte</button>
+                </div>
+
                 <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
                     <div class="flex justify-between items-center bg-black p-2 rounded">
                         <div id="color-old" class="w-12 h-12 rounded border border-white/10 bg-zinc-800 shadow-inner"></div>
                         <span class="text-red-600 font-black">➜</span>
                         <input type="color" id="custom-picker" class="w-12 h-12 bg-transparent border-none p-0 cursor-pointer">
                     </div>
-                    <button onclick="applyColor()" class="btn-jj text-[10px] shadow-2xl">Cambiar Zona Gris</button>
+                    <button onclick="applyColor()" class="btn-jj text-[10px]">Cambiar Color en Zona</button>
                 </div>
                 
                 <button onclick="hardReset()" class="w-full py-3 bg-zinc-900 text-yellow-500 font-black rounded-xl text-[10px] uppercase mt-auto shadow-lg">REESTABLECER VISTA</button>
@@ -136,7 +135,6 @@
         let originalImg = null, liveSnapshot = null, initialSnapshot = null; 
         let scale = 1, posX = 0, posY = 0, targetRGB = [255,255,255], isPanning = false, isSelecting = false, startX_PX, startY_PX, startX_View, startY_View, selectArea = null, currentTool = '';
         
-        // --- SESIÓN PERMANENTE (4 HORAS) ---
         const SESSION_LIMIT = 4 * 60 * 60 * 1000;
         let isVIP = localStorage.getItem('jj_session_perm') === 'active';
         let freeCount = parseInt(localStorage.getItem('jj_free_count') || "2");
@@ -144,10 +142,13 @@
         window.onload = () => {
             const loginTime = localStorage.getItem('jj_login_time');
             const userNum = localStorage.getItem('jj_user_num');
-            if(isVIP && loginTime && (new Date().getTime() - parseInt(loginTime) < SESSION_LIMIT)) {
-                silentCheck(userNum);
-            } else { logout(); }
             document.getElementById('t-count').innerText = freeCount;
+            
+            if(isVIP && loginTime && userNum) {
+                if(new Date().getTime() - parseInt(loginTime) < SESSION_LIMIT) {
+                    silentCheck(userNum);
+                } else { logout(); }
+            }
         };
 
         async function validateAccess() {
@@ -161,6 +162,7 @@
                     localStorage.setItem('jj_session_perm', 'active');
                     localStorage.setItem('jj_user_num', u);
                     localStorage.setItem('jj_login_time', new Date().getTime().toString());
+                    localStorage.setItem('jj_user_name', data.nombre.toUpperCase());
                     document.getElementById('user-display').innerText = `SOCIO: ${data.nombre.toUpperCase()}`;
                     enterApp(); 
                 } else alert(`Estado: ${data.status.toUpperCase()}`);
@@ -171,11 +173,14 @@
             try {
                 const res = await fetch(`https://script.google.com/macros/s/AKfycbzwIHNPwRi4x_oQHIYIvMYRD7HbZD-dkwo7bEdH3Zc9yN4-TwfURjSd1TcgNKPqYJxo/exec?user=${u}`);
                 const data = await res.json();
-                if(data.access === true) { enterApp(); document.getElementById('user-display').innerText = `SOCIO: ${data.nombre.toUpperCase()}`; } else logout();
+                if(data.access === true) { 
+                    document.getElementById('user-display').innerText = `SOCIO: ${data.nombre.toUpperCase()}`;
+                    enterApp(); 
+                } else logout();
             } catch(e) { enterApp(); } 
         }
 
-        function startTrial() { if(freeCount > 0) enterApp(); else alert("Pruebas agotadas."); }
+        function startTrial() { if(freeCount > 0) enterApp(); else alert("Sin pruebas."); }
         function enterApp() { document.getElementById('auth-screen').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; }
         function logout() { localStorage.clear(); location.reload(); }
 
@@ -183,7 +188,6 @@
         viewport.onwheel = (e) => { if(!originalImg) return; e.preventDefault(); const delta = e.deltaY > 0 ? 0.9 : 1.1; scale = Math.min(Math.max(0.1, scale * delta), 10); updateTransform(); };
         function updateTransform() { zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`; }
 
-        // --- CARGA Y RESET ---
         upload.onchange = (e) => {
             const reader = new FileReader();
             reader.onload = (ev) => {
@@ -207,15 +211,7 @@
             posX = 0; posY = 0; updateTransform();
         }
 
-        function hardReset() {
-            if(initialSnapshot) {
-                canvas.width = initialSnapshot.width; canvas.height = initialSnapshot.height;
-                ctx.putImageData(initialSnapshot, 0, 0);
-                fitToScreen();
-            }
-        }
-
-        // --- HERRAMIENTAS ---
+        function hardReset() { if(initialSnapshot) { canvas.width = initialSnapshot.width; canvas.height = initialSnapshot.height; ctx.putImageData(initialSnapshot, 0, 0); fitToScreen(); } }
         function clearMemory() { originalImg = null; canvas.width = 0; canvas.height = 0; selectionBox.style.display = 'none'; fitToScreen(); }
         function goBack() { clearMemory(); document.getElementById('view-tool').classList.remove('active-view'); document.getElementById('view-home').style.display = 'flex'; }
         function initTool(t) { currentTool = t; document.getElementById('view-home').style.display = 'none'; document.getElementById('view-tool').classList.add('active-view'); document.getElementById('panel-color').classList.toggle('hidden', t !== 'color'); document.getElementById('panel-bg').classList.toggle('hidden', t !== 'bg'); document.getElementById('panel-ia').classList.toggle('hidden', t !== 'ia'); }
@@ -243,8 +239,6 @@
         }
         function confirmBG() { liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height); }
 
-        // SELECTOR MATRIX
-        let panSX, panSY;
         viewport.addEventListener('mousedown', (e) => {
             if (!originalImg) return;
             const rect = canvas.getBoundingClientRect(), vRect = viewport.getBoundingClientRect();
@@ -257,10 +251,10 @@
                 if(currentTool === 'color') { isSelecting = true; startX_PX = tx; startY_PX = ty; startX_View = e.clientX - vRect.left; startY_View = e.clientY - vRect.top; }
                 if(currentTool === 'bg') updateBG();
             }
-            isPanning = true; panSX = e.clientX - posX; panSY = e.clientY - posY;
+            isPanning = true; startXP = e.clientX - posX; startYP = e.clientY - posY;
         });
         window.addEventListener('mousemove', (e) => {
-            if (isPanning && !isSelecting) { posX = e.clientX - panSX; posY = e.clientY - panSY; updateTransform(); }
+            if (isPanning && !isSelecting) { posX = e.clientX - startXP; posY = e.clientY - startYP; updateTransform(); }
             if (isSelecting) {
                 const vRect = viewport.getBoundingClientRect();
                 const curVX = e.clientX - vRect.left, curVY = e.clientY - vRect.top;
@@ -280,6 +274,7 @@
             const d = id.data, hex = document.getElementById('custom-picker').value, rN = parseInt(hex.slice(1,3),16), gN = parseInt(hex.slice(3,5),16), bN = parseInt(hex.slice(5,7),16);
             for(let i=0; i<d.length; i+=4) { if(Math.sqrt(Math.pow(d[i]-targetRGB[0],2)+Math.pow(d[i+1]-targetRGB[1],2)+Math.pow(d[i+2]-targetRGB[2],2)) < 80) { d[i]=rN; d[i+1]=gN; d[i+2]=bN; } }
             ctx.putImageData(id, selectArea.x, selectArea.y);
+            liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
             selectionBox.style.display='none'; selectArea = null;
         }
 
@@ -292,7 +287,7 @@
             const table = (function() { const t = new Int32Array(256); for (let i = 0; i < 256; i++) { let c = i; for (let j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[i] = c; } return t; })();
             let crc = 0xFFFFFFFF; for (let i = 4; i < 17; i++) crc = table[(crc ^ pHYs[i]) & 0xFF] ^ (crc >>> 1); view.setUint32(17, crc ^ 0xFFFFFFFF);
             const final = new Uint8Array(uint8.length + 21); final.set(uint8.slice(0, 33)); final.set(pHYs, 33); final.set(uint8.slice(33), 54);
-            const a = document.createElement('a'); a.download = `JJ_STUDIO_300DPI.png`; a.href = URL.createObjectURL(new Blob([final])); a.click();
+            const a = document.createElement('a'); a.download = `JJ_STUDIO_MASTER.png`; a.href = URL.createObjectURL(new Blob([final])); a.click();
             if(!isVIP) { freeCount--; localStorage.setItem('jj_free_count', freeCount); if(freeCount === 0) location.reload(); }
         }
 
