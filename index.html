@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J&J Master Studio - Elite Production</title>
+    <title>J&J Studio - Elite Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Lato', sans-serif; background: #050505; color: white; overflow: hidden; }
-        .bg-premium { background: linear-gradient(135deg, #000 0%, #1a0000 50%, #4a0000 100%); }
+        .bg-premium { background: linear-gradient(135deg, #000000 0%, #200000 50%, #600000 100%); }
         .tool-view { display: none; grid-template-columns: 1fr 380px; height: calc(100vh - 65px); }
         .active-view { display: grid !important; }
-        .viewport { overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; background-color: #0a0a0a; background-image: radial-gradient(#1a1a1a 1px, transparent 1px); background-size: 30px 30px; touch-action: none; }
+        .viewport { overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; background-color: #111; background-image: radial-gradient(#222 1px, transparent 1px); background-size: 30px 30px; }
         #zoom-container { transform-origin: center center; position: absolute; cursor: crosshair; }
-        canvas { box-shadow: 0 0 50px rgba(0,0,0,1); image-rendering: auto; }
-        .sidebar { background: #0a0a0a; border-left: 1px solid #222; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        canvas { box-shadow: 0 0 60px rgba(0,0,0,1); background: transparent; }
+        .sidebar { background: #0a0a0a; border-left: 1px solid #1a1a1a; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 15px; }
         .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 8px; cursor: pointer; transition: 0.2s; }
         .btn-jj:hover { background: #ff0000; transform: translateY(-1px); }
-        .input-jj { background: #000; border: 1px solid #333; border-radius: 6px; padding: 10px; color: #dc2626; font-weight: 900; font-size: 12px; width: 100%; outline: none; }
+        .input-jj { background: #000; border: 1px solid #333; border-radius: 6px; padding: 10px; color: #dc2626; font-weight: 900; font-size: 13px; width: 100%; outline: none; }
+        
+        /* Modal Exportación Maestro */
         #export-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-content { background: #0a0a0a; border: 1px solid #dc2626; border-radius: 20px; width: 450px; padding: 30px; }
-        #selection-box { position: absolute; border: 1.5px dashed #dc2626; display: none; pointer-events: none; z-index: 50; }
-        .color-tag { width: 28px; height: 28px; border-radius: 6px; border: 1px solid #333; cursor: pointer; transition: 0.2s; }
-        .color-tag:hover { transform: scale(1.2); border-color: white; }
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 10px; }
+        .modal-content { background: #0a0a0a; border: 1px solid #dc2626; border-radius: 20px; width: 450px; padding: 30px; box-shadow: 0 0 100px rgba(220, 38, 38, 0.1); }
+        
+        #selection-box { position: absolute; border: 1.5px dashed #dc2626; background: transparent; display: none; pointer-events: none; z-index: 50; }
+        .guide-line { position: absolute; background: rgba(220, 38, 38, 0.5); display: none; pointer-events: none; z-index: 40; }
     </style>
 </head>
 <body class="flex flex-col h-screen">
 
     <header class="h-[65px] px-8 flex justify-between items-center bg-black border-b border-red-900/40 z-[100]">
         <div class="flex items-center gap-3 cursor-pointer" onclick="showView('home')">
-            <div class="w-10 h-10 bg-red-600 rounded flex items-center justify-center shadow-lg"><span class="text-white font-black text-xl italic">J&J</span></div>
-            <h1 class="font-black text-lg uppercase italic tracking-tighter text-white">STUDIO <span class="text-red-600 font-light">PREMIUM</span></h1>
+            <div class="w-10 h-10 bg-red-600 rounded flex items-center justify-center"><span class="text-white font-black text-xl italic">J&J</span></div>
+            <h1 class="font-black text-lg uppercase italic tracking-tighter">COMUNIDAD <span class="text-red-600 font-light">PREMIUM</span></h1>
         </div>
-        <div id="top-info" class="hidden items-center gap-6">
-            <div class="bg-red-950/20 px-4 py-2 rounded-full border border-red-900/40 text-[9px] font-black uppercase tracking-widest text-red-500 italic">
+        <div id="top-info" class="hidden items-center gap-4">
+            <div class="bg-red-950/20 px-4 py-2 rounded-full border border-red-900/40 text-[9px] font-black uppercase tracking-widest text-red-500">
                 MÓDULO: <span id="current-module-name">...</span> | ZOOM: <span id="zoom-label">100</span>%
             </div>
         </div>
     </header>
 
     <section id="view-home" class="h-[calc(100vh-65px)] p-10 flex flex-col items-center justify-center bg-premium">
-        <h2 class="text-6xl font-black italic tracking-tighter mb-16 uppercase text-white drop-shadow-2xl text-center">COMUNIDAD PREMIUM J&J</h2>
+        <h2 class="text-6xl font-black italic tracking-tighter mb-16 uppercase text-white">ESTUDIO J&J</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl w-full">
             <div onclick="initTool('color')" class="bg-black/60 p-12 rounded-[3rem] border border-white/5 hover:border-red-600 transition-all cursor-pointer text-center group">
-                <div class="text-5xl mb-4 group-hover:scale-110">🎨</div>
+                <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🎨</div>
                 <h3 class="text-xl font-black uppercase italic tracking-widest">Colorizador</h3>
             </div>
-            <div onclick="initTool('bg')" class="bg-black/60 p-12 rounded-[3rem] border border-white/5 hover:border-red-600 transition-all cursor-pointer text-center group">
-                <div class="text-5xl mb-4 group-hover:scale-110">✂️</div>
-                <h3 class="text-xl font-black uppercase italic tracking-widest text-red-600">Quitar Fondo</h3>
+            <div onclick="initTool('bg')" class="bg-black/60 p-12 rounded-[3rem] border border-white/5 hover:border-red-600 transition-all cursor-pointer text-center group text-red-500">
+                <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">✂️</div>
+                <h3 class="text-xl font-black uppercase italic tracking-widest">Quitar Fondo</h3>
             </div>
             <div onclick="initTool('ia')" class="bg-black/60 p-12 rounded-[3rem] border border-white/5 hover:border-red-600 transition-all cursor-pointer text-center group">
-                <div class="text-5xl mb-4 group-hover:scale-110">✨</div>
+                <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">✨</div>
                 <h3 class="text-xl font-black uppercase italic tracking-widest">Mejorador IA</h3>
             </div>
         </div>
@@ -64,6 +64,8 @@
         <main class="viewport" id="viewport">
             <div id="zoom-container">
                 <div id="canvas-wrapper">
+                    <div id="guide-h" class="guide-line h-[1px] w-[10000px] left-[-5000px]"></div>
+                    <div id="guide-v" class="guide-line w-[1px] h-[10000px] top-[-5000px]"></div>
                     <div id="selection-box"></div>
                     <canvas id="canvas"></canvas>
                 </div>
@@ -71,96 +73,101 @@
         </main>
 
         <aside class="sidebar custom-scroll">
-            <button onclick="showView('home')" class="text-[9px] font-black uppercase text-red-500 mb-2 italic">← VOLVER AL MENÚ</button>
+            <button onclick="showView('home')" class="text-[9px] font-black uppercase text-red-600 mb-2 italic">← CERRAR MÓDULO</button>
             <div class="card">
-                <label class="text-[9px] font-black text-gray-500 uppercase block mb-1">Cargar Imagen</label>
+                <label class="text-[9px] font-black text-gray-500 uppercase block mb-1">Cargar Diseño</label>
                 <input type="file" id="upload" class="w-full text-[10px] text-gray-400 file:bg-red-600 file:text-white file:border-none file:rounded file:px-2 file:py-1 cursor-pointer"/>
             </div>
 
             <div id="panel-color" class="hidden space-y-3">
                 <div class="card border-red-600/30">
-                    <h3 class="text-red-500 font-black text-[10px] uppercase mb-3 italic text-center">Paleta del Diseño</h3>
-                    <div id="design-palette" class="flex flex-wrap gap-2 mb-4 justify-center min-h-[40px]">
-                        <p class="text-[8px] text-gray-600">Sube una imagen...</p>
-                    </div>
-                    <div class="flex items-center justify-between mb-2">
-                        <div id="picked-color" class="w-10 h-10 rounded border border-white/10 bg-zinc-900"></div>
-                        <div class="text-right">
-                            <p class="text-[8px] text-gray-500 font-black uppercase">Color Nuevo</p>
-                            <input type="color" id="custom-picker" class="w-10 h-10 bg-transparent border-none p-0 cursor-pointer">
-                        </div>
-                    </div>
+                    <h3 class="text-red-500 font-black text-[10px] uppercase mb-4 italic text-center">Cambio de Tinta</h3>
+                    <div id="picked-color" class="w-full h-8 rounded border border-white/10 mb-4 bg-zinc-900"></div>
+                    <input type="color" id="custom-picker" class="w-full h-10 mb-4 bg-transparent border-none cursor-pointer">
                     <label class="text-[9px] font-black text-gray-500 uppercase flex justify-between">Sensibilidad <span id="sens-val" class="text-red-600">25</span></label>
                     <input type="range" id="sensitivity" min="1" max="100" value="25" class="w-full accent-red-600">
-                    <button onclick="applyColorAction()" class="btn-jj w-full py-4 mt-4 text-[10px]">Actualizar Diseño</button>
+                    <button onclick="applyColorAction()" class="btn-jj w-full py-4 mt-4 text-[10px]">Actualizar Área</button>
                 </div>
             </div>
 
-            <div id="panel-bg" class="hidden space-y-3">
-                <div class="card border-red-600/30">
-                    <h3 class="text-red-500 font-black text-[10px] uppercase mb-4 italic text-center">Modo Quitar Fondos</h3>
-                    <div class="grid grid-cols-2 gap-2 mb-4">
-                        <button onclick="quickRemove('white')" class="py-2 bg-white text-black text-[9px] font-black rounded uppercase">Quitar Blanco</button>
-                        <button onclick="quickRemove('black')" class="py-2 bg-zinc-800 text-white text-[9px] font-black rounded uppercase">Quitar Negro</button>
-                    </div>
-                    <div class="flex items-center gap-3 mb-4 p-2 bg-black rounded-lg border border-red-900/20">
-                        <div id="bg-target-preview" class="w-8 h-8 rounded border border-white/10 bg-gray-900"></div>
-                        <p class="text-[8px] text-gray-500 uppercase italic">O toca el color en la imagen</p>
-                    </div>
-                    <label class="text-[9px] font-black text-gray-500 uppercase flex justify-between">Tolerancia <span id="bg-sens-text" class="text-red-600">35</span></label>
-                    <input type="range" id="bg-sensitivity" min="1" max="150" value="35" class="w-full accent-red-600" oninput="document.getElementById('bg-sens-text').innerText=this.value">
-                    <button onclick="applyBgRemovePro()" class="btn-jj w-full py-4 mt-4 text-[10px]">Borrar Seleccionado</button>
+            <div id="panel-bg" class="hidden space-y-3 text-center">
+                <div class="card border-red-600/30 text-center">
+                    <h3 class="text-red-500 font-black text-[10px] uppercase mb-2 italic text-center">Remover Fondos</h3>
+                    <div id="bg-target-preview" class="w-12 h-12 rounded border border-white/20 bg-black mx-auto mb-4 shadow-lg"></div>
+                    <label class="text-[9px] font-black text-gray-500 uppercase block mb-1">Tolerancia</label>
+                    <input type="range" id="bg-sensitivity" min="1" max="150" value="35" class="w-full accent-red-600">
+                    <button onclick="applyBgRemove()" class="btn-jj w-full py-4 mt-4 text-[10px]">Limpiar Color</button>
                 </div>
             </div>
 
             <div id="panel-ia" class="hidden space-y-3">
                 <div class="card border-red-600/30">
-                    <h3 class="text-red-500 font-black text-[10px] uppercase mb-4 italic text-center">IA Reescalado y Nitidez</h3>
-                    <div class="space-y-4">
-                        <button onclick="upscaleIA(2)" class="w-full py-3 bg-red-950/30 border border-red-600/30 rounded-lg text-[9px] font-black uppercase hover:bg-red-600 transition-all">Reescalar x2 (HD)</button>
-                        <button onclick="applyBetterIA()" class="btn-jj w-full py-4 text-[10px]">Mejorar Bordes</button>
-                    </div>
+                    <h3 class="text-red-500 font-black text-[10px] uppercase mb-2 italic">Optimización IA</h3>
+                    <button onclick="applyEnhanceIA()" class="btn-jj w-full py-4 text-[10px]">Realzar Imagen</button>
+                </div>
+            </div>
+
+            <div class="card bg-black/50">
+                <label class="text-[9px] font-black text-gray-700 uppercase mb-2 block">Previsualización</label>
+                <div class="flex gap-2">
+                    <button onclick="setBg('#ffffff')" class="w-6 h-6 bg-white rounded"></button>
+                    <button onclick="setBg('#0a0a0a')" class="w-6 h-6 bg-black rounded border border-white/10"></button>
+                    <button onclick="setBg('#cbd5e1')" class="w-6 h-6 bg-slate-400 rounded"></button>
                 </div>
             </div>
 
             <div class="mt-auto space-y-2">
-                <div class="card bg-black/50">
-                    <div class="flex gap-2 justify-center">
-                        <button onclick="setBg('#ffffff')" class="w-6 h-6 bg-white rounded"></button>
-                        <button onclick="setBg('#0a0a0a')" class="w-6 h-6 bg-black rounded border border-white/10"></button>
-                        <button onclick="setBg('#cbd5e1')" class="w-6 h-6 bg-slate-400 rounded"></button>
-                    </div>
-                </div>
                 <button onclick="resetToOriginal()" class="w-full py-2 bg-zinc-900 text-zinc-500 rounded text-[8px] font-black uppercase">Reiniciar</button>
-                <button onclick="openExportModal()" class="w-full py-4 bg-white text-black rounded-xl font-black text-[11px] uppercase hover:bg-red-600 hover:text-white transition-all">Exportar y Descargar</button>
+                <button onclick="openExportModal()" class="w-full py-4 bg-white text-black rounded-xl font-black text-[11px] uppercase hover:bg-red-600 hover:text-white transition-all">Exportar PNG Premium</button>
             </div>
         </aside>
     </section>
 
     <div id="export-modal">
         <div class="modal-content">
-            <h3 class="text-red-600 font-black text-lg uppercase italic mb-6 text-center underline underline-offset-8">Panel de Descarga J&J</h3>
+            <h3 class="text-red-600 font-black text-lg uppercase italic mb-6 text-center tracking-tighter underline underline-offset-8">Salida de Producción</h3>
+            
             <div class="flex gap-4 mb-4">
-                <div class="flex-1"><label class="text-[9px] font-black text-gray-500 uppercase mb-1">Unidad</label>
-                    <select id="exp-unit" class="input-jj" onchange="convertUnits()"><option value="px">Píxeles</option><option value="cm">cm</option><option value="mm">mm</option></select>
+                <div class="flex-1">
+                    <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1">Unidad</label>
+                    <select id="exp-unit" class="input-jj" onchange="convertUnits()">
+                        <option value="px">Píxeles (px)</option>
+                        <option value="cm">Centímetros (cm)</option>
+                        <option value="mm">Milímetros (mm)</option>
+                    </select>
                 </div>
-                <div class="flex-1"><label class="text-[9px] font-black text-gray-500 uppercase mb-1">DPI</label><input type="number" id="exp-dpi" value="300" class="input-jj" oninput="convertUnits()"></div>
+                <div class="flex-1">
+                    <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1">DPI / Resolución</label>
+                    <input type="number" id="exp-dpi" value="300" class="input-jj" oninput="convertUnits()">
+                </div>
             </div>
+
             <div class="flex items-center gap-4 mb-6">
-                <div class="flex-1"><label class="text-[9px] font-black text-gray-500 uppercase block mb-1">Ancho</label><input type="number" id="exp-width" class="input-jj" oninput="syncDim('w')"></div>
-                <div class="flex flex-col items-center justify-center pt-4">
-                    <span class="text-[7px] font-black text-red-600 uppercase">Fijar</span>
+                <div class="flex-1">
+                    <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1">Ancho</label>
+                    <input type="number" id="exp-width" class="input-jj" oninput="syncDim('w')">
+                </div>
+                <div class="pt-4">
                     <input type="checkbox" id="exp-ratio" checked class="accent-red-600 w-4 h-4">
                 </div>
-                <div class="flex-1"><label class="text-[9px] font-black text-gray-500 uppercase block mb-1">Alto</label><input type="number" id="exp-height" class="input-jj" oninput="syncDim('h')"></div>
+                <div class="flex-1">
+                    <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1">Alto</label>
+                    <input type="number" id="exp-height" class="input-jj" oninput="syncDim('h')">
+                </div>
             </div>
+
             <div class="mb-6">
-                <label class="text-[9px] font-black text-gray-500 uppercase block mb-1">Calidad de Remuestreo</label>
-                <select id="exp-resampling" class="input-jj"><option value="high">Bicúbico (Suave)</option><option value="medium">Bilineal</option><option value="low">Cercano (Fuerte)</option></select>
+                <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1">Algoritmo de Calidad</label>
+                <select id="exp-resampling" class="input-jj">
+                    <option value="high">Bicúbico (Mejor para Textiles)</option>
+                    <option value="medium">Bilineal (Rápido)</option>
+                    <option value="low">Vecino Cercano (Nítido/Pixel)</option>
+                </select>
             </div>
+
             <div class="flex gap-3">
-                <button onclick="closeExportModal()" class="flex-1 py-3 bg-zinc-900 text-gray-400 rounded-lg font-black text-[9px] uppercase tracking-widest">Cerrar</button>
-                <button onclick="downloadPro()" class="flex-1 btn-jj py-3 text-[9px] text-white tracking-widest">Descargar PNG</button>
+                <button onclick="closeExportModal()" class="flex-1 py-3 bg-zinc-900 text-gray-400 rounded-lg font-black text-[10px] uppercase">Cancelar</button>
+                <button onclick="downloadPro()" class="flex-1 btn-jj py-3 text-[10px] text-white">Descargar PNG</button>
             </div>
         </div>
     </div>
@@ -169,16 +176,25 @@
         const canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
         const viewport = document.getElementById('viewport'), zoomContainer = document.getElementById('zoom-container');
         const selectionBox = document.getElementById('selection-box'), upload = document.getElementById('upload');
-        let originalImg = null, scale = 1, posX = 0, posY = 0, isSelecting = false, isPanning = false, startX, startY, selectArea = null, currentTool = 'color', targetRGB = [0,0,0], ratio = 1, spacePressed = false;
+        const exportModal = document.getElementById('export-modal');
 
-        window.onkeydown = (e) => { if(e.code === 'Space') { spacePressed = true; viewport.style.cursor = 'grab'; } };
-        window.onkeyup = (e) => { if(e.code === 'Space') { spacePressed = false; viewport.style.cursor = 'crosshair'; } };
+        let originalImg = null, scale = 1, posX = 0, posY = 0, isSelecting = false;
+        let startX, startY, selectArea = null, currentTool = 'color', targetRGB = [0,0,0], ratio = 1;
 
+        // SISTEMA DE LIMPIEZA AL CAMBIAR HERRAMIENTA
         function showView(view) {
             document.getElementById('view-home').classList.toggle('hidden', view !== 'home');
             document.getElementById('view-tool').classList.toggle('active-view', view !== 'home');
             document.getElementById('top-info').classList.toggle('flex', view !== 'home');
-            if(view === 'home') { originalImg = null; ctx.clearRect(0,0,canvas.width,canvas.height); upload.value = ""; }
+            
+            // Si vuelve al home, limpiamos todo para que la siguiente herramienta esté vacía
+            if(view === 'home') {
+                originalImg = null;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                upload.value = "";
+                selectionBox.style.display = 'none';
+                selectArea = null;
+            }
         }
 
         function initTool(tool) {
@@ -197,9 +213,7 @@
                     canvas.width = img.width; canvas.height = img.height;
                     ctx.drawImage(img, 0, 0);
                     originalImg = img; ratio = img.width / img.height;
-                    if(currentTool === 'color') extractPalette();
-                    document.getElementById('exp-width').value = img.width;
-                    document.getElementById('exp-height').value = img.height;
+                    resetExportFields();
                     scale = 0.5; posX = 0; posY = 0; updateTransform();
                 };
                 img.src = ev.target.result;
@@ -207,106 +221,49 @@
             reader.readAsDataURL(e.target.files[0]);
         };
 
-        function extractPalette() {
-            const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-            const colors = {};
-            for(let i=0; i<data.length; i+=Math.max(4, Math.floor(data.length/2000))) {
-                if(data[i+3] < 200) continue;
-                const h = "#" + ((1 << 24) + (data[i] << 16) + (data[i+1] << 8) + data[i+2]).toString(16).slice(1).toUpperCase();
-                colors[h] = (colors[h] || 0) + 1;
-            }
-            const sorted = Object.keys(colors).sort((a,b) => colors[b]-colors[a]).slice(0, 14);
-            const container = document.getElementById('design-palette');
-            container.innerHTML = "";
-            sorted.forEach(hex => {
-                const div = document.createElement('div');
-                div.className = "color-tag"; div.style.backgroundColor = hex;
-                div.onclick = () => {
-                    const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
-                    targetRGB = [r,g,b];
-                    document.getElementById('picked-color').style.backgroundColor = hex;
-                };
-                container.appendChild(div);
-            });
+        function resetExportFields() {
+            document.getElementById('exp-unit').value = 'px';
+            document.getElementById('exp-width').value = canvas.width;
+            document.getElementById('exp-height').value = canvas.height;
         }
 
+        // ZOOM Y TRANSFORM
         viewport.onwheel = (e) => {
             if(!originalImg) return; e.preventDefault();
             scale = Math.max(0.05, Math.min(15, scale + (e.deltaY > 0 ? -0.1 : 0.1) * scale));
             updateTransform();
         };
-
         function updateTransform() {
             zoomContainer.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
             document.getElementById('zoom-label').innerText = Math.round(scale * 100);
         }
 
+        // SELECCIÓN Y COLOR
         viewport.onmousedown = (e) => {
-            if(!originalImg) return;
-            if(spacePressed || e.button === 1) {
-                isPanning = true; startX = e.clientX - posX; startY = e.clientY - posY;
-            } else {
-                isSelecting = true; const rect = canvas.getBoundingClientRect();
-                startX = (e.clientX - rect.left) / scale; startY = (e.clientY - rect.top) / scale;
-                selectionBox.style.display = 'block';
-                const pixel = ctx.getImageData(startX, startY, 1, 1).data;
-                targetRGB = [pixel[0], pixel[1], pixel[2]];
-                document.getElementById('picked-color').style.backgroundColor = `rgb(${targetRGB[0]},${targetRGB[1]},${targetRGB[2]})`;
-                document.getElementById('bg-target-preview').style.backgroundColor = `rgb(${targetRGB[0]},${targetRGB[1]},${targetRGB[2]})`;
-            }
+            if(!originalImg || e.button !== 0) return;
+            isSelecting = true; const rect = canvas.getBoundingClientRect();
+            startX = (e.clientX - rect.left) / scale; startY = (e.clientY - rect.top) / scale;
+            selectionBox.style.display = 'block';
+            const pixel = ctx.getImageData(startX, startY, 1, 1).data;
+            targetRGB = [pixel[0], pixel[1], pixel[2]];
+            document.getElementById('picked-color').style.backgroundColor = `rgb(${targetRGB[0]},${targetRGB[1]},${targetRGB[2]})`;
+            document.getElementById('bg-target-preview').style.backgroundColor = `rgb(${targetRGB[0]},${targetRGB[1]},${targetRGB[2]})`;
         };
 
         window.onmousemove = (e) => {
-            if(isPanning) {
-                posX = e.clientX - startX; posY = e.clientY - startY; updateTransform();
-            } else if(isSelecting) {
-                const rect = canvas.getBoundingClientRect();
-                let cX = (e.clientX - rect.left) / scale, cY = (e.clientY - rect.top) / scale;
-                let x = Math.min(startX, cX), y = Math.min(startY, cY), w = Math.abs(startX - cX), h = Math.abs(startY - cY);
-                selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px';
-                selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px';
-                selectArea = { x, y, w, h };
-            }
+            if(!isSelecting) return;
+            const rect = canvas.getBoundingClientRect();
+            let cX = (e.clientX - rect.left) / scale, cY = (e.clientY - rect.top) / scale;
+            let x = Math.min(startX, cX), y = Math.min(startY, cY), w = Math.abs(startX - cX), h = Math.abs(startY - cY);
+            selectionBox.style.left = x + 'px'; selectionBox.style.top = y + 'px';
+            selectionBox.style.width = w + 'px'; selectionBox.style.height = h + 'px';
+            selectArea = { x, y, w, h };
         };
+        window.onmouseup = () => { isSelecting = false; };
 
-        window.onmouseup = () => { isPanning = isSelecting = false; };
-
-        // --- LÓGICA IA REESCALADO ---
-        function upscaleIA(factor) {
-            if(!originalImg) return;
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width * factor;
-            tempCanvas.height = canvas.height * factor;
-            const tCtx = tempCanvas.getContext('2d');
-            tCtx.imageSmoothingEnabled = true;
-            tCtx.imageSmoothingQuality = 'high';
-            tCtx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
-            canvas.width = tempCanvas.width;
-            canvas.height = tempCanvas.height;
-            ctx.drawImage(tempCanvas, 0, 0);
-            updateTransform();
-            alert("Imagen reescalada a " + canvas.width + "x" + canvas.height);
-        }
-
-        function applyBetterIA() { ctx.filter = 'contrast(120%) saturate(105%) brightness(102%)'; ctx.drawImage(canvas, 0, 0); ctx.filter = 'none'; }
-
-        // --- FONDOS RÁPIDOS ---
-        function quickRemove(color) {
-            targetRGB = color === 'white' ? [255,255,255] : [0,0,0];
-            applyBgRemovePro();
-        }
-
-        function applyBgRemovePro() {
-            const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
-            const d = imgData.data, sens = parseInt(document.getElementById('bg-sensitivity').value);
-            for (let i = 0; i < d.length; i += 4) {
-                const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2) + Math.pow(d[i+1]-targetRGB[1],2) + Math.pow(d[i+2]-targetRGB[2],2));
-                if(diff < sens) d[i+3] = 0;
-            }
-            ctx.putImageData(imgData, 0, 0);
-        }
-
+        // ACCIONES
         function applyColorAction() {
+            if(!originalImg) return;
             const area = selectArea || { x: 0, y: 0, w: canvas.width, h: canvas.height };
             const imgData = ctx.getImageData(area.x, area.y, area.w, area.h);
             const d = imgData.data, sens = parseInt(document.getElementById('sensitivity').value);
@@ -321,20 +278,54 @@
             selectionBox.style.display = 'none'; selectArea = null;
         }
 
-        // --- EXPORT ---
-        function syncDim(type) { if(!document.getElementById('exp-ratio').checked) return; const w = document.getElementById('exp-width'), h = document.getElementById('exp-height'); if(type === 'w') h.value = Math.round(w.value / ratio); else w.value = Math.round(h.value * ratio); }
-        function convertUnits() { const unit = document.getElementById('exp-unit').value, dpi = document.getElementById('exp-dpi').value; let w = canvas.width, h = canvas.height; if(unit === 'cm') { w = (canvas.width / dpi * 2.54).toFixed(2); h = (canvas.height / dpi * 2.54).toFixed(2); } else if(unit === 'mm') { w = (canvas.width / dpi * 25.4).toFixed(2); h = (canvas.height / dpi * 25.4).toFixed(2); } document.getElementById('exp-width').value = w; document.getElementById('exp-height').value = h; }
+        function applyBgRemove() {
+            if(!originalImg) return;
+            const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+            const d = imgData.data, sens = parseInt(document.getElementById('bg-sensitivity').value);
+            for (let i = 0; i < d.length; i += 4) {
+                const diff = Math.sqrt(Math.pow(d[i]-targetRGB[0],2) + Math.pow(d[i+1]-targetRGB[1],2) + Math.pow(d[i+2]-targetRGB[2],2));
+                if(diff < sens) d[i+3] = 0;
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function applyEnhanceIA() { ctx.filter = 'contrast(120%) brightness(105%)'; ctx.drawImage(canvas, 0, 0); ctx.filter = 'none'; }
+
+        // --- EXPORTACIÓN ---
+        function syncDim(type) {
+            if(!document.getElementById('exp-ratio').checked) return;
+            const w = document.getElementById('exp-width'), h = document.getElementById('exp-height');
+            if(type === 'w') h.value = (w.value / ratio).toFixed(2);
+            else w.value = (h.value * ratio).toFixed(2);
+        }
+
+        function convertUnits() {
+            const unit = document.getElementById('exp-unit').value;
+            const dpi = document.getElementById('exp-dpi').value;
+            let w = canvas.width, h = canvas.height;
+            if(unit === 'cm') { w = (canvas.width / dpi * 2.54).toFixed(2); h = (canvas.height / dpi * 2.54).toFixed(2); }
+            if(unit === 'mm') { w = (canvas.width / dpi * 25.4).toFixed(2); h = (canvas.height / dpi * 25.4).toFixed(2); }
+            document.getElementById('exp-width').value = w;
+            document.getElementById('exp-height').value = h;
+        }
+
         function openExportModal() { exportModal.style.display = 'flex'; }
         function closeExportModal() { exportModal.style.display = 'none'; }
+        
         function downloadPro() {
-            const unit = document.getElementById('exp-unit').value, dpi = document.getElementById('exp-dpi').value;
+            const unit = document.getElementById('exp-unit').value;
+            const dpi = document.getElementById('exp-dpi').value;
             let w = document.getElementById('exp-width').value, h = document.getElementById('exp-height').value;
-            if(unit === 'cm') { w = (w/2.54*dpi); h = (h/2.54*dpi); }
-            if(unit === 'mm') { w = (w/25.4*dpi); h = (h/25.4*dpi); }
-            const outCanvas = document.createElement('canvas'); outCanvas.width = w; outCanvas.height = h;
-            const outCtx = outCanvas.getContext('2d'); outCtx.imageSmoothingQuality = document.getElementById('exp-resampling').value;
+            
+            if(unit === 'cm') { w = (w / 2.54 * dpi); h = (h / 2.54 * dpi); }
+            if(unit === 'mm') { w = (w / 25.4 * dpi); h = (h / 25.4 * dpi); }
+
+            const outCanvas = document.createElement('canvas');
+            outCanvas.width = w; outCanvas.height = h;
+            const outCtx = outCanvas.getContext('2d');
+            outCtx.imageSmoothingQuality = document.getElementById('exp-resampling').value;
             outCtx.drawImage(canvas, 0, 0, w, h);
-            const a = document.createElement('a'); a.download = 'jj_premium_final.png'; a.href = outCanvas.toDataURL(); a.click();
+            const a = document.createElement('a'); a.download = 'jj_studio_pro.png'; a.href = outCanvas.toDataURL(); a.click();
             closeExportModal();
         }
 
