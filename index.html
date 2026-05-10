@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J STUDIO v41.4 - TOTAL LOCK</title>
+    <title>J&J STUDIO v41.5 - AUTH FIX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -39,11 +39,13 @@
             <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6 shadow-xl">J&J</div>
             <h2 class="text-2xl font-black italic uppercase mb-2">Acceso Premium</h2>
             <input type="tel" id="user-phone" placeholder="Número registrado" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none">
+            
             <button onclick="checkAccess()" class="w-full btn-jj py-4 mb-4">Ingresar</button>
-            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8 shadow-lg">Prueba Gratis (<span id="t-count">3</span>)</button>
-            <div class="border-t border-zinc-800 pt-6 space-y-4">
-                <a href="https://wa.me/51916689969" target="_blank" class="flex items-center justify-between bg-green-600/10 border border-green-600/30 p-4 rounded-xl text-[11px] font-black uppercase text-green-500 hover:bg-green-600/20 transition-all"><span>👑 Suscribirme</span><span>➔</span></a>
-                <a href="https://wa.me/51904503246" target="_blank" class="flex items-center justify-between bg-blue-600/10 border border-blue-600/30 p-4 rounded-xl text-[11px] font-black uppercase text-blue-500 hover:bg-blue-600/20 transition-all"><span>🔄 Renovar Membresía</span><span>➔</span></a>
+            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8">Prueba Gratis (<span id="t-count">3</span>)</button>
+            
+            <div id="support-buttons" class="border-t border-zinc-800 pt-6 space-y-4 text-left">
+                <a href="https://wa.me/51916689969" target="_blank" class="flex items-center justify-between bg-green-600/10 border border-green-600/30 p-4 rounded-xl text-[11px] font-black uppercase text-green-500 italic"><span>👑 Suscribirme al VIP</span><span>➔</span></a>
+                <a href="https://wa.me/51904503246" target="_blank" class="flex items-center justify-between bg-blue-600/10 border border-blue-600/30 p-4 rounded-xl text-[11px] font-black uppercase text-blue-500 italic"><span>🔄 Renovar Membresía</span><span>➔</span></a>
             </div>
         </div>
     </div>
@@ -52,7 +54,7 @@
         <header class="h-[65px] px-4 flex justify-between items-center bg-black border-b border-red-900/40 z-[100]">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
                 <div class="w-10 h-10 bg-red-600 rounded flex items-center justify-center font-black text-xl shadow-lg text-white">J&J</div>
-                <h1 class="font-black text-sm uppercase italic text-white tracking-widest">J&J STUDIO</h1>
+                <h1 class="font-black text-sm uppercase italic text-white tracking-widest italic">J&J STUDIO</h1>
             </div>
             <button onclick="downloadPNGWith300DPI()" class="bg-yellow-500 text-black font-black text-[10px] px-4 py-2 rounded shadow-lg uppercase italic">📥 Descargar Master</button>
         </header>
@@ -60,9 +62,9 @@
         <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6">
             <h2 class="text-5xl md:text-7xl font-black italic mb-10 uppercase text-center text-white tracking-tighter italic">STUDIO TOOLS</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
-                <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group"><h3 class="font-black uppercase text-xl italic text-white">MASTER COLOR CHANGER</h3></div>
-                <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group"><h3 class="font-black uppercase text-xl italic text-red-600">Quitar Fondo</h3></div>
-                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group"><h3 class="font-black uppercase text-xl italic text-white">Mejorador IA Pro</h3></div>
+                <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group"><h3 class="font-black uppercase text-xl italic text-white italic">MASTER COLOR CHANGER</h3></div>
+                <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group"><h3 class="font-black uppercase text-xl italic text-red-600 italic">Quitar Fondo</h3></div>
+                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group"><h3 class="font-black uppercase text-xl italic text-white italic">Mejorador IA Pro</h3></div>
             </div>
         </section>
 
@@ -81,12 +83,12 @@
                         <div onclick="setBg('#0a0a0a')" class="w-6 h-6 rounded-full bg-black border border-white/10 cursor-pointer shadow-lg"></div>
                         <div onclick="setBg('#ffffff')" class="w-6 h-6 rounded-full bg-white border border-black/10 cursor-pointer shadow-lg"></div>
                         <div onclick="setBg('#dc2626')" class="w-6 h-6 rounded-full bg-red-600 cursor-pointer shadow-lg"></div>
-                        <input type="color" oninput="setBg(this.value)" class="w-6 h-6 bg-transparent border-none p-0 cursor-pointer">
+                        <input type="color" oninput="setBg(this.value)" class="w-6 h-6 bg-transparent border-none p-0 cursor-pointer shadow-lg">
                     </div>
                 </div>
 
                 <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
-                    <p class="label-tool text-red-500 text-center italic font-black">Área Gris de Precisión</p>
+                    <p class="label-tool text-red-500 text-center italic font-black">Selector de Zonas Gris</p>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="text-center"><p class="text-[8px] font-black mb-1 text-zinc-500 uppercase">Origen</p><div id="color-old" class="w-full h-10 rounded border border-white/10 bg-zinc-900 shadow-inner"></div></div>
                         <div class="text-center"><p class="text-[8px] text-red-500 font-black mb-1 uppercase">Nueva Tinta</p><input type="color" id="custom-picker" class="w-full h-10 bg-transparent border-none p-0 cursor-pointer"></div>
@@ -97,13 +99,13 @@
 
                 <div id="panel-ia" class="hidden space-y-2">
                     <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3 border border-white/10">💎 RECONSTRUCCIÓN IA 4K</button>
-                    <div onclick="toggleAccordion('acc-raw')" class="accordion-header"><span class="text-[9px] font-black text-blue-400 uppercase tracking-tighter">Revelado RAW</span><span>▼</span></div>
+                    <div onclick="toggleAccordion('acc-raw')" class="accordion-header"><span class="text-[9px] font-black text-blue-400">REVELADO RAW</span><span>▼</span></div>
                     <div id="acc-raw" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Exposición: <span id="v-exp">0</span></label><input type="range" id="ia-exp" min="-100" max="100" value="0" oninput="applyFilters()"></div>
                         <div><label class="label-tool flex justify-between">Sombras: <span id="v-shadows">0</span></label><input type="range" id="ia-shadows" min="-100" max="100" value="0" oninput="applyFilters()"></div>
                         <div><label class="label-tool flex justify-between">Altas Luces: <span id="v-highlights">0</span></label><input type="range" id="ia-highlights" min="-100" max="100" value="0" oninput="applyFilters()"></div>
                     </div>
-                    <div onclick="toggleAccordion('acc-cal')" class="accordion-header"><span class="text-[9px] font-black text-yellow-500 uppercase tracking-tighter">Ajustes Calidad</span><span>▼</span></div>
+                    <div onclick="toggleAccordion('acc-cal')" class="accordion-header"><span class="text-[9px] font-black text-yellow-500">AJUSTES DE CALIDAD</span><span>▼</span></div>
                     <div id="acc-cal" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Brillo: <span id="v-bright">100%</span></label><input type="range" id="ia-bright" min="50" max="150" value="100" oninput="applyFilters()"></div>
                         <div><label class="label-tool flex justify-between">Saturación: <span id="v-sat">100%</span></label><input type="range" id="ia-sat" min="0" max="200" value="100" oninput="applyFilters()"></div>
@@ -134,15 +136,30 @@
         let scale = 1, posX = 0, posY = 0, targetRGB = [255,255,255], isPanning = false, isSelecting = false, startX_PX, startY_PX, startX_View, startY_View, selectArea = null, currentTool = '';
         let isVIP = false;
 
-        // --- SISTEMA DE CONTADOR ANTI-RESET ---
+        // --- SISTEMA DE CONTADOR REFORZADO ---
         let trialsStored = localStorage.getItem('jj_v41_trials');
-        // Si es nulo (primera vez), ponemos 3. Si existe, respetamos el valor (así sea 0).
         let trials = (trialsStored !== null) ? parseInt(trialsStored) : 3;
         document.getElementById('t-count').innerText = trials;
 
-        function checkAccess() { const p = document.getElementById('user-phone').value; if(p === "51916689969" || p === "VIP") { isVIP = true; enterApp(); } else alert("No VIP."); }
-        function startTrial() { if(trials > 0) { isVIP = false; enterApp(); } else alert("Créditos agotados. Suscríbete."); }
-        function enterApp() { document.getElementById('auth-screen').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; }
+        // --- ACCESO CORREGIDO ---
+        function checkAccess() { 
+            const input = document.getElementById('user-phone').value.trim();
+            // Comparación robusta (soporta texto y número)
+            if(input === "51916689969" || input === "VIP" || input === "51904503246") { 
+                isVIP = true; 
+                enterApp(); 
+            } else { 
+                alert("Número no registrado en la base de datos."); 
+            }
+        }
+        function startTrial() { 
+            if(trials > 0) { isVIP = false; enterApp(); } 
+            else { alert("Créditos agotados. Suscríbete para continuar."); }
+        }
+        function enterApp() { 
+            document.getElementById('auth-screen').style.display = 'none'; 
+            document.getElementById('main-content').style.display = 'block'; 
+        }
         
         function clearMemory() {
             originalImg = null; liveSnapshot = null; initialSnapshot = null;
@@ -161,7 +178,8 @@
                     ctx.drawImage(img, 0, 0); originalImg = img;
                     liveSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
                     initialSnapshot = ctx.getImageData(0,0,canvas.width,canvas.height);
-                    scale = Math.min((viewport.offsetWidth - 40) / img.width, (viewport.offsetHeight - 40) / img.height, 1);
+                    const pad = 40;
+                    scale = Math.min((viewport.offsetWidth - pad) / img.width, (viewport.offsetHeight - pad) / img.height, 1);
                     posX = 0; posY = 0; updateTransform();
                 };
                 img.src = ev.target.result;
@@ -170,6 +188,7 @@
         };
 
         // --- SELECTOR DE ZONAS MATRIX ---
+        let pSX, pSY;
         viewport.addEventListener('mousedown', (e) => {
             if (!originalImg) return;
             const rect = canvas.getBoundingClientRect();
@@ -181,13 +200,16 @@
                 targetRGB = [p[0], p[1], p[2]];
                 document.getElementById('color-old').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
                 document.getElementById('bg-color-preview').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
-                if(currentTool === 'color') { isSelecting = true; startX_PX = tx; startY_PX = ty; startX_View = e.clientX - vRect.left; startY_View = e.clientY - vRect.top; }
+                if(currentTool === 'color') { 
+                    isSelecting = true; startX_PX = tx; startY_PX = ty; 
+                    startX_View = e.clientX - vRect.left; startY_View = e.clientY - vRect.top; 
+                }
                 if(currentTool === 'bg') updateBG(); 
             }
-            isPanning = true; startX_Pan = e.clientX - posX; startY_Pan = e.clientY - posY;
+            isPanning = true; pSX = e.clientX - posX; pSY = e.clientY - posY;
         });
         window.addEventListener('mousemove', (e) => {
-            if (isPanning && !isSelecting) { posX = e.clientX - startX_Pan; posY = e.clientY - startY_Pan; updateTransform(); }
+            if (isPanning && !isSelecting) { posX = e.clientX - pSX; posY = e.clientY - pSY; updateTransform(); }
             if (isSelecting) {
                 const vRect = viewport.getBoundingClientRect();
                 const curVX = e.clientX - vRect.left, curVY = e.clientY - vRect.top;
@@ -275,7 +297,7 @@
             const table = (function() { const t = new Int32Array(256); for (let i = 0; i < 256; i++) { let c = i; for (let j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[i] = c; } return t; })();
             let crc = 0xFFFFFFFF; for (let i = 4; i < 17; i++) crc = table[(crc ^ pHYs[i]) & 0xFF] ^ (crc >>> 1); view.setUint32(17, crc ^ 0xFFFFFFFF);
             const final = new Uint8Array(uint8.length + 21); final.set(uint8.slice(0, 33)); final.set(pHYs, 33); final.set(uint8.slice(33), 54);
-            const a = document.createElement('a'); a.download = `JJ_MASTER_300.png`; a.href = URL.createObjectURL(new Blob([final])); a.click();
+            const a = document.createElement('a'); a.download = `JJ_MASTER_300DPI.png`; a.href = URL.createObjectURL(new Blob([final])); a.click();
             if(!isVIP && trials === 0) location.reload();
         }
         function toggleAccordion(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
