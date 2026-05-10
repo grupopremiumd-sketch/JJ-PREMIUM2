@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>J&J STUDIO v42.4 - UNLOCK FIX</title>
+    <title>J&J STUDIO v42.5 - FULL TOOLS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -19,8 +19,9 @@
         #selection-box { position: absolute; border: 1.5px solid #fff; display: none; pointer-events: none; z-index: 9999; background: rgba(100, 100, 100, 0.4); }
         .sidebar { background: #0a0a0a; padding: 15px; display: flex; flex-direction: column; gap: 12px; z-index: 50; }
         .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 12px; }
-        .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; color: white; border: none; cursor: pointer; }
-        .btn-renew { background: #ff9f43 !important; color: #000 !important; }
+        .btn-jj { background: #dc2626; font-weight: 900; text-transform: uppercase; border-radius: 10px; padding: 14px; width: 100%; color: white; border: none; cursor: pointer; transition: 0.3s; }
+        .btn-jj:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-renew { background: #f97316 !important; color: white !important; }
         .label-tool { font-size: 9px; font-weight: 900; color: #666; text-transform: uppercase; margin-bottom: 4px; display: block; }
         .accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #1a1a1a; border-radius: 8px; margin-bottom: 5px; font-size: 10px; font-weight: 900; }
         .accordion-content { display: none; padding: 10px; background: #0d0d0d; border-radius: 0 0 8px 8px; margin-bottom: 10px; border: 1px solid #222; }
@@ -32,15 +33,15 @@
 </head>
 <body>
 
-    <div id="loading-overlay"><div class="spinner"></div><p class="font-black italic text-red-500 uppercase text-sm mt-4 tracking-widest">Validando Acceso...</p></div>
+    <div id="loading-overlay"><div class="spinner"></div><p class="font-black italic text-red-500 uppercase text-sm mt-4 tracking-widest">Sincronizando J&J Pro...</p></div>
 
     <div id="auth-screen">
         <div class="max-w-md w-full bg-zinc-900 p-8 rounded-[2rem] border border-red-600/30 text-center shadow-2xl text-white">
-            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6">J&J</div>
-            <h2 class="text-2xl font-black italic uppercase mb-2">STUDIO CENTRAL</h2>
+            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center font-black text-3xl mx-auto mb-6 shadow-xl">J&J</div>
+            <h2 class="text-2xl font-black italic uppercase mb-2">ACCESO STUDIO VIP</h2>
             <input type="tel" id="user-phone" placeholder="Número registrado" class="w-full bg-black border border-zinc-800 rounded-xl p-4 text-center text-xl font-black text-red-500 mb-4 focus:border-red-600 outline-none">
-            <button id="btn-login" onclick="validateAccess()" class="w-full btn-jj py-4 mb-4">INGRESAR AHORA</button>
-            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8">PRUEBA GRATIS (<span id="t-count">2</span>)</button>
+            <button id="btn-login" onclick="validateAccess()" class="w-full btn-jj py-4 mb-4">Ingresar al Studio</button>
+            <button onclick="startTrial()" class="w-full bg-zinc-800 py-3 rounded-xl text-[10px] font-black uppercase text-zinc-400 mb-8">Prueba Gratis (<span id="t-count">2</span>)</button>
             <div class="border-t border-zinc-800 pt-6 space-y-3 text-left">
                 <button class="w-full py-3 bg-orange-600/10 border border-orange-600/30 rounded-xl text-[10px] font-black text-orange-500 uppercase" onclick="window.open('https://wa.me/51904503246', '_blank')">🔥 RENOVAR VIP</button>
                 <button class="w-full py-3 bg-green-600/10 border border-green-600/30 rounded-xl text-[10px] font-black text-green-500 uppercase" onclick="window.open('https://wa.me/51916689969', '_blank')">💎 NUEVO REGISTRO</button>
@@ -51,18 +52,18 @@
     <div id="main-content" style="display:none;">
         <header class="h-[65px] px-4 flex justify-between items-center bg-black border-b border-red-900/40 z-[100]">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
-                <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-black text-white">J&J</div>
-                <h1 id="user-display" class="font-black text-xs uppercase italic text-white tracking-widest tracking-tighter">J&J STUDIO VIP</h1>
+                <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-black text-white text-xs">J&J</div>
+                <h1 id="user-display" class="font-black text-xs uppercase italic text-white tracking-widest">J&J STUDIO PRO</h1>
             </div>
-            <button onclick="downloadPNGWith300DPI()" class="bg-yellow-500 text-black font-black text-[10px] px-4 py-2 rounded shadow-lg uppercase italic tracking-tighter">📥 Descargar Master</button>
+            <button onclick="downloadPNGWith300DPI()" class="bg-yellow-500 text-black font-black text-[9px] px-3 py-2 rounded shadow-lg uppercase italic">📥 Descargar Master 300DPI</button>
         </header>
 
-        <section id="view-home" class="h-[calc(100vh-65px)] bg-[radial-gradient(circle_at_center,#1a0000_0%,#050505_100%)] flex flex-col items-center py-10 px-6 overflow-y-auto">
-            <h2 class="text-5xl font-black italic mb-10 uppercase text-center text-white tracking-tighter">TOOLSET PRO</h2>
+        <section id="view-home" class="h-[calc(100vh-65px)] bg-premium flex flex-col items-center py-10 px-6 overflow-y-auto">
+            <h2 class="text-5xl font-black italic mb-10 uppercase text-center text-white tracking-tighter">TOOLSET PLATINUM</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
                 <div onclick="initTool('color')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">Master Color</h3></div>
                 <div onclick="initTool('bg')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-red-600">Quitar Fondo</h3></div>
-                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">IA Upscale</h3></div>
+                <div onclick="initTool('ia')" class="bg-black/40 p-8 rounded-[2rem] border border-white/5 cursor-pointer hover:border-red-600 text-center transition-all group shadow-xl"><h3 class="font-black uppercase text-xl italic text-white">Mejorador IA</h3></div>
             </div>
         </section>
 
@@ -72,11 +73,21 @@
                 <div id="selection-box"></div>
             </main>
             <aside class="sidebar">
-                <button onclick="goBack()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 mb-2">← VOLVER</button>
+                <button onclick="goBack()" class="bg-zinc-900 text-red-500 font-black py-4 rounded-xl text-[10px] uppercase border border-red-900/20 mb-2">← VOLVER AL MENÚ</button>
                 <div class="card"><input type="file" id="upload" class="text-[10px] w-full text-zinc-500" accept="image/*"/></div>
                 
+                <div class="card border-zinc-800">
+                    <p class="label-tool text-center mb-2">Mesa de Trabajo</p>
+                    <div class="flex justify-center gap-4">
+                        <div onclick="setBg('#0a0a0a')" class="w-6 h-6 rounded-full bg-black border border-white/10 cursor-pointer shadow-lg"></div>
+                        <div onclick="setBg('#ffffff')" class="w-6 h-6 rounded-full bg-white border border-black/10 cursor-pointer shadow-lg"></div>
+                        <div onclick="setBg('#dc2626')" class="w-6 h-6 rounded-full bg-red-600 cursor-pointer shadow-lg"></div>
+                        <input type="color" oninput="setBg(this.value)" class="w-6 h-6 bg-transparent border-none p-0 cursor-pointer">
+                    </div>
+                </div>
+
                 <div id="panel-ia" class="hidden space-y-2">
-                    <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3">💎 RECONSTRUCCIÓN IA 4K</button>
+                    <button onclick="superUpscaleIA()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-black text-[11px] rounded-xl shadow-lg uppercase mb-3 border border-white/10">💎 RECONSTRUCCIÓN IA 4K</button>
                     <div onclick="toggleAccordion('acc-raw')" class="accordion-header"><span>REVELADO RAW</span><span>▼</span></div>
                     <div id="acc-raw" class="accordion-content space-y-4">
                         <div><label class="label-tool flex justify-between">Exposición: <span id="v-exp">0</span></label><input type="range" id="ia-exp" min="-100" max="100" value="0" oninput="applyFilters()"></div>
@@ -91,6 +102,13 @@
                     </div>
                 </div>
 
+                <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
+                    <p class="label-tool text-white text-center italic">Recorte por Gotero</p>
+                    <div id="bg-color-preview" class="w-full h-8 rounded border border-white/10 bg-zinc-900 shadow-inner"></div>
+                    <div><label class="label-tool flex justify-between">Tolerancia: <span id="val-tol">40</span></label><input type="range" id="bg-tolerance" min="1" max="150" value="40" oninput="updateBG()"></div>
+                    <button onclick="confirmBG()" class="btn-jj text-[10px]">Confirmar Recorte</button>
+                </div>
+
                 <div id="panel-color" class="hidden card border-red-600/30 space-y-4">
                     <div class="flex justify-between items-center bg-black p-2 rounded">
                         <div id="color-old" class="w-12 h-12 rounded border border-white/10 bg-zinc-800"></div>
@@ -98,11 +116,6 @@
                         <input type="color" id="custom-picker" class="w-12 h-12 bg-transparent border-none p-0 cursor-pointer">
                     </div>
                     <button onclick="applyColor()" class="btn-jj text-[10px] shadow-2xl">Cambiar Color en Zona</button>
-                </div>
-
-                <div id="panel-bg" class="hidden card border-red-600/30 space-y-4">
-                    <div><label class="label-tool flex justify-between">Tolerancia: <span id="val-tol">40</span></label><input type="range" id="bg-tolerance" min="1" max="150" value="40" oninput="updateBG()"></div>
-                    <button onclick="confirmBG()" class="btn-jj text-[10px]">Confirmar Recorte</button>
                 </div>
                 
                 <button onclick="hardReset()" class="w-full py-3 bg-zinc-900 text-yellow-500 font-black rounded-xl text-[10px] uppercase mt-auto shadow-lg">REESTABLECER VISTA</button>
@@ -126,36 +139,29 @@
 
         async function validateAccess() {
             const u = document.getElementById('user-phone').value.toString().replace(/\D/g,'');
-            if(!u) return alert("Número vacío");
+            if(!u) return;
             const btn = document.getElementById('btn-login');
             btn.innerText = "VERIFICANDO...";
-            btn.disabled = true;
-
             try {
                 const res = await fetch(`https://script.google.com/macros/s/AKfycbzwIHNPwRi4x_oQHIYIvMYRD7HbZD-dkwo7bEdH3Zc9yN4-TwfURjSd1TcgNKPqYJxo/exec?user=${u}`);
                 const data = await res.json();
-                
-                // SI EL SCRIPT DE GOOGLE DICE TRUE, ENTRAMOS.
                 if(data.access === true) { 
-                    isVIP = true; 
-                    sessionStorage.setItem('jj_session', 'active');
+                    isVIP = true; sessionStorage.setItem('jj_session', 'active');
                     document.getElementById('user-display').innerText = `SOCIO: ${data.nombre.toUpperCase()}`;
                     enterApp(); 
                 } else {
                     alert(`ESTADO: ${data.status.toUpperCase()}`);
-                    btn.innerText = "RENOVAR MEMBRESÍA";
-                    btn.classList.add('btn-renew');
-                    btn.disabled = false;
+                    btn.innerText = "RENOVAR AQUÍ"; btn.classList.add('btn-renew');
                     btn.onclick = () => window.open('https://wa.me/51904503246', '_blank');
                 }
-            } catch(e) { alert("Error de servidor J&J."); btn.innerText = "REINTENTAR"; btn.disabled = false; }
+            } catch(e) { alert("Error DB J&J."); } finally { if(!isVIP) btn.innerText = "Validar Acceso"; }
         }
 
         function startTrial() { if(freeCount > 0) enterApp(); else alert("Sin pruebas."); }
         function enterApp() { document.getElementById('auth-screen').style.display = 'none'; document.getElementById('main-content').style.display = 'block'; }
         function logout() { sessionStorage.clear(); location.reload(); }
 
-        // --- FILTROS (V42.4 FIXED) ---
+        // FILTROS IA
         function applyFilters() {
             if(!originalImg) return;
             const exp = parseInt(document.getElementById('ia-exp').value);
@@ -164,14 +170,12 @@
             const sat = document.getElementById('ia-sat').value;
             const sharp = document.getElementById('ia-sharp').value;
             const bright = document.getElementById('ia-bright').value;
-
             document.getElementById('v-exp').innerText = exp;
             document.getElementById('v-shadows').innerText = shad;
             document.getElementById('v-highlights').innerText = high;
             document.getElementById('v-bright').innerText = bright + "%";
             document.getElementById('v-sat').innerText = sat + "%";
             document.getElementById('v-sharp').innerText = sharp;
-
             ctx.clearRect(0,0,canvas.width,canvas.height);
             const sAdj = 100 + (shad * -0.25);
             const hAdj = 100 + (high * 0.25);
@@ -181,7 +185,7 @@
             ctx.filter = 'none';
         }
 
-        // --- SISTEMA CORE ---
+        // CORE
         function clearMemory() { originalImg = null; canvas.width = 0; canvas.height = 0; selectionBox.style.display = 'none'; posX = 0; posY = 0; scale = 1; updateTransform(); }
         function goBack() { clearMemory(); document.getElementById('view-tool').classList.remove('active-view'); document.getElementById('view-home').style.display = 'flex'; }
         function initTool(t) { currentTool = t; document.getElementById('view-home').style.display = 'none'; document.getElementById('view-tool').classList.add('active-view'); document.getElementById('panel-color').classList.toggle('hidden', t !== 'color'); document.getElementById('panel-bg').classList.toggle('hidden', t !== 'bg'); document.getElementById('panel-ia').classList.toggle('hidden', t !== 'ia'); }
@@ -204,6 +208,7 @@
         };
 
         // SELECTOR MATRIX
+        let panSX, panSY;
         viewport.addEventListener('mousedown', (e) => {
             if (!originalImg) return;
             const rect = canvas.getBoundingClientRect(), vRect = viewport.getBoundingClientRect();
@@ -212,6 +217,7 @@
                 const p = ctx.getImageData(Math.floor(tx), Math.floor(ty), 1, 1).data;
                 targetRGB = [p[0], p[1], p[2]];
                 document.getElementById('color-old').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
+                document.getElementById('bg-color-preview').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
                 if(currentTool === 'color') { isSelecting = true; startX_PX = tx; startY_PX = ty; startX_View = e.clientX - vRect.left; startY_View = e.clientY - vRect.top; }
                 if(currentTool === 'bg') updateBG();
             }
